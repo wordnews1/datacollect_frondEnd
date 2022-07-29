@@ -1,0 +1,42 @@
+/*"catA":"Category A",
+  "catB":"Category B",
+  "catB1":"Category B1",
+  "catCPL":"Category C PL",
+  "catCVL ":"Category C VL",
+  "catC":"Category C",
+  "catDPL":"Category D PL",
+  "catDVLr":"Category D VL",
+  "catDVL":"Category D VL",
+
+  {
+                          label: "Id Accident",
+                          field: "Id Accident",
+                          hidden: true,
+                      },
+                      {
+                          label: "Type d'usager",
+                          field: "Type d'usager",
+                          html:true
+                      },
+                      {
+                          label: "Patient",
+                          field: "Patient",
+                      },
+                      {
+                          label: "Date",
+                          field: "Date"
+                      },
+                      {
+                          label: "Heure",
+                          field: "Heure"
+                      },
+                      {
+                          label: "Gravite",
+                          field: "Gravite"
+                      },
+                      {
+                          label: "Statut",
+                          field: "statut",
+                          html: true
+                      },
+                      */

@@ -1,0 +1,41 @@
+#!/usr/bin/env groovy
+
+pipeline {
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+
+    agent none
+
+    stages {
+        stage('Pre process') {
+            agent any
+            steps {
+                script {
+                    
+                }       
+                               
+            }
+        }
+        stage('Build') {
+            agent any
+            steps {
+                sh 'docker build -t app_front' --no-cache
+            }
+        }
+        stage('Run') {
+            agent any
+            steps {
+                sh 'docker run ..... '
+            }
+        }
+        stage('Update') {
+            agent any
+            steps {
+            }
+        }
+        stage('Test & Clean-up') {
+            
+        }
+    } // stages
+} // pipeline

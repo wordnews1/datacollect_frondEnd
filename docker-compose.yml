@@ -1,0 +1,194 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:5.7
+    command: --max_allowed_packet=32505856
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: catisdb
+    volumes:
+      - "./db:/var/lib/mysql"
+    ports:
+      - "3308:3306"
+    networks:
+      - backend
+
+  admin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8084:80"
+    networks:
+      - backend
+
+  keycloak:
+    container_name: keycloak
+    user: root
+    depends_on:
+      - db
+    links:
+      - db
+    build:
+      context: ./keycloak
+      dockerfile: Dockerfile
+    environment:
+#      KEYCLOAK_USER: admin
+#     KEYCLOAK_PASSWORD: admin
+      DB_DATABASE: keycloak
+      DB_VENDOR: MYSQL
+      DB_ADDR: 141.95.103.210
+      DB_PORT: 3308
+      DB_USER: root
+      DB_PASSWORD: root
+    restart: always
+    volumes:
+      - keycloak-data:/var/lib/keycloak/data
+      - ./imports:/opt/jboss/keycloak/imports
+    command:  
+      - "-b 0.0.0.0 -Dkeycloak.profile.feature.upload_scripts=enabled"
+    ports:
+      - 8090:8080
+      - 8443:8443
+    networks:
+      - backend
+  caisse:
+    build:
+      context: ./mtcBackend
+      dockerfile: Dockerfile
+    depends_on:
+      - keycloak
+      - db
+#    restart: always
+    volumes:
+      - DITROS-VT:/opt
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ditrosdb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_KEYCLOAK_AUTH: http://141.95.103.210:8090/auth
+    ports:
+      - "8086:8080"
+    networks:
+      - backend     
+  front: 
+    build:
+      context: ./mtcFrontEnd
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - caisse
+      - keycloak
+    ports:
+      - "8085:8080"
+    networks:
+      - frontend
+    environment:
+     VUE_APP_SERVER_URL: 141.95.103.210
+     VUE_APP_MTC_PORT: 8086
+     VUE_APP_HOME_PORT: 8085
+     VUE_APP_KEYCLOAK_PORT: 8090
+     VUE_APP_KEYCLOAK_URL: 141.95.103.210
+     VUE_APP_REPORTING_URL: 141.95.103.210
+     VUE_APP_REPORTING_PORT: 8080
+     VUE_APP_CLIENT_URL: 141.95.103.210
+
+  assuranceback:
+    build:
+      context: ./assuranceBack
+      dockerfile: Dockerfile
+    depends_on:
+      - keycloak
+      - db
+    environment:
+     SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/assurancedb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+     SPRING_DATASOURCE_USERNAME: root
+     SPRING_DATASOURCE_PASSWORD: root 
+    ports:
+      - "8087:8080"
+    networks:
+      - backend
+   
+  assurancefront:
+     build:
+      context: ./assuranceFront
+      dockerfile: Dockerfile
+     restart: always
+     depends_on:
+      - assuranceback
+     ports:
+      - "8088:8080"
+     networks:
+      - frontendass
+   
+  controleroutier:
+    build:
+      context: ./control-routier 
+      dockerfile: Dockerfile
+    depends_on:
+      - keycloak
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ditrosdb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_KEYCLOAK_AUTH: http://141.95.103.210:8090/auth
+    volumes:
+      - DITROS-VT:/opt
+    ports:
+      - "8095:8080"
+    networks:
+      - backend
+
+  adminfront:
+    build:
+      context: ./adminDitros
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - caisse
+    ports:
+      - "8094:8080"
+    networks:
+      - frontendadmin
+    environment:
+     VUE_APP_SERVER_URL: 141.95.103.210
+     VUE_APP_MTC_PORT: 8086
+     VUE_APP_HOME_PORT: 8094
+     VUE_APP_KEYCLOAK_PORT: 8090
+     VUE_APP_KEYCLOAK_URL: 141.95.103.210 
+     VUE_APP_REPORTING_URL: 141.95.103.210
+     VUE_APP_REPORTING_PORT: 8080
+  controller:
+    build:
+      context: ./controllerService
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ditrosdb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+      - caisse
+    ports:
+      - "8089:8080"
+    networks:
+      - backend
+  
+volumes:
+  keycloak-data:
+  DITROS-VT:
+networks:
+  backend:
+  frontend:
+  frontendass:
+  frontendadmin:
