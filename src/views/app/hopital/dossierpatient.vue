@@ -3,6 +3,39 @@
 
     <b-overlay :show="show" rounded="sm">
 
+        <b-overlay :show="openb" rounded="sm" >
+
+            <b-modal id="confirmopenAccount" :title="$t('open_box')" hide-footer>
+
+                <template #modal-header="{}">
+                    <!-- Emulate built in modal header close button action -->
+                    <h5>{{$t('open_box')}}</h5>
+                </template>
+
+                <template #default="{  }">
+
+                    <b-form-input
+
+                            v-model="ouvertureAmount"
+                            type="number"
+                            :placeholder="$t('Montant_Encaisse')"
+                    ></b-form-input>
+
+                    <AutoComplete ref="childAutos" @save-change="savechange" msg='clients'
+                                  type='caisse' :optionsKey="optionsKey"
+                                  :optionsKey1="optionsKey1"></AutoComplete>
+
+                    <p></p>
+                    <div style="text-align: right">
+                        <b-button  :disabled="!openb" @click="openBox()" variant="outline-success" style="margin-right: 15px">{{$t('open')}}</b-button>
+                    </div>
+
+                </template>
+
+            </b-modal>
+
+        </b-overlay>
+
         <b-form :aria-hidden="show ? 'true' : null" >
 
             <div role="tablist">
@@ -590,11 +623,14 @@
                     <b-collapse id="accordion-6" invisible accordion="my-accordion" role="tabpanel">
                         <b-card-body>
                             <b-row>
+                                <b-button type="submit"  @click ="openmodalbox('soins')"  variant="success"
+                                          style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+
 
                                 <b-col md="12">
                                     <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                                        <ListTable :rows="listsoin" :columns="columnoins" :onRowclick="onRowclick" :isCLoseMenu="true"
+                                        <ListTable :type="'soins'" :rows="listsoin" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
                                                    :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                                    @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -624,11 +660,13 @@
                     <b-collapse id="accordion-7" invisible accordion="my-accordion" role="tabpanel">
                         <b-card-body>
                             <b-row>
+                                <b-button type="submit"  @click ="openmodalbox('examen')"  variant="success"
+                                          style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
                                 <b-col md="12">
                                     <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                                        <ListTable :rows="listexamen" :columns="columnexamen" :isCLoseMenu="true"
+                                        <ListTable :type="'examen'" @onRowclick="onRowclick" :rows="listexamen" :columns="columnexamen" :isCLoseMenu="true"
                                                    :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                                    @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -657,11 +695,13 @@
                     <b-collapse id="accordion-8" invisible accordion="my-accordion" role="tabpanel">
                         <b-card-body>
                             <b-row>
+                                <b-button  @click ="openmodalbox('trauma')"  variant="success"
+                                          style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
                                 <b-col md="12">
                                     <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                                        <ListTable :rows="listrauma" :columns="columnexamen" :isCLoseMenu="true"
+                                        <ListTable :type="'trauma'" @onRowclick="onRowclick" :rows="listrauma" :columns="columnexamen" :isCLoseMenu="true"
                                                    :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                                    @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -688,9 +728,11 @@
 
 <script>
 
+    import constants from '../../../plugins/constants'
     import ListTable from '../components/List-table2'
     import { required, minLength, maxLength } from "vuelidate/lib/validators";
     // import partnersVue from "../partners/list"
+    import axios from 'axios'
     import { mapGetters,mapActions } from "vuex";
     export default {
 
@@ -706,10 +748,14 @@
             console.log('rowe',this.rowes)
             //this.ListDossierPatient(this.rowes[0].id)
             this.ListDossierPatient(9)
+            this.folder_id = 9
 
         },
         data() {
             return {
+                optionsKey:"nom",
+                optionsKey1:"prenom",
+                folder_id:0,
                 checkEx2Options : [
                     {item: 'oui', name: 'Oui'},
                     {item: 'non', name: 'Non'}
@@ -762,6 +808,12 @@
                         label: "Number",
                         field: "number",
                         hidden: false,
+                    },
+                    {
+                        label: "actions",
+                        field: "actions",
+                        hidden: false,
+                        html: true,
                     }
                 ],
                 consumalcohol:'',
@@ -810,8 +862,78 @@
         methods:{
 
             ...mapActions(["ListDossierPatient"]),
+            savechange(data) {
+
+                console.log('savechange', data);
+            },
+            openmodalbox(){
+                this.$bvModal.show('confirmopenAccount')
+            },
             onRowclick(params){
+                this.loadanotherpage = true
+                let soin = {
+                    care: this.folder_id,
+                    item: params.id
+                };
+                switch(params.type){
+                    case 'examen':
+
+                        axios.post(constants.resource_url+'cares/remove-exam', soin)
+                            .then(response =>{
+                                this.listexamen = response.data.data.exams;
+                                this.loadanotherpage = false
+                                //this.containerClass = 'container';
+                                //this.trauma={}
+                            }).catch(function(error) {
+                            console.log('products_error',error);
+                            // Handle Errors here.
+                            // var errorCode = error.code;
+                            // var errorMessage = error.message;
+                            // console.log(error);
+
+                            //commit("setError", error);
+
+                        }); break;
+                    case 'soins':
+
+                        axios.post(constants.resource_url+'cares/remove-treatment', soin)
+                            .then(response =>{
+                                this.listsoin = response.data.data.treatments;
+                                //this.containerClass = 'container';
+                                //this.trauma={}
+                                this.loadanotherpage = false
+                            }).catch(function(error) {
+                            console.log('products_error',error);
+                            // Handle Errors here.
+                            // var errorCode = error.code;
+                            // var errorMessage = error.message;
+                            // console.log(error);
+
+                            //commit("setError", error);
+
+                        });break;
+                    case 'trauma':
+                        axios.post(constants.resource_url+'cares/remove-injury', soin)
+                            .then(response =>{
+                                this.listrauma = response.data.data.injuries;
+                                this.containerClass = 'container';
+                                this.trauma={}
+                                this.loadanotherpage = false
+
+                            }).catch(function(error) {
+                            console.log('products_error',error);
+                            // Handle Errors here.
+                            // var errorCode = error.code;
+                            // var errorMessage = error.message;
+                            // console.log(error);
+
+                            //commit("setError", error);
+
+                        });break;
+
+                }
                 console.log('paramis',params)
+
             },
             editProps(params){
 

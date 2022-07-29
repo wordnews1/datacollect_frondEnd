@@ -28,6 +28,7 @@
                     <vue-good-table
                             :columns="columns"
                             :line-numbers="true"
+                            @on-selected-rows-change="selectionChanged"
                             @on-row-click="changeColor"
                             :row-style-class="rowStyleClassFn"
                             :select-options="{
@@ -57,13 +58,13 @@
 
                         </div>
 
-                        <template slot="table-row"  >
-                            <a class="btn btn-sm primary"  @on-row-click="onRowClick"><i class="i-Remove" style="color: red"></i></a>
+                        <template slot="table-row" slot-scope="props" >
+                            <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Remove" style="color: red"></i></a>
                         </template>
 
                         <template slot="table-row" slot-scope="props">
                             <span v-if="props.column.field == 'actions'">
-                              <a class="btn btn-sm primary"  @on-row-click="onRowClick"><i class="i-Remove"></i></a>
+                              <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Remove"></i></a>
                             </span>
                                                 <span v-else>
                               {{props.formattedRow[props.column.field]}}
@@ -156,6 +157,7 @@
         props:{
             searchref:String,
             rows:Array,
+            type:String,
             links:Array,
             perPage:Number,
             columns:Array,
@@ -187,8 +189,11 @@
         methods: {
 
             onRowClick(value){
+                console.log('onrow',value)
+                value.type=this.type
                 this.$emit('onRowclick',value)
             },
+
                 changeColor(row){
                 this.selectedRow = row;
             },
