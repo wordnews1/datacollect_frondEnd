@@ -1,0 +1,69 @@
+pipeline {
+environment {
+    CI = 'true'
+  }
+  agent any
+  stages {
+   
+	stage('clone'){
+	steps{
+		git branch: 'main', changelog: false, credentialsId: 'Mtc_Git', url: 'git@github.com:CATIS-DEVELOPER/mtcFrontEnd.git'
+		
+		}
+	}
+	  stage('Cleaning directory'){
+		steps{
+			echo 'Starting clean up build directory'
+			script{
+				sh'git clean -fdx'
+				}
+			}
+	  }
+	  stage('build'){
+	  	steps {
+                	nodejs(nodeForJenkins: 'Node 15.4.0') {
+                    		sh 'npm config ls'
+                		}
+	  		}
+	  }
+	  stage('Installing dependencies'){
+		steps{
+			echo 'Start to Install dependencies'
+			script{
+				sh'npm install'
+				}
+			}
+	  }
+	  stage('Running unit tests'){
+		steps{
+			echo 'Start to run test'
+			script{
+				sh'npm run test:unit'
+				sh'npm run build'
+				}
+			}
+	  }
+	stage('Building image') {
+		steps{
+			echo 'Starting to build docker image'
+			script {
+				def dockerfile = 'Dockerfile'
+				dockerImage = docker.build("frontend", "-f ${dockerfile} .")
+			}
+	    }
+    }
+	
+    stage('Deploy Image') {
+      steps{
+        script {
+        
+		    docker.withRegistry('https://51.210.48.154:5000') {
+				/*dockerImage.push("${env.BUILD_NUMBER}")*/
+				dockerImage.push("latest")
+			}
+        }
+      }
+    }
+	
+	}
+}
