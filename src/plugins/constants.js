@@ -31,6 +31,5 @@ export default {
     resource_url_auth,
     resource_redirect,
     resource_urs,
-    reporting_link
 }
 
