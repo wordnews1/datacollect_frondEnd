@@ -40,7 +40,7 @@ export default {
               this.$store.state.authData.username = Vue.prototype.$keycloak.tokenParsed.preferred_username
               this.$store.state.authData.role = Vue.prototype.$keycloak.tokenParsed.realm_access.roles
               localStorage.setItem('userinfo', JSON.stringify(Vue.prototype.$keycloak.tokenParsed));
-				console.log('userinfo',Vue.prototype.$keycloak.token)
+				console.log('userinfo',Vue.prototype.$keycloak)
               if(this.$store.state.authData.role.indexOf('cg') !== -1){
                   this.$router.push({ name: 'cg', params: { id: '0' }})
                   return;

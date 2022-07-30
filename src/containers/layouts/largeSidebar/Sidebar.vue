@@ -76,6 +76,22 @@
 
             </li>
 
+          <li
+              @mouseenter="toggleSubMenu"
+              class="nav-item"
+              :class="{ active: selectedParentMenu == 'crma' }"
+              data-item="crma"
+              :data-submenu="true"
+          >
+
+            <a class="nav-item-hold" href="#">
+              <i class="nav-icon i-Police"></i>
+              <span class="nav-text">Police</span>
+            </a>
+            <div class="triangle"></div>
+
+          </li>
+
 
 
 
@@ -84,6 +100,7 @@
       </div>
 
     </vue-perfect-scrollbar>
+
 
       <vue-perfect-scrollbar
               :class="{ open: getSideBarToggleProperties.isSecondarySideNavOpen }"
@@ -136,8 +153,33 @@
 
 
               </ul>
+            <ul
+                class="childNav d-none"
+                data-parent="crma"
+                :class="{ 'd-block': selectedParentMenu == 'crma' }"
+            >
+
+              <li class="nav-item">
+                <router-link :to="{ name: 'addaccident'}">
+                  <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Add-User"></i>
+                    <span class="nav-text">{{ $t("Ajouter Accident") }}</span>
+                  </a>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link :to="{ name: 'accidents'}">
+                  <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Lock-User"></i>
+                    <span class="nav-text">{{ $t("Liste des Declarations") }}</span>
+                  </a>
+                </router-link>
+              </li>
+            </ul>
           </div>
       </vue-perfect-scrollbar>
+
 
    <!-- <vue-perfect-scrollbar
       :class="{ open: getSideBarToggleProperties.isSecondarySideNavOpen }"

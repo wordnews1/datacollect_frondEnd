@@ -61,30 +61,29 @@
 
                             <template slot="table-row" slot-scope="props">
 
-                                <div v-if="props.column.field == 'identity'">
-                                    {{props.row.identity}}
-                                </div>
-                                <div v-if="props.column.field == 'gender'">
-                                    {{props.row.gender}}
-                                </div>
-                                <div v-if="props.column.field == 'personTraumaSeverity'">
-                                    {{props.row.personTraumaSeverity}}
-                                </div>
-                                <div v-if="props.column.field == 'place'">
-                                    {{props.row.place}}
-                                </div>
-                                <div v-if="props.column.field == 'crashDate'">
-                                    {{props.row.crashDate}}
-                                </div>
+                              <div v-if="props.column.field == 'identity' ">
+
+                                <span> {{props.row.nom}} {{props.row.prenom}}</span>
+
+                              </div>
+                              <div v-if="props.column.field == 'personTraumaSeverity' ">
+
+                                <span> {{traumas[props.row.accparams.persontrauma]}}</span>
+
+                              </div>
 
                                 <div v-if="props.column.field == 'status' && props.formattedRow[props.column.field] == 'OPENED'">
 
                                     <span class="badge badge-success" style="margin-right: 5px;"> {{props.row.status}}</span>
 
                                 </div>
-                                <div v-if="props.column.field == 'birthDate' && props.formattedRow[props.column.field] == null">
+                                <div v-else-if="props.column.field == 'birthDate' && props.formattedRow[props.column.field] == null">
                                     Pas renseigne
                                 </div>
+
+                              <span v-else>
+                              {{props.formattedRow[props.column.field]}}
+                            </span>
 
 
 
@@ -186,7 +185,9 @@
 
         data() {
 
+
             return {
+
                 customStyles,
                 customLabels,
                 currentPage:1,
@@ -198,7 +199,12 @@
                 searchrefs:this.searchref,
                 pagesize:10,
                 currentpage:1,
-                filter:""
+                filter:"",
+              traumas:[
+                "Traumatisme Mortel","Traumatisme Grave/sérieux",
+                "pas de Traumatisme","Inconnu"
+              ],
+
             };
         },
 

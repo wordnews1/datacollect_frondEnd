@@ -227,12 +227,17 @@
                     {
                         label: "Id ",
                         field: "id",
-                       hidden: false,
+                        hidden: false,
                     },
                     {
                         label: "Identity ",
                         field: "identity",
                        hidden: false,
+                    },
+                    {
+                      label: "Date Accident",
+                      field: "crashDate",
+                      hidden: false,
                     },
                     {
                         label: "Sexe ",
@@ -244,19 +249,10 @@
                         field: "personTraumaSeverity",
                        hidden: false,
                     },
-                    {
-                        label: "Place",
-                        field: "place",
-                       hidden: false,
-                    },
-                    {
-                        label: "Date Accident",
-                        field: "crashDate",
-                       hidden: false,
-                    },
+
                     {
                         label: "Date de Naissance ",
-                        field: "birthDate",
+                        field: "dateNaiss",
                         hidden: false,
                     },
                     {
@@ -264,8 +260,6 @@
                         field: "status",
                         hidden: false,
                     }
-
-
 
                 ]
             }

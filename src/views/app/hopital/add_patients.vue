@@ -58,6 +58,7 @@
                                     >
                                         <b-form-datepicker id="example-datepicker"  v-model="birthday" class="mb-2"></b-form-datepicker>
 
+
                                     </b-form-group>
                                     <b-form-group
                                             class="col-md-12 mb-30"
@@ -153,13 +154,17 @@
                                         v-model="personGender"
                                         >
 
-                                        <option value="0">
+                                        <option value=1>
                                             Male
                                         </option>
 
-                                        <option value="1">
+                                        <option value=2>
                                             Female
                                         </option>
+
+                                      <option value=3>
+                                        Inconnu
+                                      </option>
 
                                     </b-form-select>
                                 </b-col>
@@ -191,9 +196,12 @@
                                             :label="$t('crashacc')"
                                             label-for="input-1"
                                     >
-                                        <b-form-datepicker id="example-datepicker"  v-model="crashacc" class="mb-2"></b-form-datepicker>
+<!--                                        <b-form-datepicker id="example-datepicker"
+                                                           class="mb-2"></b-form-datepicker>-->
+                                      <Datepicker format="YYYY-MM-DD H:i"  v-model="crashacc" />
 
                                     </b-form-group>
+
                                     <b-form-group :label="$t('consumalcohol')">
 
 
@@ -229,13 +237,22 @@
                                                 v-model="persontrauma"
                                         >
 
-                                            <option value="0">
-                                                Mortel
+                                            <option value="1">
+                                                Traumatisme Mortel
                                             </option>
 
-                                            <option value="1">
-                                                Grave
+                                            <option value="2">
+                                                Traumatisme Grave/sérieux
                                             </option>
+                                          <option value="3">
+                                            Traumatisme Léger/Mineur
+                                          </option>
+                                          <option value="4">
+                                            pas de Traumatisme
+                                          </option>
+                                          <option value="5">
+                                           Inconnu
+                                          </option>
 
 
                                         </select>
@@ -592,6 +609,7 @@
     import { required, minLength, maxLength } from "vuelidate/lib/validators";
    // import partnersVue from "../partners/list"
     import { mapGetters,mapActions } from "vuex";
+    import Datepicker from 'vuejs-datetimepicker';
     export default {
 
         name:"registerPartners",
@@ -601,7 +619,7 @@
             type:String,
             statut:Boolean
         },
-        components:{},
+        components:{Datepicker},
 
         data() {
             return {
@@ -609,7 +627,7 @@
                     {item: 'oui', name: 'Oui'},
                     {item: 'non', name: 'Non'}
                 ],
-
+              crashacc:'',
                 consumalcohol:'',
                 consumdrugs:'',
                 personGender:'',
@@ -653,19 +671,25 @@
         computed: {
             ...mapGetters(["GetStorePatients"]),
         },
+
+
         methods:{
 
             ...mapActions(["StorePatients"]),
+          fred(){
+            console.log('lll',this.crashacc)
+          },
             registerCustomer: function(item){
                 console.log('test',item)
                 let test={}
-                test = {cni: this.cni, nom: this.nom,prenom:this.prenom,
+                test = {cni: this.cni, nom: this.nom,prenom:this.prenom,crashDate:this.crashacc,
                     telephone:this.phone,dateNaiss:this.birthday,
-                    passport:this.passport,permis:this.permi_de_conduire,description:this.description,personGender:this.personGender}
+                    passport:this.passport,permis:this.permi_de_conduire,description:this.description,gender:this.personGender}
                 let params = {}
                 params = {poids:this.poids,temperature:this.temperature,pouls:this.pouls,tension:this.tension,params:this.checkedNames}
                 let accparams = {}
-                accparams = {persontrauma:this.persontrauma,consumalcohol:this.consumalcohol,consumdrugs: this.consumdrugs,crashDate:this.crashDate}
+                accparams = {persontrauma:this.persontrauma,consumalcohol:this.consumalcohol,
+                  consumdrugs: this.consumdrugs}
                 test.accparams = accparams
                 test.parametre = params
 
@@ -707,7 +731,16 @@
                     solid: true
                 });
             },
-        }
+        },
+
+      watch:{
+
+        GetStorePatients(value){
+
+            console.log('ff',value)
+          this.$router.push({name: 'hospital',params: { rowes:0 }})
+          }
+        },
     }
 </script>
 <style scoped>
@@ -716,4 +749,7 @@
         margin-left: 30%;
     }
 
+    .year-month-wrapper{
+      background-color: #003473!important;
+    }
     </style>

@@ -150,6 +150,7 @@
   "catDVL":"Camion & tire Remorque",
   "details_ventes":"Détails vente",
 
+  "crashacc":"Date de l'Accident",
   "veh_success":"Visite enregitré",
   "approved_success":"Approuvé avec succès",
   "veh_failed":"Visite échoué",
@@ -172,6 +173,7 @@
   "profile_inf":"Profile Picture",
   "img":"Picture",
   "add":"Ajouter",
+  "added":"Ajoute avec success",
   "list_visit":"Listes des visites",
   "list_products":"Listes des Produits",
   "register_proprio":"Enregister un proprietaire",

@@ -74,6 +74,16 @@ const routes = [
                         path: "addpatient",
                         component: () => import("../views/app/hopital/add_patients")
                     },
+                    {
+                        name:"addaccident",
+                        path: "addaccident",
+                        component: () => import("../views/app/accident/addaccident")
+                    },
+                    {
+                        name:"accidents",
+                        path: "accidents",
+                        component: () => import("../views/app/accident/accidents")
+                    },
 {
                         name:"dossier",
                         path: "dossier",

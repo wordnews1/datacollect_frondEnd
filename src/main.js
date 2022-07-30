@@ -13,7 +13,8 @@ import VueKeyCloak from '@dsb-norge/vue-keycloak-js'
 import VueMask from 'v-mask'
 import constants from "./plugins/constants";
 import wysiwyg from "vue-wysiwyg";
-
+// Main JS (in UMD format)
+import VueTimepicker from 'vue2-timepicker'
 import 'vue-wysiwyg/dist/vueWysiwyg.css';
 import VueSignaturePad from 'vue-signature-pad';
 /*import VueAuthImage from 'vue-auth-image';
@@ -28,6 +29,7 @@ import 'vue-search-select/dist/VueSearchSelect.css'
 Vue.use(wysiwyg, {});
 Vue.config.productionTip = false
 Vue.use(VueSSE)
+Vue.use(VueTimepicker)
 
 
 // set Authorization header used by axios
@@ -40,6 +42,11 @@ Vue.use(VueCompositionAPI);
 
 import VueAutosuggest from "vue-autosuggest";
 Vue.use(VueAutosuggest);
+
+
+
+// CSS
+import 'vue2-timepicker/dist/VueTimepicker.css'
 
 //Vue.prototype.$keycloak.token
 import {vueImgPreview} from 'vue-img-preview'

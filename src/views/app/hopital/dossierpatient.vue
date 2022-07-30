@@ -9,25 +9,33 @@
 
                 <template #modal-header="{}">
                     <!-- Emulate built in modal header close button action -->
-                    <h5>{{$t('open_box')}}</h5>
+                    <h5>{{$t('Ajouter')}} </h5>
                 </template>
 
                 <template #default="{  }">
 
                     <b-form-input
 
-                            v-model="ouvertureAmount"
-                            type="number"
-                            :placeholder="$t('Montant_Encaisse')"
+                            v-model="valeur"
+                            @input="suggestionon(valeur)"
+                            type="text"
+                            :placeholder="$t('valeur')"
                     ></b-form-input>
 
-                    <AutoComplete ref="childAutos" @save-change="savechange" msg='clients'
-                                  type='caisse' :optionsKey="optionsKey"
-                                  :optionsKey1="optionsKey1"></AutoComplete>
+                  <b-list-group v-if="filteredSuggestions.length" style="float:inherit;position:absolute;z-index:1">
+
+                    <b-list-group-item v-for="(s,i) in filteredSuggestions" :key="i"
+                                       @click="selected({item:s})">
+                      {{s[optionsKey]}}
+
+                    </b-list-group-item>
+
+                  </b-list-group>
 
                     <p></p>
                     <div style="text-align: right">
-                        <b-button  :disabled="!openb" @click="openBox()" variant="outline-success" style="margin-right: 15px">{{$t('open')}}</b-button>
+                        <b-button @click="addelement()" variant="outline-success" style="margin-right: 15px">
+                          {{$t('ajouter')}}</b-button>
                     </div>
 
                 </template>
@@ -269,13 +277,22 @@
                                                 v-model="persontrauma"
                                         >
 
-                                            <option value="0">
-                                                Mortel
-                                            </option>
+                                          <option value="1">
+                                            Traumatisme Mortel
+                                          </option>
 
-                                            <option value="1">
-                                                Grave
-                                            </option>
+                                          <option value="2">
+                                            Traumatisme Grave/sérieux
+                                          </option>
+                                          <option value="3">
+                                            Traumatisme Léger/Mineur
+                                          </option>
+                                          <option value="4">
+                                            pas de Traumatisme
+                                          </option>
+                                          <option value="5">
+                                            Inconnu
+                                          </option>
 
 
                                         </select>
@@ -623,7 +640,7 @@
                     <b-collapse id="accordion-6" invisible accordion="my-accordion" role="tabpanel">
                         <b-card-body>
                             <b-row>
-                                <b-button type="submit"  @click ="openmodalbox('soins')"  variant="success"
+                                <b-button   @click ="openmodalbox('soins')"  variant="success"
                                           style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
 
@@ -660,7 +677,7 @@
                     <b-collapse id="accordion-7" invisible accordion="my-accordion" role="tabpanel">
                         <b-card-body>
                             <b-row>
-                                <b-button type="submit"  @click ="openmodalbox('examen')"  variant="success"
+                                <b-button   @click ="openmodalbox('examen')"  variant="success"
                                           style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
                                 <b-col md="12">
@@ -695,7 +712,7 @@
                     <b-collapse id="accordion-8" invisible accordion="my-accordion" role="tabpanel">
                         <b-card-body>
                             <b-row>
-                                <b-button  @click ="openmodalbox('trauma')"  variant="success"
+                                <b-button  @click ="openmodalbox('traumatisme')"  variant="success"
                                           style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
                                 <b-col md="12">
@@ -746,14 +763,18 @@
         },
         mounted(){
             console.log('rowe',this.rowes)
-            //this.ListDossierPatient(this.rowes[0].id)
-            this.ListDossierPatient(9)
-            this.folder_id = 9
+            this.ListDossierPatient(this.rowes[0].id)
+            //this.ListDossierPatient(9)
+            this.folder_id = this.rowes[0].id
 
         },
         data() {
             return {
-                optionsKey:"nom",
+              valeur:'',
+              valeur1:{},
+              filteredSuggestions:[],
+              type:"",
+                optionsKey:"name",
                 optionsKey1:"prenom",
                 folder_id:0,
                 checkEx2Options : [
@@ -841,6 +862,7 @@
                 towns:["Douala","Yaounde"]
             }
         },
+        openb:false,
         validations: {
             cni: {
                 required,
@@ -862,12 +884,170 @@
         methods:{
 
             ...mapActions(["ListDossierPatient"]),
+          selected(value){
+              this.filteredSuggestions = []
+              this.valeur = value.item.name
+              this.valeur1 = value
+
+              console.log('selected',value)
+          },
+          makeToast(variant = null,type) {
+
+            switch (type) {
+              case 0: type="error"; break;
+              case 1: type="success" ; break;
+              case 2: type="info"; break;
+              case 3: type="warning"; break;
+
+            }
+
+            this.$toasted.show((variant),{type:type})
+
+          },
+          addelement(value){
+            console.log('selected2',value)
+            console.log('selected2',this.valeur)
+            this.openb=true
+            let soin = {
+              care: this.folder_id,
+              item: this.valeur1.item.id
+            };
+            switch(this.type){
+
+               case 'examen':
+
+                 axios.post(constants.resource_url+'cares/add-exam', soin)
+                     .then(response =>{
+
+                       this.openb = false
+                       this.valeur=''
+                       this.makeToast(this.$t('added'),1)
+                       console.log('products_error',response);
+                       this.listexamen.push(response.data.data.exams)
+                       //this.containerClass = 'container';
+                       //this.trauma={}
+                     }).catch(function(error) {
+                   console.log('products_error',error);
+                   // Handle Errors here.
+                   // var errorCode = error.code;
+                   // var errorMessage = error.message;
+                   // console.log(error);
+
+                   //commit("setError", error);
+
+                 }); break;
+               case 'soins':
+
+                 axios.post(constants.resource_url+'cares/add-treatment', soin)
+                     .then(response =>{
+                       this.valeur=''
+                       this.makeToast(this.$t('added'),1)
+                       console.log('products_error',response);
+                       //this.trauma={}
+                       this.openb = false
+                     }).catch(function(error) {
+                   console.log('products_error',error);
+                   // Handle Errors here.
+                   // var errorCode = error.code;
+                   // var errorMessage = error.message;
+                   // console.log(error);
+
+                   //commit("setError", error);
+
+                 });break;
+               case 'traumatisme':
+                 axios.post(constants.resource_url+'cares/add-injury', soin)
+                     .then(response =>{
+                       this.makeToast(this.$t('added'),1)
+                       console.log('products_error',response);
+                       this.openb = false
+                       this.valeur=''
+                       this.listrauma.push(response.data.data.injuries)
+
+                     }).catch(function(error) {
+                   console.log('products_error',error);
+                   // Handle Errors here.
+                   // var errorCode = error.code;
+                   // var errorMessage = error.message;
+                   // console.log(error);
+
+                   //commit("setError", error);
+
+                 });break;
+             }
+          },
+            suggestionon(value){
+              console.log('suggestionon',value)
+              //this.openb = true
+              let params = {};
+              params["name"] = value
+              switch(this.type){
+
+                case 'examen':
+
+                  axios.get(constants.resource_url+'examinations/search', {params})
+                      .then(response =>{
+
+                        this.loadanotherpage = false
+                        this.filteredSuggestions = response.data.data
+                        //this.containerClass = 'container';
+                        //this.trauma={}
+                      }).catch(function(error) {
+                    console.log('products_error',error);
+                    // Handle Errors here.
+                    // var errorCode = error.code;
+                    // var errorMessage = error.message;
+                    // console.log(error);
+
+                    //commit("setError", error);
+
+                  }); break;
+                case 'soins':
+
+                  axios.get(constants.resource_url+'treatments/search', {params})
+                      .then(response =>{
+                        this.filteredSuggestions = response.data.data
+                        //this.containerClass = 'container';
+                        //this.trauma={}
+                        this.openb = false
+                      }).catch(function(error) {
+                    console.log('products_error',error);
+                    // Handle Errors here.
+                    // var errorCode = error.code;
+                    // var errorMessage = error.message;
+                    // console.log(error);
+
+                    //commit("setError", error);
+
+                  });break;
+                case 'traumatisme':
+                  axios.get(constants.resource_url+'injuries/search', {params})
+                      .then(response =>{
+                        this.filteredSuggestions = response.data.data
+                        this.openb = false
+
+                      }).catch(function(error) {
+                    console.log('products_error',error);
+                    // Handle Errors here.
+                    // var errorCode = error.code;
+                    // var errorMessage = error.message;
+                    // console.log(error);
+
+                    //commit("setError", error);
+
+                  });break;
+              }
+
+            },
             savechange(data) {
 
                 console.log('savechange', data);
             },
-            openmodalbox(){
-                this.$bvModal.show('confirmopenAccount')
+            openmodalbox(value){
+
+              this.type=value
+              console.log('savechange', value);
+              this.$bvModal.show('confirmopenAccount')
             },
             onRowclick(params){
                 this.loadanotherpage = true
@@ -966,10 +1146,7 @@
                 console.log('loadpage','')
             },
 
-            makeToast(variant = null,type="info") {
 
-                this.$toasted.show(variant,{type:type})
-            },
 
             makeToastTwo(variant = null) {
                 console.log('Successfully Submitted')
@@ -987,10 +1164,10 @@
                 this.cni = data.cni!=null?data.cni:'pas renseigne'
                 this.nom = data.nom!=null?data.nom:'pas renseigne'
                 this.prenom = data.prenom!=null?data.prenom:'pas renseigne'
-                this.telephone = data.telephone!=null?data.telephone:'pas renseigne'
+                this.phone = data.telephone!=null?data.telephone:'pas renseigne'
                 this.birthday = data.dateNaiss!=null?data.dateNaiss:'pas renseigne'
                 this.passport = data.passport!=null?data.passport:'pas renseigne'
-                this.permis = data.permis!=null?data.permis:'pas renseigne'
+                this.permi_de_conduire = data.permis!=null?data.permis:'pas renseigne'
                 this.personGender = data.gender!=null?data.gender:'pas renseigne'
 
                 this.poids = data.poids!=null?data.poids:'pas renseigne'
