@@ -1,11 +1,11 @@
-const server_url = process.env.VUE_APP_SERVER_URL;
-const client_url = process.env.VUE_APP_CLIENT_URL;
-const keycloak_url = process.env.VUE_APP_KEYCLOAK_URL;
+const server_url = process.env.VUE_APP_BACK_SERVER_URL;
+const client_url = process.env.VUE_APP_FRONT_SERVER_URL;
+const keycloak_url = process.env.VUE_APP_KEYCLOAK_SERVER_URL;
 //const reporting_url =  process.env.VUE_APP_REPORTING_URL;
 
 
-const mtc_port = process.env.VUE_APP_MTC_PORT;
-const home_port =  process.env.VUE_APP_HOME_PORT;
+const mtc_port = process.env.VUE_APP_BACK_PORT;
+const home_port =  process.env.VUE_APP_FRONT_PORT;
 const keycloak_port =  process.env.VUE_APP_KEYCLOAK_PORT;
 //const reporting_port =  process.env.VUE_APP_REPORTING_PORT;
 
