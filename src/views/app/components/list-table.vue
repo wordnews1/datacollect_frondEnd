@@ -72,14 +72,15 @@
 
                               </div>
 
-                                <div v-if="props.column.field == 'status' && props.formattedRow[props.column.field] == 'OPENED'">
+                              <span v-if="props.column.field == 'brand'">
+                              <span> TOYOTA</span>
+                            </span>
 
-                                    <span class="badge badge-success" style="margin-right: 5px;"> {{props.row.status}}</span>
 
-                                </div>
-                                <div v-else-if="props.column.field == 'birthDate' && props.formattedRow[props.column.field] == null">
-                                    Pas renseigne
-                                </div>
+                              <span v-if="props.column.field == 'actions'">
+                              <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Eye-Visible"></i></a>
+                            </span>
+
 
                               <span v-else>
                               {{props.formattedRow[props.column.field]}}
@@ -210,6 +211,10 @@
 
         methods: {
 
+          onRowClick(value){
+            console.log('onrowd',value)
+            this.$emit('onRowclick',value)
+          },
 
             changeColor(row){
                 this.selectedRow = row;

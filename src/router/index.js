@@ -65,6 +65,12 @@ const routes = [
                         component: () => import("../views/app/hopital/examens")
                     },
                     {
+                        name:"detailsaccident",
+                        path: "detailsaccident",
+                        component: () => import("../views/app/accident/detailsaccident"),
+                        props: true
+                    },
+                    {
                         name:"traumatisme",
                         path: "traumatisme",
                         component: () => import("../views/app/hopital/traumatisme")

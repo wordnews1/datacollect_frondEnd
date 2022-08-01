@@ -11,6 +11,7 @@ const state = {
     listexamens:[],
     listsoins:[],
     listdossier:[],
+    listdetail:[],
     list:[],
     listacc:[]
 
@@ -74,6 +75,33 @@ const actions = {
                 if(list.data.success){
 
                     commit("SETSTOREPATIENTS",list.data.data)
+
+                }
+
+            })
+            .catch(function(error) {
+                console.log('products_error',error);
+                // Handle Errors here.
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // console.log(error);
+
+                //commit("setError", error);
+
+            });
+    },
+    DetailsAccident({commit},data){
+
+        axios.get(state.resource_url+'accidents/'+data)
+
+            .then(list => {
+
+                console.log('accidentdetails',list.data)
+                console.log('accidentdetails',list.data.data)
+
+                if(list.data.success){
+
+                    commit("SETDETAILACCIDENT",list.data.data)
 
                 }
 
@@ -266,6 +294,7 @@ const getters = {
     GETLISTACCIDENTS: state => state.listacc,
     GETLISTSOINS: state => state.listsoins,
     GetStorePatients: state => state.listpatients,
+    GETDETAILACCIDENT: state => state.listdetail,
     GetListDossier: state => state.listdossier
 
 }
@@ -281,6 +310,7 @@ const mutations = {
     SETVUELISTACCIDENTS: (state,list_acc)=>state.listacc=list_acc,
     SETLISTSOINS: (state,list_soins)=>state.listsoins=list_soins,
     SETSTOREPATIENTS: (state,list)=>state.listpatients=list,
+    SETDETAILACCIDENT: (state,listdetail)=>state.listdetail=listdetail,
     SETLISTDOSSIER: (state,listdossier)=>state.listdossier=listdossier
 
 }

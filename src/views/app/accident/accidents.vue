@@ -54,7 +54,7 @@
 
               <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                <ListTable :rows="list" :columns="columns" :isCLoseMenu="true"
+                <ListTable :rows="list" :columns="columns" :isCLoseMenu="true" @onRowclick="rowClick"
                            :totalPage="totalPages_" :totalElement="totalElement" :links="links"
                            @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -152,6 +152,10 @@ export default {
       console.log('params','this.idd')
 
     },
+    rowClick(params){
+      this.$router.push({name: 'detailsaccident',params: { rowes:params }})
+      console.log('loadpage',params)
+    },
 
     loadpage(params){
 
@@ -204,7 +208,13 @@ export default {
           label: "Status",
           field: "status",
           hidden: false,
+        },
+        {
+          label: "actions",
+          field: "actions",
+          hidden: false,
         }
+
 
 
 

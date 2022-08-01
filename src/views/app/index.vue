@@ -45,6 +45,14 @@ export default {
                   this.$router.push({ name: 'cg', params: { id: '0' }})
                   return;
               }
+            if(this.$store.state.authData.role.indexOf('hopital') !== -1){
+              this.$router.push({ name: 'hospital', params: { id: '0' }})
+              return;
+            }
+            if(this.$store.state.authData.role.indexOf('policier') !== -1){
+              this.$router.push({ name: 'accidents', params: { id: '0' }})
+              return;
+            }
               if(this.$store.state.authData.role.indexOf('controleur') !== -1){
                   this.$router.push({name: 'visit_start'})
                   return;
