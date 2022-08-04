@@ -243,23 +243,21 @@
                                     <b-form-group :label="$t('consumalcohol')">
 
 
-                                        <b-form-checkbox
-                                                v-model="consumalcohol"
-                                                value="oui"
-                                                class="mb-5"
-                                                disabled
+                                        <b-checkbox
+                                            disabled
+                                            v-model="consumalcohol"
+                                            class="mb-5 right_header"
                                         >
                                             Oui
-                                        </b-form-checkbox>
+                                        </b-checkbox>
 
-                                        <b-form-checkbox
+                                        <b-checkbox
                                                 disabled
-                                                v-model="consumalcohol"
-                                                value="non"
+                                                v-model="consumalcohols"
                                                 class="mb-5 right_header"
                                         >
                                             Non
-                                        </b-form-checkbox>
+                                        </b-checkbox>
 
 
                                     </b-form-group>
@@ -301,24 +299,21 @@
 
                                     <b-form-group :label="$t('consumdrugs')">
 
-
-                                        <b-form-checkbox
+                                        <b-checkbox
                                                 disabled
                                                 v-model="consumdrugs"
-                                                value="oui"
                                                 class="mb-5"
                                         >
                                             Oui
-                                        </b-form-checkbox>
+                                        </b-checkbox>
 
-                                        <b-form-checkbox
+                                        <b-checkbox
                                                 disabled
-                                                v-model="consumdrugs"
-                                                value="non"
+                                                v-model="consumdrugse"
                                                 class="mb-5 right_header"
                                         >
                                             Non
-                                        </b-form-checkbox>
+                                        </b-checkbox>
 
 
 
@@ -550,71 +545,65 @@
                             </b-row>
                             <b-row>
                                 <br/>
+
                                 <b-col md="12">
                                     <b-form-group :label="$t('param_med_label')">
 
-                                        <b-form-checkbox-group
-                                                disabled
-                                                id="flavours"
-                                                name="flavours"
-                                                class="ml-4"
-                                                aria-label="Individual flavours"
-                                                stacked
-                                        >
                                             <br/>
-                                            <b-form-checkbox
-                                                    v-model="checkedNames"
-                                                    value="ashtme"
+                                            <b-checkbox
+                                                md="3"
+                                                disabled
+                                                    v-model="ashtme"
                                                     class="mb-5"
                                             >
                                                 Asthme
-                                            </b-form-checkbox>
+                                            </b-checkbox>
 
-                                            <b-form-checkbox
-                                                    v-model="checkedNames"
-                                                    value="cardiaque"
+                                            <b-checkbox
+                                                disabled
+                                                    v-model="cardiaque"
                                                     class="mb-5 right_header"
                                             >
                                                 Maladie Cardiaque
-                                            </b-form-checkbox>
+                                            </b-checkbox>
                                             <br/>
-                                            <b-form-checkbox
-                                                    v-model="checkedNames"
-                                                    value="hypertension"
+                                            <b-checkbox
+                                                disabled
+                                                    v-model="epilepsie"
                                                     class="mb-5"
                                             >
-                                                hypertension
-                                            </b-form-checkbox>
+                                                epilepsie
+                                            </b-checkbox>
 
 
-                                            <b-form-checkbox
-                                                    v-model="checkedNames"
-                                                    value="epilepsie"
+                                            <b-checkbox
+                                                disabled
+                                                    v-model="hypertension"
                                                     class="mb-5 right_header"
                                             >
-                                                Epilepsie
+                                              hypertension
 
-                                            </b-form-checkbox>
+                                            </b-checkbox>
                                             <br/>
 
-                                            <b-form-checkbox
-                                                    v-model="checkedNames"
-                                                    value="diabete"
+                                            <b-checkbox
+                                                disabled
+                                                    v-model="diabete"
                                                     class="mb-5 "
                                             >
                                                 Diabete
-                                            </b-form-checkbox>
+                                            </b-checkbox>
 
-                                            <b-form-checkbox
-                                                    v-model="checkedNames"
-                                                    value="cancer"
+                                            <b-checkbox
+                                                disabled
+                                                    v-model="cancer"
                                                     class="mb-5 right_header"
                                             >
                                                 Cancer
-                                            </b-form-checkbox>
+                                            </b-checkbox>
 
 
-                                        </b-form-checkbox-group>
+
                                     </b-form-group>
                                 </b-col>
                             </b-row>
@@ -837,14 +826,24 @@
                         html: true,
                     }
                 ],
+              tst:true,
                 consumalcohol:'',
+                consumalcohols:'',
+               persontrauma:'',
                 consumdrugs:'',
+                consumdrugse:'',
                 personGender:'',
                 checkedNames:[],
                 poids:'',
                 temperature:'',
                 tension:'',
                 pouls:'',
+                ashtme:'',
+                cardiaque:'',
+                hypertension:'',
+                diabete:'',
+                cancer:'',
+                epilepsie:'',
 
                 rout:false,
                 content:"",
@@ -1170,14 +1169,36 @@
                 this.permi_de_conduire = data.permis!=null?data.permis:'pas renseigne'
                 this.personGender = data.gender!=null?data.gender:'pas renseigne'
 
-                this.poids = data.poids!=null?data.poids:'pas renseigne'
-                this.tension = data.tension!=null?data.tension:'pas renseigne'
-                this.pouls = data.pouls!=null?data.pouls:'pas renseigne'
-                this.temperature = data.temperature!=null?data.temperature:'pas renseigne'
+                this.poids = data.parametre.poids!=null?data.parametre.poids:'pas renseigne'
+                this.tension = data.parametre.tension!=null?data.parametre.tension:'pas renseigne'
+                this.pouls = data.parametre.pouls!=null?data.parametre.pouls:'pas renseigne'
+                this.temperature = data.parametre.temperature!=null?data.parametre.temperature:'pas renseigne'
                 this.crashacc = data.crashDate!=null?data.crashDate:'pas renseigne'
                 this.listsoin = data.treatments
                 this.listexamen = data.exams
                 this.listrauma = data.injuries
+                this.checkedNames = data.parametre.params
+
+              this.ashtme = this.checkedNames.some(data => data === 'ashtme')
+              this.cardiaque = this.checkedNames.some(data => data === 'cardiaque')
+              this.hypertension = this.checkedNames.some(data => data === 'hypertension')
+              this.epilepsie = this.checkedNames.some(data => data === 'epilepsie')
+              this.diabete = this.checkedNames.some(data => data === 'diabete')
+              this.cancer = this.checkedNames.some(data => data === 'cancer')
+
+              console.log('cardiaque',data.parametre.pouls)
+              console.log('cardiaque',data.parametre.pouls)
+
+
+               this.consumalcohol  = data.accparams.consumalcohol=='oui'?true:false;
+               this.consumalcohols  = data.accparams.consumalcohol=='non'?true:false;
+
+               this.consumdrugs  = data.accparams.consumdrugs=='oui'?true:false;
+
+               this.persontrauma  = data.accparams.persontraum;
+
+               this.consumdrugse  = data.accparams.consumdrugs=='non'?true:false;
+
             }
 
         }

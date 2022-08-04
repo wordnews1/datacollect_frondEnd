@@ -2,6 +2,50 @@
 
   <b-overlay :show="show" rounded="sm">
 
+    <b-overlay :show="openb" rounded="sm" >
+
+      <b-modal id="openassociate" :title="$t('open_box')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("Associer le dossier patient d'un accidenté")}} </h5>
+        </template>
+
+        <template #default="{  }">
+
+          <b-form-input
+
+              v-model="valeur"
+              @input="suggestionon(valeur)"
+              type="text"
+              :placeholder="$t('valeur')"
+          ></b-form-input>
+
+          <b-list-group v-if="filteredSuggestions.length" style="width:90%;float:inherit;position:absolute;z-index:1">
+
+            <b-list-group-item v-for="(s,i) in filteredSuggestions" :key="i"
+                               @click="selected({item:s})">
+
+              Cni: {{s["cni"]}}<br/>
+              {{s[optionsKey]}} {{s["prenom"]}}<br/>
+              Née le: {{s["dateNaiss"]}}
+
+            </b-list-group-item>
+
+          </b-list-group>
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="addelement()" variant="outline-success" style="margin-right: 15px">
+              {{$t('ajouter')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
+    </b-overlay>
+
 
     <b-form :aria-hidden="show ? 'true' : null" >
 
@@ -261,6 +305,8 @@
           <b-collapse id="accordion-7" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
+                <b-button v-if=" rowe.length<=1 "  @click ="associer()"  variant="success"
+                            style="position: relative;right: 0;margin-right: 10px;">{{$t('associer')}}</b-button>
 
 
                 <b-col md="12">
@@ -294,8 +340,8 @@
 </template>
 
 <script>
-
-//import constants from '../../../plugins/constants'
+import constants from '../../../plugins/constants'
+import axios from 'axios'
 import ListTable from '../components/List-table2'
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
 // import partnersVue from "../partners/list"
@@ -319,10 +365,13 @@ export default {
   },
   data() {
     return {
-      data:{},
+      rowe:{},
+      openb:false,
+      optionsKey:"nom",
       valeur:'',
-      valeur1:{},
       filteredSuggestions:[],
+      data:{},
+      valeur1:{},
       type:"",
       folder_id:0,
 
@@ -446,6 +495,49 @@ export default {
   methods:{
 
     ...mapActions(["DetailsAccident"]),
+    associer(){
+
+      this.$bvModal.show('openassociate')
+    },
+    suggestionon(value) {
+      this.openb = true
+
+      console.log('suggestionon', value)
+      //this.openb = true
+      let params = {};
+      params["name"] = value
+
+      axios.get(constants.resource_url+'cares/search', {params})
+          .then(response =>{
+
+            this.openb = false
+            this.filteredSuggestions = response.data.data
+
+            // this.$bvModal.hide('openassociate')
+
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
+
+        //commit("setError", error);
+
+      });
+
+    },
+    selected(value){
+
+      this.filteredSuggestions = []
+      this.valeur = value.item.nom + " "+value.item.prenom
+      this.valeur1 = value
+
+      console.log('selected',value)
+
+    },
     editProps(params){
 
       console.log('params',params)
@@ -459,13 +551,51 @@ export default {
       console.log('loadpage',params)
     },
 
-    selected(value){
-      this.filteredSuggestions = []
-      this.valeur = value.item.name
-      this.valeur1 = value
+    addelement(value) {
+      console.log('selected2', value)
+      console.log('selected2', this.valeur)
+      this.openb = true
 
-      console.log('selected',value)
+      let soin = {
+        careId: this.valeur1.item.id,
+        personAccidentId: this.rowe[0].id
+      };
+
+
+
+      axios.post(constants.resource_url+'cares/join-person-accident', soin)
+          .then(response =>{
+
+            if(response.data.success){
+
+              this.valeur=''
+              this.makeToast(this.$t('added'),1)
+              console.log('products_error',response);
+              this.$bvModal.hide('openassociate')
+            }else{
+              this.makeToast(this.$t('error'),0)
+            }
+            this.openb = false
+
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
+
+        //commit("setError", error);
+
+      });
+
+      /*let soin = {
+        care: this.folder_id,
+        item: this.valeur1.item.id
+      };*/
     },
+
     makeToast(variant = null,type) {
 
       switch (type) {
@@ -496,8 +626,17 @@ export default {
 
 
     },
-    clickRow(){
-      console.log('loadpage','')
+
+    clickRow(params) {
+
+      if(params.length>0){
+        this.rowe = params
+        this.rowe1 = params;
+        console.log('parames', params);
+      }else{
+        this.rowe={}
+        this.rowe1=[]
+      }
     },
     selectionChanged(){
       console.log('loadpage','')

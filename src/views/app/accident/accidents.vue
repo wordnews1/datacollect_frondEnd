@@ -2,6 +2,50 @@
 
   <div class="main-content">
 
+    <b-overlay :show="openb" rounded="sm" >
+
+      <b-modal id="openassociate" :title="$t('open_box')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("Associer le dossier patient d'un accidenté")}} </h5>
+        </template>
+
+        <template #default="{  }">
+
+          <b-form-input
+
+              v-model="valeur"
+              @input="suggestionon(valeur)"
+              type="text"
+              :placeholder="$t('valeur')"
+          ></b-form-input>
+
+          <b-list-group v-if="filteredSuggestions.length" style="width:90%;float:inherit;position:absolute;z-index:1">
+
+            <b-list-group-item v-for="(s,i) in filteredSuggestions" :key="i"
+                               @click="selected({item:s})">
+
+              Cni: {{s["cni"]}}<br/>
+              {{s[optionsKey]}} {{s["prenom"]}}<br/>
+              Née le: {{s["dateNaiss"]}}
+
+            </b-list-group-item>
+
+          </b-list-group>
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="addelement()" variant="outline-success" style="margin-right: 15px">
+              {{$t('ajouter')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
+    </b-overlay>
+
     <b-row>
 
       <div style="background: white;" >
@@ -15,6 +59,15 @@
                 </a>
               </div>
             </div>
+
+<!--            <div v-if=" rowe.length<=1 ">
+              <div class="card mb-20">
+                <a href="#"  @click="rowClick()" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Receipt-3 icon"></i>
+                  <span class="icons" >{{$t('consulter')}}</span>
+                </a>
+              </div>
+            </div>-->
 
 
           </b-col>
@@ -74,12 +127,12 @@
 
 <script>
 
+import constants from '../../../plugins/constants'
+import axios from 'axios'
 import ListTable from '../components/list-table'/*
     import ListKanban from '../components/list-kanban'
     import ListGraph from '../components/list-graph'*/
 import { mapGetters,mapActions } from "vuex";
-// import constants from '../../../plugins/constants'
-//import axios from 'axios'
 // import { getRequestParams  } from '../../../plugins/functions'
 export default {
 
@@ -109,6 +162,102 @@ export default {
   },
   methods: {
     ...mapActions(["FetchVueKanban", "FetchVueGraph", "FetchVueListaccidents"]),
+    makeToast(variant = null,type) {
+
+      switch (type) {
+        case 0: type="error"; break;
+        case 1: type="success" ; break;
+        case 2: type="info"; break;
+        case 3: type="warning"; break;
+
+      }
+
+      this.$toasted.show((variant),{type:type})
+
+    },
+    addelement(value) {
+      console.log('selected2', value)
+      console.log('selected2', this.valeur)
+      this.openb = true
+
+      let soin = {
+        careId: this.valeur1.item.id,
+        personAccidentId: this.rowe[0].id
+      };
+
+
+
+      axios.post(constants.resource_url+'cares/join-person-accident', soin)
+          .then(response =>{
+
+            if(response.data.success){
+
+            this.valeur=''
+            this.makeToast(this.$t('added'),1)
+            console.log('products_error',response);
+              this.$bvModal.hide('openassociate')
+            }else{
+              this.makeToast(this.$t('error'),0)
+            }
+            this.openb = false
+
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
+
+        //commit("setError", error);
+
+      });
+
+      /*let soin = {
+        care: this.folder_id,
+        item: this.valeur1.item.id
+      };*/
+    },
+    suggestionon(value) {
+      this.openb = true
+
+      console.log('suggestionon', value)
+      //this.openb = true
+      let params = {};
+      params["name"] = value
+
+      axios.get(constants.resource_url+'cares/search', {params})
+          .then(response =>{
+
+            this.openb = false
+            this.filteredSuggestions = response.data.data
+
+            // this.$bvModal.hide('openassociate')
+
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
+
+        //commit("setError", error);
+
+      });
+
+    },
+      selected(value){
+
+        this.filteredSuggestions = []
+        this.valeur = value.item.nom + " "+value.item.prenom
+        this.valeur1 = value
+
+        console.log('selected',value)
+
+      },
     addpatient(){
 
       this.$router.push({name: 'addpatient',params: { rowes:this.rowe }})
@@ -167,11 +316,19 @@ export default {
 
 
     },
+    associer(){
+
+      this.$bvModal.show('openassociate')
+    }
   },
   /**/
   data() {
 
     return {
+      openb:false,
+      optionsKey:"nom",
+      valeur:'',
+      filteredSuggestions:[],
       totalPages_:0,
       loadanotherpage:false,
       totalElement:0,
