@@ -3,6 +3,101 @@
 
     <b-overlay :show="show" rounded="sm">
 
+      <b-modal id="opencontacts" :title="$t('add_contact')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("add_contact")}} </h5>
+        </template>
+
+        <template #default="{  }">
+          <b-row>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('CNI')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+
+                  v-model="contact.cni"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('nom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+                  v-model="contact.firstName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('prenom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-model="contact.lastName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('phone')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+
+                  v-model="contact.phone"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group  style="margin-bottom: 10px"
+                           class="col-md-6 mb-30"
+                           :label="$t('Sexe')"
+                           label-for="input-1"
+            >
+
+              <b-form-select v-model="contact.gender">
+                <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                <option v-for="option in sexes" :value="option.id" :key="option.id">
+                  {{ option.value }}
+                </option>
+              </b-form-select>
+
+
+            </b-form-group>
+
+
+          </b-row>
+
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="submitcontact()" variant="outline-success" style="margin-right: 15px">
+              {{$t('ajouter')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
         <b-form :aria-hidden="show ? 'true' : null" @submit.prevent="registerCustomer(type)">
 
             <div role="tablist">
@@ -295,118 +390,6 @@
             </div>
             <p></p>
 
-            <!--<div role="tablist">
-                <b-card no-body class="ul-card__border-radius">
-                    <b-card-header header-tag="header" class="p-1"  role="tab">
-                        <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-2 variant="transparent">
-                            {{$t('adress_inf')}}</b-button>
-                    </b-card-header>
-                    <b-collapse id="accordion-2" invisible accordion="my-accordion" role="tabpanel">
-                        <b-card-body>
-                            <b-row>
-                                <b-col md="6">
-                                    <b-form-group
-                                            class="col-md-12 mb-30"
-                                            :label="$t('pays')"
-                                            label-for="input-1"
-                                    >
-
-                                        <b-form-select
-                                                id="input-3"
-                                                v-model="pays"
-                                                :options="countrys"
-                                                required
-                                        ></b-form-select>
-
-                                        &lt;!&ndash;<b-alert
-                                                show
-                                                variant="danger"
-                                                class="error col-md-12 mt-1"
-                                                v-if="!$v.cni.minLength"
-                                        >{{$t('validator_cni')}}
-                                            {{ $v.cni.$params.minLength.min }} {{$t('letters')}}  .</b-alert
-                                        >&ndash;&gt;
-
-                                    </b-form-group>
-
-                                    <b-form-group
-                                            class="col-md-12 mb-30"
-                                            :label="$t('rue')"
-                                            label-for="input-1"
-                                    >
-                                        <b-form-input
-
-                                                v-model="rue"
-                                                type="text"
-                                                :placeholder="$t('rue')"
-                                        ></b-form-input>
-
-                                    </b-form-group>
-
-                                    <b-form-group
-                                            class="col-md-12 mb-30"
-                                            :label="$t('zip_other')"
-                                            label-for="input-1"
-                                    >
-                                        <b-form-input
-
-                                                v-model="zip_other"
-                                                type="number"
-                                                :placeholder="$t('zip_other')"
-                                        ></b-form-input>
-
-                                    </b-form-group>
-                                </b-col>
-                                <b-col md="6">
-                                    <b-form-group
-                                            class="col-md-12 mb-30"
-                                            :label="$t('towns')"
-                                            label-for="input-1"
-                                    >
-
-                                        <b-form-select
-                                                id="input-3"
-                                                v-model="town"
-                                                :options="towns"
-                                                required
-                                        ></b-form-select>
-                                        &lt;!&ndash;<b-alert
-                                                show
-                                                variant="danger"
-                                                class="error col-md-12 mt-1"
-                                                v-if="!$v.nom.minLength"
-                                        >{{$t('validator_nom')}}
-                                            {{ $v.nom.$params.minLength.min }} {{$t('letters')}}  .</b-alert
-                                        >&ndash;&gt;
-
-
-                                    </b-form-group>
-
-                                    <b-form-group
-                                            class="col-md-12 mb-30"
-                                            :label="$t('zip')"
-                                            label-for="input-1"
-                                    >
-                                        <b-form-input
-
-                                                v-model="zip"
-                                                type="number"
-                                                :placeholder="$t('zip')"
-                                        ></b-form-input>
-
-
-                                    </b-form-group>
-
-
-                                </b-col>
-                            </b-row>
-
-                        </b-card-body>
-                    </b-collapse>
-
-                </b-card>
-            </div>
-            <p></p>-->
             <div role="tablist">
                 <b-card no-body class="ul-card__border-radius">
                     <b-card-header header-tag="header" class="p-1"  role="tab">
@@ -423,7 +406,6 @@
 
                 </b-card>
             </div>
-
             <p></p>
 
             <div role="tablist">
@@ -580,14 +562,51 @@
                 </b-card>
                 <p></p>
 
-                <b-col md="12">
-                    <b-button class="mt-3" type="submit" variant="primary">Submit</b-button>
-                </b-col>
             </div>
+            <p></p>
+
+            <div role="tablist">
+              <b-card no-body class="ul-card__border-radius">
+
+                <b-card-header header-tag="header" class="p-1"  role="tab">
+                  <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-10 variant="transparent">
+                    {{$t('contact_patient')}}</b-button>
+                </b-card-header>
+
+                <b-collapse id="accordion-10" invisible accordion="my-accordion" role="tabpanel">
+                  <b-card-body>
+                    <b-row>
+                      <b-button  @click ="addcontact()"  variant="success"
+                                 style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+
+
+                      <b-col md="12">
+                        <b-overlay :show="loadanotherpage" rounded="sm" >
+
+                          <ListTable :type="'contact'" @onRowclick="onRowclick" :rows="contacts" :columns="columns" :isCLoseMenu="true"
+                                     :totalPage="totalPagesoin_" :totalElement="totalElementsoin"
+                                     @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
+
+
+                        </b-overlay>
+                      </b-col>
+                    </b-row>
+                    <br/>
+
+                  </b-card-body>
+                </b-collapse>
+
+              </b-card>
+            </div>
+            <p></p>
             <!--<div style="text-align: right">
                 <b-button  @click="hide()" variant="outline-danger" style="margin-right: 15px">{{$t('Annuler')}}</b-button>
                 <b-button type="submit" variant="outline-success rights" style="position: relative;right: 0;margin-right: 10px;">{{$t('Enregistrer')}}</b-button>
             </div>-->
+
+          <b-col md="12">
+            <b-button class="mt-3" type="submit" variant="primary">Submit</b-button>
+          </b-col>
 
             <p v-once class="typo__p" v-if="submitStatus === 'OK'">
                 <!--{{ makeToast("success","success") }}-->
@@ -607,6 +626,7 @@
 <script>
 
     import { required, minLength, maxLength } from "vuelidate/lib/validators";
+    import ListTable from '../components/list-table'
    // import partnersVue from "../partners/list"
     import { mapGetters,mapActions } from "vuex";
     import Datepicker from 'vuejs-datetimepicker';
@@ -619,10 +639,55 @@
             type:String,
             statut:Boolean
         },
-        components:{Datepicker},
+        components:{Datepicker,ListTable},
 
         data() {
             return {
+              sexes:[{
+                id:1,
+                value:"Homme"
+              },
+                {
+                  id:2,
+                  value:"Femme"
+                },
+                {
+                  id:9,
+                  value:"Inconnu"
+                }],
+              contacts:[],
+              contact:{},
+              columns:[
+
+                {
+                  label: "CNI",
+                  field: "cni",
+                  hidden: false,
+                },
+                {
+                  label: "Prenom",
+                  field: "firstName",
+                  hidden: false,
+                },
+                {
+                  label: "Nom",
+                  field: "lastName",
+                  hidden: false,
+                },
+                {
+                  label: "Numero de Telephone",
+                  field: "phone",
+                  hidden: false,
+                },
+                {
+                  label: "actions",
+                  field: "actions",
+                  html: true
+                }
+              ],
+              totalPagesoin_:0,
+              loadanotherpage:false,
+              totalElementsoin:0,
                 checkEx2Options : [
                     {item: 'oui', name: 'Oui'},
                     {item: 'non', name: 'Non'}
@@ -676,8 +741,52 @@
         methods:{
 
             ...mapActions(["StorePatients"]),
-          fred(){
-            console.log('lll',this.crashacc)
+          submitcontact(){
+
+            this.$bvModal.hide('opencontacts')
+            this.contacts.push(this.contact)
+            this.contact={}
+            this.makeToast(this.$t('added'),1)
+          },
+          onRowclick(){},
+          addcontact(){
+            this.$bvModal.show('opencontacts')
+          },
+          clickRow(params) {
+
+            if(params.length>0){
+              this.rowe = params
+              this.rowe1 = params;
+              console.log('parames', params);
+            }else{
+              this.rowe={}
+              this.rowe1=[]
+            }
+          },
+          editProps(params){
+
+            console.log('params',params)
+          },
+          deleteProps(params){
+
+            /* this.$bvModal.show('confirmdelete')
+             this.idd = params.formattedRow.id*/
+
+            console.log('params', params+'params.formattedRow.id');
+          },
+          deleteprop(){
+
+            //   this.$bvModal.hide('confirmdelete')
+            console.log('params','this.idd')
+
+          },
+
+          loadpage(params){
+
+            console.log('loadpage',params)
+            this.currentpage = params
+            this.loadanotherpage = true
+
           },
             registerCustomer: function(item){
                 console.log('test',item)
@@ -692,6 +801,7 @@
                   consumdrugs: this.consumdrugs}
                 test.accparams = accparams
                 test.parametre = params
+              test.contacts = this.contacts
 
                 this.show = !this.show
                 this.$v.$touch();

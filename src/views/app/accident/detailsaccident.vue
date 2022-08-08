@@ -400,6 +400,15 @@ export default {
           label: "Numero de Vehicule ",
           field: "vehicleNumber",
           hidden: false,
+        },
+        {
+          label: "Action",
+          field: "action.value",
+          hidden: false,
+        },{
+          label: "Sexe",
+          field: "person.gender.value",
+          hidden: false,
         },{
           label: "Annee du permis",
           field: "drivingLicenceYear",
@@ -423,7 +432,7 @@ export default {
           hidden: false,
         },
         {
-          label: "Numero d'accident d",
+          label: "Numero d'accident",
           field: "vehicleAccidentNumber",
           hidden: false,
         },
@@ -433,6 +442,10 @@ export default {
           hidden: false,
         },
         {
+          label: "Type de vehicule",
+          field: "vehicle.type.value",
+          hidden: false,
+        },{
           label: "Marque",
           field: "vehicle.brand.value",
           hidden: false,

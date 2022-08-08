@@ -59,6 +59,24 @@
                 </a>
               </div>
             </div>
+            <div v-if="rowe.length<=1">
+              <div class="card mb-20">
+                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                <a href="#"  @click="consult()" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Folder-Open icon"></i>
+                  <span class="icons">{{$t('consultfolder')}}</span>
+                </a>
+              </div>
+            </div>
+            <div v-if="rowe.length<=1">
+              <!--<div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+              <div class="card mb-20">
+                <a href="#" @click="edit()"  class="item item-text-wrap item-button-left  taille">
+                  <i class="i-File-Edit icon"></i>
+                  <span class="icons">{{$t('updatepatient')}}</span>
+                </a>
+              </div>
+            </div>
 
 <!--            <div v-if=" rowe.length<=1 ">
               <div class="card mb-20">
@@ -258,10 +276,20 @@ export default {
         console.log('selected',value)
 
       },
-    addpatient(){
+    addaccident(){
 
-      this.$router.push({name: 'addpatient',params: { rowes:this.rowe }})
+      this.$router.push({name: 'addaccident',params: { rowes:this.rowe }})
 
+    },
+    edit(){
+
+      console.log('parames1', this.rowe);
+      if(Object.keys(this.rowe).length === 0){
+        this.makeToast(this.$t('Select_patient'),'error')
+        return ;
+      }
+
+      this.$router.push({name: 'editaccident',params: { rowes:this.rowe[0] }})
     },
     consult(){
       console.log('parames2', this.rowe);
@@ -270,7 +298,7 @@ export default {
         return ;
       }
 
-      this.$router.push({name: 'dossier',params: { rowes:this.rowe }})
+      this.$router.push({name: 'detailsaccident',params: { rowes:this.rowe[0] }})
 
     },
     clickRow(params) {

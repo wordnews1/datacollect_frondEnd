@@ -2,6 +2,7 @@
 
     <div class="main-content">
 
+
         <b-row>
 
             <div style="background: white;" >
@@ -17,7 +18,7 @@
                         </div>
 
                        <!-- <div v-if="rowe.length<=1  && rowe[0].statutVisite===3">-->
-                        <div>
+                        <div v-if="rowe.length<=1">
                             <div class="card mb-20">
                           <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
                                 <a href="#"  @click="consult()" class="item item-text-wrap item-button-left  taille">
@@ -28,17 +29,17 @@
                         </div>
 
                         <!--<div v-if="rowe.length<=1  && rowe[0].statutVisite===3">-->
-                        <div>
+                        <div v-if="rowe.length<=1">
                             <!--<div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
                             <div class="card mb-20">
-                                <a href="#" class="item item-text-wrap item-button-left  taille">
+                                <a href="#" @click="edit()"  class="item item-text-wrap item-button-left  taille">
                                     <i class="i-File-Edit icon"></i>
                                     <span class="icons">{{$t('updatepatient')}}</span>
                                 </a>
                             </div>
                         </div>
                         <!--<div v-if="rowe.length<=1  && rowe[0].statutVisite===3">-->
-                        <div>
+                        <div v-if="rowe.length>=1">
                             <!--<div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
                             <div class="card mb-20">
 
@@ -49,7 +50,7 @@
                              </div>
                         </div>
                         <!--<div v-if="rowe.length<=1  && rowe[0].statutVisite===3">-->
-                            <div>
+                            <div v-if="rowe.length>=1">
                             <!--<div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
                                 <div class="card mb-20">
                                     <a href="#" class="item item-text-wrap item-button-left  taille">
@@ -163,6 +164,7 @@
                     this.$router.push({name: 'addpatient',params: { rowes:this.rowe }})
 
             },
+
             consult(){
                 console.log('parames2', this.rowe);
                 if(Object.keys(this.rowe).length === 0){
@@ -171,6 +173,17 @@
                 }
 
                     this.$router.push({name: 'dossier',params: { rowes:this.rowe }})
+
+            },
+
+          edit(){
+                console.log('parames2', this.rowe);
+                if(Object.keys(this.rowe).length === 0){
+                    this.makeToast(this.$t('Select_patient'),'error')
+                    return ;
+                }
+
+                    this.$router.push({name: 'editdossier',params: { rowes:this.rowe }})
 
             },
             clickRow(params) {

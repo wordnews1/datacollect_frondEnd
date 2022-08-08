@@ -12,6 +12,8 @@ const state = {
     listsoins:[],
     listdossier:[],
     listdetail:[],
+    listdata:[],
+    listpolice:[],
     list:[],
     listacc:[]
 
@@ -90,14 +92,67 @@ const actions = {
 
             });
     },
+    UpdatePatients({commit},data){
+
+        axios.post(state.resource_url+'cares/'+data.folder_id)
+
+            .then(list => {
+
+                console.log('care',list.data)
+
+                if(list.data.success){
+
+                    commit("SETUPDATEPATIENTS",list.data.data)
+
+                }
+
+            })
+            .catch(function(error) {
+                console.log('products_error',error);
+                // Handle Errors here.
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // console.log(error);
+
+                //commit("setError", error);
+
+            });
+    },
+    addpolice({commit},data){
+
+        axios.post(state.resource_url+'accidents',data)
+
+            .then(list => {
+
+                console.log('care',list.data)
+
+                if(list.data.success){
+
+                    commit("SETADDACCIDENT",list.data.data)
+
+                }
+
+            })
+            .catch(function(error) {
+                console.log('products_error',error);
+                // Handle Errors here.
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // console.log(error);
+
+                //commit("setError", error);
+
+            });
+    },
     DetailsAccident({commit},data){
 
         axios.get(state.resource_url+'accidents/'+data)
 
             .then(list => {
 
-                console.log('accidentdetails',list.data)
+
                 console.log('accidentdetails',list.data.data)
+                state.listdetail=[]
 
                 if(list.data.success){
 
@@ -280,6 +335,33 @@ const actions = {
             });
 
     },
+    ListData({commit}){
+
+        axios.get(state.resource_url+'accidents/oms-data')
+
+            .then(list => {
+
+                console.log('care',list.data)
+
+                if(list.data.success){
+
+                    commit("SETLISTDATA",list.data.data)
+
+                }
+
+            })
+            .catch(function(error) {
+                console.log('products_error',error);
+                // Handle Errors here.
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // console.log(error);
+
+                //commit("setError", error);
+
+            });
+
+    },
 
 }
 
@@ -295,6 +377,8 @@ const getters = {
     GETLISTSOINS: state => state.listsoins,
     GetStorePatients: state => state.listpatients,
     GETDETAILACCIDENT: state => state.listdetail,
+    GETLISTDATA: state => state.listdata,
+    GETADDACCIDENT: state => state.listpolice,
     GetListDossier: state => state.listdossier
 
 }
@@ -311,6 +395,8 @@ const mutations = {
     SETLISTSOINS: (state,list_soins)=>state.listsoins=list_soins,
     SETSTOREPATIENTS: (state,list)=>state.listpatients=list,
     SETDETAILACCIDENT: (state,listdetail)=>state.listdetail=listdetail,
+    SETLISTDATA: (state,listdata)=>state.listdata=listdata,
+    SETADDACCIDENT: (state,listpolice)=>state.listpolice=listpolice,
     SETLISTDOSSIER: (state,listdossier)=>state.listdossier=listdossier
 
 }

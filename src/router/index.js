@@ -86,14 +86,26 @@ const routes = [
                         component: () => import("../views/app/accident/addaccident")
                     },
                     {
+                        name:"editaccident",
+                        path: "editaccident",
+                        component: () => import("../views/app/accident/edit_accident"),
+                        props: true
+                    },
+                    {
                         name:"accidents",
                         path: "accidents",
                         component: () => import("../views/app/accident/accidents")
                     },
-{
+                    {
                         name:"dossier",
                         path: "dossier",
                         component: () => import("../views/app/hopital/dossierpatient"),
+                        props:true
+                    },
+                    {
+                        name:"editdossier",
+                        path: "editdossier",
+                        component: () => import("../views/app/hopital/edit_dossierpatient"),
                         props:true
                     },
 

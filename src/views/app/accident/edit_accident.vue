@@ -11,148 +11,148 @@
 
       <template #default="{  }">
         <b-row>
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Numéro Véhicule')"
-            label-for="input-1"
-        >
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Numéro Véhicule')"
+              label-for="input-1"
+          >
 
-                            <b-form-input
+            <b-form-input
 
-                                          v-model="vehicle.vehicleAccidentNumber"
-                                          type="text"
-                            ></b-form-input>
-
-
-        </b-form-group>
-
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Plaque d\'immatriculation ')"
-            label-for="input-1"
-        >
-
-          <b-form-input
-              v-uppercase
-
-              v-model="vehicle.plate"
-              type="text"
-          ></b-form-input>
+                v-model="vehicle.vehicleAccidentNumber"
+                type="text"
+            ></b-form-input>
 
 
-        </b-form-group>
+          </b-form-group>
 
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Année modèle du Véhicule')"
-            label-for="input-1"
-        >
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Plaque d\'immatriculation ')"
+              label-for="input-1"
+          >
 
-          <b-form-input
+            <b-form-input
+                v-uppercase
 
-              v-model="vehicle.fabricationYear"
-              type="text"
-          ></b-form-input>
-
-
-        </b-form-group>
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Cylindrée')"
-            label-for="input-1"
-        >
-
-          <b-form-input
-
-              v-model="vehicle.cylinderCapacity"
-              type="text"
-          ></b-form-input>
+                v-model="vehicle.plate"
+                type="text"
+            ></b-form-input>
 
 
-        </b-form-group>
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Marque')"
-            label-for="input-1"
-        >
+          </b-form-group>
+
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Année modèle du Véhicule')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+
+                v-model="vehicle.fabricationYear"
+                type="text"
+            ></b-form-input>
 
 
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Cylindrée')"
+              label-for="input-1"
+          >
 
-          <b-form-select v-model="vehicle.brand">
-            <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
-            <option v-for="option in respdata.brandResp" :value="option.id" :key="option.id">
-              {{ option.value }}
-            </option>
-          </b-form-select>
+            <b-form-input
+
+                v-model="vehicle.cylinderCapacity"
+                type="text"
+            ></b-form-input>
 
 
-        </b-form-group>
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Type de véhicule')"
-            label-for="input-1"
-        >
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Marque')"
+              label-for="input-1"
+          >
 
 
 
-          <b-form-select v-model="vehicle.type">
-            <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
-            <option v-for="option in respdata.vehicleTypeResp" :value="option.id" :key="option.id">
-              {{ option.value }}
-            </option>
-          </b-form-select>
-
-        </b-form-group>
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Modèle du Véhicule')"
-            label-for="input-1"
-        >
+            <b-form-select v-model="vehicle.brand">
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
+              <option v-for="option in respdata.brandResp" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
 
 
-          <b-form-select v-model="vehicle.model">
-            <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
-            <option v-for="option in respdata.vehicleModelResp" :value="option.id" :key="option.id">
-              {{ option.value }}
-            </option>
-          </b-form-select>
-
-
-        </b-form-group>
-
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Fonction spéciale du Véhicule')"
-            label-for="input-1"
-        >
-
-          <b-form-select v-model="vehicle.specialFunction">
-            <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
-            <option v-for="option in respdata.specialFunctionResp" :value="option.id" :key="option.id">
-              {{ option.value }}
-            </option>
-          </b-form-select>
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Type de véhicule')"
+              label-for="input-1"
+          >
 
 
 
-        </b-form-group>
-        <b-form-group
-            class="col-md-6 mb-30"
-            :label="$t('Manoeuvre du Véhicule')"
-            label-for="input-1"
-        >
+            <b-form-select v-model="vehicle.type">
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
+              <option v-for="option in respdata.vehicleTypeResp" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Modèle du Véhicule')"
+              label-for="input-1"
+          >
+
+
+            <b-form-select v-model="vehicle.model">
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
+              <option v-for="option in respdata.vehicleModelResp" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
+
+
+          </b-form-group>
+
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Fonction spéciale du Véhicule')"
+              label-for="input-1"
+          >
+
+            <b-form-select v-model="vehicle.specialFunction">
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
+              <option v-for="option in respdata.specialFunctionResp" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
 
 
 
-          <b-form-select v-model="vehicle.vehicleAction">
-            <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
-            <option v-for="option in respdata.vehicleActionResp" :value="option.id" :key="option.id">
-              {{ option.value }}
-            </option>
-          </b-form-select>
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Manoeuvre du Véhicule')"
+              label-for="input-1"
+          >
 
 
-        </b-form-group>
+
+            <b-form-select v-model="vehicle.vehicleAction">
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
+              <option v-for="option in respdata.vehicleActionResp" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
+
+
+          </b-form-group>
         </b-row>
 
 
@@ -176,14 +176,14 @@
       <template #default="{  }">
         <b-row>
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-12 mb-30"
-              :label="$t('véhicules concerné')"
-              label-for="input-1"
+                         class="col-md-12 mb-30"
+                         :label="$t('véhicules concerné')"
+                         label-for="input-1"
           >
 
 
             <b-form-select v-model="person.vehicleAccidentNumber">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in vehicles" :value="option.vehicleAccidentNumber" :key="option.vehicleAccidentNumber">
                 {{ option.plate }}
               </option>
@@ -192,20 +192,20 @@
 
           </b-form-group>
 
-        <b-form-group  style="margin-bottom: 10px"
-            class="col-md-6 mb-30"
-            :label="$t('Numéro de la personne')"
-            label-for="input-1"
-        >
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Numéro de la personne')"
+                         label-for="input-1"
+          >
 
-                            <b-form-input
+            <b-form-input
 
-                                          v-model="person.personAccidentNumber"
-                                          type="text"
-                            ></b-form-input>
+                v-model="person.personAccidentNumber"
+                type="text"
+            ></b-form-input>
 
 
-        </b-form-group>
+          </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
                          class="col-md-6 mb-30"
                          :label="$t('Numéro vehicule lie au pieton')"
@@ -220,39 +220,39 @@
 
           </b-form-group>
 
-        <b-form-group  style="margin-bottom: 10px"
-            class="col-md-6 mb-30"
-            :label="$t('Prenom')"
-            label-for="input-1"
-        >
-
-          <b-form-input
-
-              v-model="person.firstName"
-              type="text"
-          ></b-form-input>
-
-
-        </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
-            class="col-md-6 mb-30"
-            :label="$t('Nom')"
-            label-for="input-1"
-        >
+                         class="col-md-6 mb-30"
+                         :label="$t('Prenom')"
+                         label-for="input-1"
+          >
 
-          <b-form-input
-              v-uppercase
+            <b-form-input
 
-              v-model="person.lastName"
-              type="text"
-          ></b-form-input>
+                v-model="person.firstName"
+                type="text"
+            ></b-form-input>
 
 
-        </b-form-group>
+          </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Date de Naissance')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Nom')"
+                         label-for="input-1"
+          >
+
+            <b-form-input
+                v-uppercase
+
+                v-model="person.lastName"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date de Naissance')"
+                         label-for="input-1"
           >
             <date-picker v-model="person.birthDate" valueType="DD/MM/YYYY" ></date-picker>
 
@@ -260,13 +260,13 @@
 
           </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Sexe')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Sexe')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.gender">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.genderResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -275,9 +275,9 @@
 
           </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Annee d\'obtention du permis')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Annee d\'obtention du permis')"
+                         label-for="input-1"
           >
             <date-picker v-model="person.drivingLicenceYear" valueType="DD/MM/YYYY"></date-picker>
 
@@ -285,13 +285,13 @@
 
           </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Type d\' usager de la Route')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Type d\' usager de la Route')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.roadType">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.personRoadTypeResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -299,13 +299,13 @@
 
           </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Manoeuvre du Pieton')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Manoeuvre du Pieton')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.personAction">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.actionResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -313,13 +313,13 @@
 
           </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Consommation d\' alcool')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Consommation d\' alcool')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.alcoholConsumption">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholConsumptionResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -328,13 +328,13 @@
           </b-form-group>
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Consommation de Drogues')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Consommation de Drogues')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.drugUse">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.personDrugUseResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -343,13 +343,13 @@
           </b-form-group>
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Rangee')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Rangee')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.range">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.seatingRangeResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -358,13 +358,13 @@
           </b-form-group>
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Place')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Place')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.place">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.seatingPlaceResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -375,13 +375,13 @@
 
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Port de Casque')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Port de Casque')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.wearingHelmet">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.wearingHelmetResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -390,13 +390,13 @@
           </b-form-group>
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Equipement de Securite')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Equipement de Securite')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.occupantRestraintSystem">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.occupantRestraintSystemResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -408,13 +408,13 @@
 
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Status du Test')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Status du Test')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.testStatus">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholTestStatusResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -423,13 +423,13 @@
           </b-form-group>
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Type de Test')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Type de Test')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.testType">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholTestTypeResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -442,13 +442,13 @@
 
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Resultat des tests')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Resultat des tests')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.testResult">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholTestResultResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -457,13 +457,13 @@
           </b-form-group>
 
           <b-form-group  style="margin-bottom: 10px"
-              class="col-md-6 mb-30"
-              :label="$t('Gravite des traumatismes')"
-              label-for="input-1"
+                         class="col-md-6 mb-30"
+                         :label="$t('Gravite des traumatismes')"
+                         label-for="input-1"
           >
 
             <b-form-select v-model="person.traumaSeverity">
-              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.traumaSeverityResp" :value="option.id" :key="option.id">
                 {{ option.value }}
               </option>
@@ -503,13 +503,13 @@
                     label-for="input-1"
                 >
 
-<!--                  <b-form-input
-
-                                v-model="data.accidentType"
-                                type="text"
-                  ></b-form-input>-->
+                  <!--                  <b-form-input
+                  
+                                                  v-model="data.accidentType"
+                                                  type="text"
+                                    ></b-form-input>-->
                   <b-form-select v-model="data.accidentType">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.accidentTypeResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -523,7 +523,7 @@
                 >
 
                   <b-form-select v-model="data.accidentSeverity">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.accidentSeverityResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -532,36 +532,36 @@
 
                 </b-form-group>
                 <b-form-group
-                  class="col-md-3 mb-30"
-                  :label="$t('Date Accident')"
-                  label-for="input-1"
-              >
-                <date-picker v-model="data.accidentDate" valueType="DD/MM/YYYY"></date-picker>
+                    class="col-md-3 mb-30"
+                    :label="$t('Date Accident')"
+                    label-for="input-1"
+                >
+                  <date-picker v-model="data.accidentDate" valueType="DD/MM/YYYY"></date-picker>
 
-              </b-form-group>
+                </b-form-group>
                 <b-form-group
                     class="col-md-3 mb-30"
                     :label="$t('Heure Accident')"
                     label-for="input-1"
                 >
-                   <vue-timepicker v-model="accidentTime" format="hh:mm" ></vue-timepicker>
-
+                  <vue-timepicker v-model="data.accidentTime"></vue-timepicker>
+                {{data.accidentTime}}
 
                 </b-form-group>
                 <b-form-group
-                  class="col-md-6 mb-30"
-                  :label="$t('Type d impact')"
-                  label-for="input-1"
-              >
+                    class="col-md-6 mb-30"
+                    :label="$t('Type d impact')"
+                    label-for="input-1"
+                >
 
-                <b-form-select v-model="data.impactType">
-                  <option :value="null" disabled>-- Please select an option --</option>
-                  <option v-for="option in respdata.impactTypeResp" :value="option.id" :key="option.id">
-                    {{ option.value }}
-                  </option>
-                </b-form-select>
+                  <b-form-select v-model="data.impactType">
+                    <option :value="null" >-- Please select an option --</option>
+                    <option v-for="option in respdata.impactTypeResp" :value="option.id" :key="option.id">
+                      {{ option.value }}
+                    </option>
+                  </b-form-select>
 
-              </b-form-group>
+                </b-form-group>
 
 
                 <b-form-group
@@ -571,7 +571,7 @@
                 >
 
                   <b-form-select v-model="data.climaticCondition">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.climaticConditionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -585,7 +585,7 @@
                 >
 
                   <b-form-select v-model="data.brightnessCondition">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.brightnessConditionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -599,7 +599,7 @@
                 >
 
                   <b-form-select v-model="data.city">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.cityResp" :value="option.id" :key="option.id">
                       {{ option.name }}
                     </option>
@@ -613,7 +613,7 @@
                 >
 
                   <b-form-select v-model="data.municipality">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.municipalityResp" :value="option.id" :key="option.id">
                       {{ option.name }}
                     </option>
@@ -626,7 +626,7 @@
                     label-for="input-1"
                 >
                   <b-form-input
-                      
+
 
                       v-model="data.place"
                       type="text"
@@ -662,7 +662,7 @@
                     label-for="input-1"
                 >
                   <b-form-select v-model="data.roadType">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadTypeResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -676,7 +676,7 @@
                 >
 
                   <b-form-select v-model="data.roadCategory">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadCategoryResp" :value="option.id" :key="option.id">
                       {{ option.name }}
                     </option>
@@ -689,7 +689,7 @@
                   label-for="input-1"
               >
                 <b-form-select v-model="data.roadState">
-                  <option :value="null" disabled>-- Please select an option --</option>
+                  <option :value="null" >-- Please select an option --</option>
                   <option v-for="option in respdata.roadStateResp" :value="option.id" :key="option.id">
                     {{ option.value }}
                   </option>
@@ -705,7 +705,7 @@
 
 
                   <b-form-select v-model="data.roadIntersection">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadIntersectionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -720,7 +720,7 @@
                 >
 
                   <b-form-select v-model="data.block">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.blockResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -734,7 +734,7 @@
                     label-for="input-1"
                 >
                   <b-form-select v-model="data.roadTrafficControl">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.controlResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -747,7 +747,7 @@
                     label-for="input-1"
                 >
                   <b-form-select v-model="data.virage">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.virageResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -763,7 +763,7 @@
                     label-for="input-1"
                 >
                   <b-form-select v-model="data.roadSlopSection">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadSlopSectionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
@@ -828,7 +828,7 @@
             <b-card-body>
               <b-row>
                 <b-button  @click ="addperson()"  variant="success"
-                          style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+                           style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
 
                 <b-col md="12">
@@ -895,6 +895,11 @@ export default {
     //this.ListDossierPatient(this.rowes[0].id)
     this.ListData()
 
+    setTimeout(function () { this.DetailsAccident(this.rowes.id)
+    }.bind(this), 4000)
+
+
+
   },
   data() {
     return {
@@ -935,17 +940,17 @@ export default {
         },
         {
           label: "Immatriculation",
-          field: "plate",
+          field: "plateNumber",
           hidden: false,
         }
         ,{
           label: "Annee de Fabrication",
-          field: "fabricationYear",
+          field: "vehicle.fabricationYear",
           hidden: false,
         }
         ,{
           label: "Cylindree",
-          field: "cylinderCapacity",
+          field: "vehicle.cylinderCapacity",
           hidden: false,
         }
         ,{
@@ -960,18 +965,18 @@ export default {
 
         {
           label: "Numero de la Personne",
-          field: "personAccidentNumber",
+          field: "personNumber",
           hidden: false,
         },
         {
           label: "Name",
-          field: this.someComputed,
+          field: "person.firstName",
           hidden: false,
         },
         {
-        label: "Annee du permis",
-        field: "drivingLicenceYear",
-        hidden: false,
+          label: "Annee du permis",
+          field: "drivingLicenceYear",
+          hidden: false,
         },
         {
           label: "actions",
@@ -1022,14 +1027,18 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["GETLISTDATA","GETADDACCIDENT"]),
+    ...mapGetters(["GETLISTDATA","GETADDACCIDENT","GETDETAILACCIDENT"]),
     someComputed() {
       return `firstName lastName`;
     }
   },
   methods:{
 
-    ...mapActions(["addpolice","ListData"]),
+    ...mapActions(["addpolice","ListData","DetailsAccident"]),
+
+    timechoose(data){
+      console.log('data',data)
+    },
     addperson(){
       this.$bvModal.show('openperson')
     },
@@ -1037,15 +1046,15 @@ export default {
       this.$bvModal.show('openvehicule')
     },
     submitall(){
-      //console.log("vehicles",item)
-      this.data.accidentTime = this.accidentTime.hh +":"+ this.accidentTime.mm
+      console.log("vehicles",this.rowes.id)
+      //if(data.accidentTime)
+      //this.data.accidentTime = this.accidentTime.hh +":"+ this.accidentTime.mm
       this.data.road = 0
+      //this.$set(this.data, 'id', this.rowes.id);
       this.data.vehicules = this.vehicles
       this.data.persons = this.persons
 
-
-
-      this.data.id = 0
+      this.data.id = this.rowes.id
       console.log("vehicles",this.data)
 
       this.addpolice(this.data)
@@ -1346,6 +1355,17 @@ export default {
     },
   },
   watch:{
+
+    GETDETAILACCIDENT(data){
+
+      console.log('datae',data)
+      this.data = data
+      this.vehicles = data.vehicules
+      this.persons = data.persons
+
+      console.log('datae',this.persons)
+
+    },
     GETLISTDATA(data){
 
       console.log('data',data)
@@ -1354,7 +1374,7 @@ export default {
     },
     GETADDACCIDENT(data){
 
-      console.log('data',data)
+      console.log('data11',data)
       //this.respdata = dataf
 
       this.makeToast(this.$t('addedp'),1)
