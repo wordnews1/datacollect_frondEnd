@@ -17,10 +17,10 @@
               label-for="input-1"
           >
 
-            <b-form-input
+            <b-form-input 
 
-                v-model="vehicle.vehicleAccidentNumber"
-                type="text"
+                          v-model="vehicle.vehicleAccidentNumber"
+                          type="text"
             ></b-form-input>
 
 
@@ -32,11 +32,11 @@
               label-for="input-1"
           >
 
-            <b-form-input
-                v-uppercase
+            <b-form-input 
+                          v-uppercase
 
-                v-model="vehicle.plate"
-                type="text"
+                          v-model="vehicle.plate"
+                          type="text"
             ></b-form-input>
 
 
@@ -48,10 +48,10 @@
               label-for="input-1"
           >
 
-            <b-form-input
+            <b-form-input 
 
-                v-model="vehicle.fabricationYear"
-                type="text"
+                          v-model="vehicle.fabricationYear"
+                          type="text"
             ></b-form-input>
 
 
@@ -62,10 +62,10 @@
               label-for="input-1"
           >
 
-            <b-form-input
+            <b-form-input 
 
-                v-model="vehicle.cylinderCapacity"
-                type="text"
+                          v-model="vehicle.cylinderCapacity"
+                          type="text"
             ></b-form-input>
 
 
@@ -78,7 +78,7 @@
 
 
 
-            <b-form-select v-model="vehicle.brand">
+            <b-form-select  v-model="vehicle.brand">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.brandResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -95,7 +95,7 @@
 
 
 
-            <b-form-select v-model="vehicle.type">
+            <b-form-select  v-model="vehicle.type">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.vehicleTypeResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -110,7 +110,7 @@
           >
 
 
-            <b-form-select v-model="vehicle.model">
+            <b-form-select  v-model="vehicle.model">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.vehicleModelResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -126,7 +126,7 @@
               label-for="input-1"
           >
 
-            <b-form-select v-model="vehicle.specialFunction">
+            <b-form-select  v-model="vehicle.specialFunction">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.specialFunctionResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -144,7 +144,7 @@
 
 
 
-            <b-form-select v-model="vehicle.vehicleAction">
+            <b-form-select  v-model="vehicle.vehicleAction">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.vehicleActionResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -182,7 +182,7 @@
           >
 
 
-            <b-form-select v-model="person.vehicleAccidentNumber">
+            <b-form-select  v-model="person.vehicleAccidentNumber">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in vehicles" :value="option.vehicleAccidentNumber" :key="option.vehicleAccidentNumber">
                 {{ option.plate }}
@@ -198,10 +198,10 @@
                          label-for="input-1"
           >
 
-            <b-form-input
+            <b-form-input 
 
-                v-model="person.personAccidentNumber"
-                type="text"
+                          v-model="person.personAccidentNumber"
+                          type="text"
             ></b-form-input>
 
 
@@ -212,9 +212,9 @@
                          label-for="input-1"
           >
 
-            <b-form-input
-                v-model="person.vehicleLinkedPedestrian"
-                type="text"
+            <b-form-input 
+                          v-model="person.vehicleLinkedPedestrian"
+                          type="text"
             ></b-form-input>
 
 
@@ -226,10 +226,10 @@
                          label-for="input-1"
           >
 
-            <b-form-input
+            <b-form-input 
 
-                v-model="person.firstName"
-                type="text"
+                          v-model="person.firstName"
+                          type="text"
             ></b-form-input>
 
 
@@ -240,11 +240,11 @@
                          label-for="input-1"
           >
 
-            <b-form-input
-                v-uppercase
+            <b-form-input 
+                          v-uppercase
 
-                v-model="person.lastName"
-                type="text"
+                          v-model="person.lastName"
+                          type="text"
             ></b-form-input>
 
 
@@ -265,7 +265,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.gender">
+            <b-form-select  v-model="person.gender">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.genderResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -290,7 +290,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.roadType">
+            <b-form-select  v-model="person.roadType">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.personRoadTypeResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -304,7 +304,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.personAction">
+            <b-form-select  v-model="person.personAction">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.actionResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -318,7 +318,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.alcoholConsumption">
+            <b-form-select  v-model="person.alcoholConsumption">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholConsumptionResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -333,7 +333,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.drugUse">
+            <b-form-select  v-model="person.drugUse">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.personDrugUseResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -348,7 +348,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.range">
+            <b-form-select  v-model="person.range">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.seatingRangeResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -363,7 +363,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.place">
+            <b-form-select  v-model="person.place">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.seatingPlaceResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -380,7 +380,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.wearingHelmet">
+            <b-form-select  v-model="person.wearingHelmet">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.wearingHelmetResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -395,7 +395,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.occupantRestraintSystem">
+            <b-form-select  v-model="person.occupantRestraintSystem">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.occupantRestraintSystemResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -413,7 +413,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.testStatus">
+            <b-form-select  v-model="person.testStatus">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholTestStatusResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -428,7 +428,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.testType">
+            <b-form-select  v-model="person.testType">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholTestTypeResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -447,7 +447,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.testResult">
+            <b-form-select  v-model="person.testResult">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.alcoholTestResultResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -462,7 +462,7 @@
                          label-for="input-1"
           >
 
-            <b-form-select v-model="person.traumaSeverity">
+            <b-form-select  v-model="person.traumaSeverity">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.traumaSeverityResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -503,12 +503,12 @@
                     label-for="input-1"
                 >
 
-                  <!--                  <b-form-input
+                  <!--                  <b-form-input 
                   
                                                   v-model="data.accidentType"
                                                   type="text"
                                     ></b-form-input>-->
-                  <b-form-select v-model="data.accidentType">
+                  <b-form-select  v-model="data.accidentType">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.accidentTypeResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -522,7 +522,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.accidentSeverity">
+                  <b-form-select  v-model="data.accidentSeverity">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.accidentSeverityResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -545,7 +545,6 @@
                     label-for="input-1"
                 >
                   <vue-timepicker v-model="data.accidentTime"></vue-timepicker>
-                {{data.accidentTime}}
 
                 </b-form-group>
                 <b-form-group
@@ -554,7 +553,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.impactType">
+                  <b-form-select  v-model="data.impactType">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.impactTypeResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -570,7 +569,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.climaticCondition">
+                  <b-form-select  v-model="data.climaticCondition">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.climaticConditionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -584,7 +583,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.brightnessCondition">
+                  <b-form-select  v-model="data.brightnessCondition">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.brightnessConditionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -598,7 +597,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.city">
+                  <b-form-select  v-model="data.city">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.cityResp" :value="option.id" :key="option.id">
                       {{ option.name }}
@@ -612,7 +611,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.municipality">
+                  <b-form-select  v-model="data.municipality">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.municipalityResp" :value="option.id" :key="option.id">
                       {{ option.name }}
@@ -625,11 +624,11 @@
                     :label="$t('place')"
                     label-for="input-1"
                 >
-                  <b-form-input
+                  <b-form-input 
 
 
-                      v-model="data.place"
-                      type="text"
+                                v-model="data.place"
+                                type="text"
                   ></b-form-input>
 
                 </b-form-group>
@@ -661,7 +660,7 @@
                     :label="$t('type de Route')"
                     label-for="input-1"
                 >
-                  <b-form-select v-model="data.roadType">
+                  <b-form-select  v-model="data.roadType">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadTypeResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -675,7 +674,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.roadCategory">
+                  <b-form-select  v-model="data.roadCategory">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadCategoryResp" :value="option.id" :key="option.id">
                       {{ option.name }}
@@ -688,7 +687,7 @@
                   :label="$t('Etat de la Route')"
                   label-for="input-1"
               >
-                <b-form-select v-model="data.roadState">
+                <b-form-select  v-model="data.roadState">
                   <option :value="null" >-- Please select an option --</option>
                   <option v-for="option in respdata.roadStateResp" :value="option.id" :key="option.id">
                     {{ option.value }}
@@ -704,7 +703,7 @@
                 >
 
 
-                  <b-form-select v-model="data.roadIntersection">
+                  <b-form-select  v-model="data.roadIntersection">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadIntersectionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -719,7 +718,7 @@
                     label-for="input-1"
                 >
 
-                  <b-form-select v-model="data.block">
+                  <b-form-select  v-model="data.block">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.blockResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -733,7 +732,7 @@
                     :label="$t('Type de contrôle de la circulation au carrefour')"
                     label-for="input-1"
                 >
-                  <b-form-select v-model="data.roadTrafficControl">
+                  <b-form-select  v-model="data.roadTrafficControl">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.controlResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -746,7 +745,7 @@
                     :label="$t('virage')"
                     label-for="input-1"
                 >
-                  <b-form-select v-model="data.virage">
+                  <b-form-select  v-model="data.virage">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.virageResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -762,7 +761,7 @@
                     :label="$t('Route avec pente?')"
                     label-for="input-1"
                 >
-                  <b-form-select v-model="data.roadSlopSection">
+                  <b-form-select  v-model="data.roadSlopSection">
                     <option :value="null" >-- Please select an option --</option>
                     <option v-for="option in respdata.roadSlopSectionResp" :value="option.id" :key="option.id">
                       {{ option.value }}
@@ -798,7 +797,7 @@
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                    <ListTable :type="'examen'" @onRowclick="onRowclick" :rows="vehicles" :columns="columnexamen" :isCLoseMenu="true"
+                    <ListTable :type="'examen'" @onRowclick="onRowclick" @onEditClick="onEditClick" :rows="vehicles" :columns="columnexamen" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -834,7 +833,7 @@
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                    <ListTable :type="'soins'" :rows="persons" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
+                    <ListTable :type="'soins'" :rows="persons" :columns="columnoins" @onEditClick="onEditClick" @onRowclick="onRowclick" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -896,7 +895,7 @@ export default {
     this.ListData()
 
     setTimeout(function () { this.DetailsAccident(this.rowes.id)
-    }.bind(this), 4000)
+    }.bind(this), 2000)
 
 
   },
@@ -939,17 +938,17 @@ export default {
         },
         {
           label: "Immatriculation",
-          field: "plateNumber",
+          field: "plate",
           hidden: false,
         }
         ,{
           label: "Annee de Fabrication",
-          field: "vehicle.fabricationYear",
+          field: "fabricationYear",
           hidden: false,
         }
         ,{
           label: "Cylindree",
-          field: "vehicle.cylinderCapacity",
+          field: "cylinderCapacity",
           hidden: false,
         }
         ,{
@@ -963,13 +962,18 @@ export default {
       columnoins:[
 
         {
+          label: "CNI",
+          field: "cni",
+          hidden: false,
+        },
+        {
           label: "Numero de la Personne",
-          field: "personNumber",
+          field: "personAccidentNumber",
           hidden: false,
         },
         {
           label: "Name",
-          field: "person.firstName",
+          field: "firstName",
           hidden: false,
         },
         {
@@ -1244,6 +1248,26 @@ export default {
       console.log('savechange', data);
     },
 
+    onEditClick(params){
+
+      console.log('savechange', params);
+      console.log('savechange', params.type);
+      
+      switch(params.type) {
+        case 'examen':
+          this.vehicle = params
+          this.$bvModal.show('openvehicule')
+
+          break;
+        case 'soins':
+          this.person = params
+          this.$bvModal.show('openperson')
+
+          break;
+
+      }
+
+    },
     onRowclick(params){
       this.loadanotherpage = true
       let soin = {

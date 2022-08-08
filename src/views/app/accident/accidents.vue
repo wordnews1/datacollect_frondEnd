@@ -393,11 +393,6 @@ export default {
           label: "Status",
           field: "status",
           hidden: false,
-        },
-        {
-          label: "actions",
-          field: "actions",
-          hidden: false,
         }
 
 

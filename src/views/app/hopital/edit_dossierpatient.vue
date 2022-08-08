@@ -3,6 +3,101 @@
 
     <b-overlay :show="show" rounded="sm">
 
+      <b-modal id="opencontacts" :title="$t('add_contact')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("add_contact")}} </h5>
+        </template>
+
+        <template #default="{  }">
+          <b-row>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('CNI')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+
+                  v-model="contact.cni"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('nom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+                  v-model="contact.firstName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('prenom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-model="contact.lastName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('phone')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+
+                  v-model="contact.phone"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group  style="margin-bottom: 10px"
+                           class="col-md-6 mb-30"
+                           :label="$t('Sexe')"
+                           label-for="input-1"
+            >
+
+              <b-form-select v-model="contact.gender">
+                <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                <option v-for="option in sexes" :value="option.id" :key="option.id">
+                  {{ option.value }}
+                </option>
+              </b-form-select>
+
+
+            </b-form-group>
+
+
+          </b-row>
+
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="submitcontact()" variant="outline-success" style="margin-right: 15px">
+              {{$t('ajouter')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
         <b-overlay :show="openb" rounded="sm" >
 
             <b-modal id="confirmopenAccount" :title="$t('open_box')" hide-footer>
@@ -199,15 +294,19 @@
                                             v-model="personGender"
                                     >
 
-                                        <option value="0">
+                                        <option value="1">
                                             Homme
                                         </option>
 
-                                        <option value="1">
+                                        <option value="2">
                                             Femme
+                                        </option>
+                                      <option value="9">
+                                            Inconnu
                                         </option>
 
                                     </b-form-select>
+                               
                                 </b-col>
                             </b-row>
 
@@ -797,6 +896,18 @@
         },
         data() {
             return {
+              sexes:[{
+                id:1,
+                value:"Homme"
+              },
+                {
+                  id:2,
+                  value:"Femme"
+                },
+                {
+                  id:9,
+                  value:"Inconnu"
+                }],
               valeur:'',
               valeur1:{},
               filteredSuggestions:[],
@@ -946,12 +1057,20 @@
             },
         },
         computed: {
-            ...mapGetters(["GetListDossier"]),
+            ...mapGetters(["GetListDossier","GETUPDATEPATIENTS"]),
         },
         methods:{
 
-            ...mapActions(["ListDossierPatient"]),
+            ...mapActions(["ListDossierPatient","UpdatePatients"]),
+          checkId(obj, id) {
 
+            return obj.map(function(item) { return item.id; }).indexOf(id);
+
+          },
+          removelist(contact,indexIds){
+            contact.splice(indexIds, 1);
+            contact.sort();
+          },
           submitcontact(){
 
             this.$bvModal.hide('opencontacts')
@@ -976,7 +1095,7 @@
             test.accparams = accparams
             test.parametre = params
             test.contacts = this.contacts
-            test.folder_id=this.folder_id
+            //test.folder_id=this.folder_id
 
             this.show = !this.show
             this.$v.$touch();
@@ -991,7 +1110,7 @@
               setTimeout(() => {
                 this.submitStatus = "OK";
                 // this.$emit("registerpartners",test);
-
+                test.id = this.folder_id
                 this.UpdatePatients(test)
 
                 console.log('test',test)
@@ -1199,6 +1318,12 @@
                     item: params.id
                 };
                 switch(params.type){
+                    case 'contact':
+                      console.log('checkid',this.checkId(this.contacts,params.id))
+
+                      this.removelist(this.contacts,this.checkId(this.contacts,params.id))
+                      this.loadanotherpage = false
+                      break;
                     case 'examen':
 
                         axios.post(constants.resource_url+'cares/remove-exam', soin)
@@ -1332,20 +1457,23 @@
               this.diabete = this.checkedNames.some(data => data === 'diabete')
               this.cancer = this.checkedNames.some(data => data === 'cancer')
 
-              console.log('cardiaque',data.parametre.pouls)
-              console.log('cardiaque',data.parametre.pouls)
-
 
                this.consumalcohol  = data.accparams.consumalcohol=='oui'?true:false;
                this.consumalcohols  = data.accparams.consumalcohol=='non'?true:false;
 
                this.consumdrugs  = data.accparams.consumdrugs=='oui'?true:false;
 
-               this.persontrauma  = data.accparams.persontraum;
+               this.persontrauma  = data.accparams.persontrauma;
 
                this.consumdrugse  = data.accparams.consumdrugs=='non'?true:false;
 
-            }
+            },
+          GETUPDATEPATIENTS(data){
+                this.show = !this.show
+                console.log('GETUPDATEPATIENTS',data)
+
+                this.$router.push({name: 'hospital',params: { rowes:0 }})
+          }
 
         }
     ,

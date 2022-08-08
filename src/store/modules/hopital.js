@@ -94,7 +94,7 @@ const actions = {
     },
     UpdatePatients({commit},data){
 
-        axios.post(state.resource_url+'cares/'+data.folder_id)
+        axios.post(state.resource_url+'cares',data)
 
             .then(list => {
 
@@ -379,6 +379,7 @@ const getters = {
     GETDETAILACCIDENT: state => state.listdetail,
     GETLISTDATA: state => state.listdata,
     GETADDACCIDENT: state => state.listpolice,
+    GETUPDATEPATIENTS: state => state.listpatients,
     GetListDossier: state => state.listdossier
 
 }
@@ -397,6 +398,7 @@ const mutations = {
     SETDETAILACCIDENT: (state,listdetail)=>state.listdetail=listdetail,
     SETLISTDATA: (state,listdata)=>state.listdata=listdata,
     SETADDACCIDENT: (state,listpolice)=>state.listpolice=listpolice,
+    SETUPDATEPATIENTS: (state,listpatients)=>state.listpatients=listpatients,
     SETLISTDOSSIER: (state,listdossier)=>state.listdossier=listdossier
 
 }

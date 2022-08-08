@@ -64,6 +64,7 @@
 
                         <template slot="table-row" slot-scope="props">
                             <span v-if="props.column.field == 'actions'">
+                              <a class="btn btn-sm primary"  @click.stop="onEditClick(props.row)"><i class="i-Edit"></i></a>
                               <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Remove"></i></a>
                             </span>
                                                 <span v-else>
@@ -192,6 +193,11 @@
                 console.log('onrow',value)
                 value.type=this.type
                 this.$emit('onRowclick',value)
+            },
+          onEditClick(value){
+                console.log('onrow',value)
+                value.type=this.type
+                this.$emit('onEditClick',value)
             },
 
                 changeColor(row){
