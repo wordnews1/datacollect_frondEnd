@@ -899,7 +899,6 @@ export default {
     }.bind(this), 4000)
 
 
-
   },
   data() {
     return {

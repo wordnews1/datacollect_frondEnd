@@ -254,7 +254,7 @@
               :label="$t('Date de Naissance')"
               label-for="input-1"
           >
-            <date-picker v-model="person.birthDate" valueType="DD/MM/YYYY" ></date-picker>
+            <date-picker v-model="person.birthDate" format="DD/MM/YYYY" ></date-picker>
 
 
 
@@ -279,7 +279,7 @@
               :label="$t('Annee d\'obtention du permis')"
               label-for="input-1"
           >
-            <date-picker v-model="person.drivingLicenceYear" valueType="DD/MM/YYYY"></date-picker>
+            <date-picker v-model="person.drivingLicenceYear" format="DD/MM/YYYY"></date-picker>
 
 
 
@@ -536,7 +536,8 @@
                   :label="$t('Date Accident')"
                   label-for="input-1"
               >
-                <date-picker v-model="data.accidentDate" valueType="DD/MM/YYYY"></date-picker>
+
+                <date-picker v-model="data.accidentDate" format="DD/MM/YYYY"></date-picker>
 
               </b-form-group>
                 <b-form-group
