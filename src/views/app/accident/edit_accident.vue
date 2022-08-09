@@ -162,13 +162,13 @@
           <b-button v-if="operations" @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
             {{$t('ajouter')}}</b-button>
           <b-button v-if="!operations"  @click="submiteditvehicule()" variant="outline-success" style="margin-right: 15px">
-            {{$t('ajouter')}}</b-button>
+            {{$t('modifier')}}</b-button>
         </div>
 
       </template>
 
     </b-modal>
-
+e
     <b-modal size="lg" class="test-modal" id="openperson" :title="$t('add_person')" hide-footer>
 
       <template #modal-header="{}">
@@ -914,7 +914,7 @@ export default {
       valeur:'',
       valeur1:{},
       filteredSuggestions:[],
-      type:"",
+      types:"",
       optionsKey:"name",
       optionsKey1:"prenom",
       folder_id:0,
@@ -1136,7 +1136,7 @@ export default {
         care: this.folder_id,
         item: this.valeur1.item.id
       };
-      switch(this.type){
+      switch(this.types){
 
         case 'examen':
 
@@ -1205,7 +1205,7 @@ export default {
       //this.openb = true
       let params = {};
       params["name"] = value
-      switch(this.type){
+      switch(this.types){
 
         case 'examen':
 
@@ -1271,11 +1271,12 @@ export default {
     onEditClick(params){
 
       console.log('savechange', params);
-      console.log('savechange', params.type);
 
-      switch(params.type) {
+
+      switch(params.types) {
         case 'examen':
           this.vehicle = params
+          console.log('savechange', this.vehicle);
           this.$bvModal.show('openvehicule')
             this.operations=false
 
@@ -1295,7 +1296,7 @@ export default {
         care: this.folder_id,
         item: params.id
       };
-      switch(params.type){
+      switch(params.types){
         case 'examen':
 
           axios.post(constants.resource_url+'cares/remove-exam', soin)

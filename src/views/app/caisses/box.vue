@@ -1132,9 +1132,6 @@
 
         mounted() {
 
-
-
-
             console.log(moment().format("yyyy-MM-DD"))
             console.log('boxopen',this.boxopen)
 

@@ -14,12 +14,13 @@
         <template #default="{  }">
 
           <b-form-input
-
               v-model="valeur"
               @input="suggestionon(valeur)"
               type="text"
               :placeholder="$t('valeur')"
           ></b-form-input>
+
+
 
           <b-list-group v-if="filteredSuggestions.length" style="width:90%;float:inherit;position:absolute;z-index:1">
 

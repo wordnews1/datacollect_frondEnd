@@ -1162,7 +1162,7 @@
             ...mapActions(["ListDossierPatient","UpdatePatients"]),
           onEditClick(params){
 
-            switch(params.type) {
+            switch(params.types) {
               case 'contact':
                 this.contact = params
                 this.$bvModal.show('opencontacts1')
@@ -1444,7 +1444,7 @@
                     care: this.folder_id,
                     item: params.id
                 };
-                switch(params.type){
+                switch(params.types){
                     case 'contact':
                       console.log('checkid',this.checkId(this.contacts,params.id))
 

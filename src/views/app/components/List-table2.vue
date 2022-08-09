@@ -199,12 +199,12 @@
 
             onRowClick(value){
                 console.log('onrow',value)
-                value.type=this.type
+                value.types=this.type
                 this.$emit('onRowclick',value)
             },
           onEditClick(value){
                 console.log('onrow',value)
-                value.type=this.type
+                value.types=this.type
                 this.$emit('onEditClick',value)
             },
 

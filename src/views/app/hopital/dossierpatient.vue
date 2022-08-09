@@ -1141,7 +1141,7 @@
             ...mapActions(["ListDossierPatient"]),
           onEditClick(params){
 
-            switch(params.type) {
+            switch(params.types) {
               case 'contact':
                 this.contact = params
                 this.$bvModal.show('opencontacts1')
@@ -1352,7 +1352,7 @@
                     care: this.folder_id,
                     item: params.id
                 };
-                switch(params.type){
+                switch(params.types){
                     case 'examen':
 
                         axios.post(constants.resource_url+'cares/remove-exam', soin)
