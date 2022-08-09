@@ -44,7 +44,7 @@
                 </a>
               </div>
             </div>-->
-            <div v-if="rowe.length<=1 && rowe[0].status!=='READY'">
+            <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
               <div class="card mb-20">
                 <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
                 <a href="#"  @click="finish()" class="item item-text-wrap item-button-left  taille">
