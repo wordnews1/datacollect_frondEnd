@@ -431,8 +431,10 @@
                                             :label="$t('crashacc')"
                                             label-for="input-1"
                                     >
-                                        <b-form-datepicker id="example-datepicker"  v-model="crashacc" class="mb-2"></b-form-datepicker>
+<!--                                        <b-form-datepicker id="example-datepicker"  v-model="crashacc" class="mb-2"></b-form-datepicker>-->
 
+                                      <date-picker v-model="crashacc" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></date-picker>
+{{crashacc}}
                                     </b-form-group>
                                     <b-form-group :label="$t('consumalcohol')">
 
@@ -973,6 +975,8 @@
     import { required, minLength, maxLength } from "vuelidate/lib/validators";
     // import partnersVue from "../partners/list"
     import axios from 'axios'
+    import DatePicker from 'vue2-datepicker';
+    import 'vue2-datepicker/index.css';
     import { mapGetters,mapActions } from "vuex";
     export default {
 
@@ -982,7 +986,7 @@
         },
 
         components: {
-            ListTable
+            ListTable,DatePicker
         },
         mounted(){
             console.log('rowe',this.rowes)

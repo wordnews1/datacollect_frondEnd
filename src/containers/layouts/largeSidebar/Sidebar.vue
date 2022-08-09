@@ -169,6 +169,14 @@
                   </a>
                 </router-link>
               </li>
+              <li class="nav-item">
+                <router-link :to="{ name: 'billing'}">
+                  <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Add-User"></i>
+                    <span class="nav-text">{{ $t("Billing") }}</span>
+                  </a>
+                </router-link>
+              </li>
 
               <li class="nav-item">
                 <router-link :to="{ name: 'accidents'}">

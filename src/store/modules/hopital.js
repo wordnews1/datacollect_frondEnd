@@ -7,8 +7,10 @@ const state = {
     list_kanban:[],
     list_graph:[],
     listpatients:[],
+    listfinish:[],
     listraumatisme:[],
     listexamens:[],
+    listpatient:[],
     listsoins:[],
     listdossier:[],
     listdetail:[],
@@ -226,6 +228,33 @@ const actions = {
             });
 
     },
+    Finish({commit},data){
+
+        axios.get(state.resource_url+'accidents/finish/'+data.id)
+
+            .then(list => {
+
+                console.log('care',list.data)
+
+                if(list.data.success){
+
+                    commit("SETFINISHACCIDENTS",list.data.data)
+
+                }
+
+            })
+            .catch(function(error) {
+                console.log('products_error',error);
+                // Handle Errors here.
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // console.log(error);
+
+                //commit("setError", error);
+
+            });
+
+    },
     FetchListTraumatisme({commit}){
 
         axios.get(state.resource_url+'injuries')
@@ -362,6 +391,33 @@ const actions = {
             });
 
     },
+    fermerdossier({commit},data){
+
+        axios.get(state.resource_url+'cares/close/folder/'+data.id)
+
+            .then(list => {
+
+                //console.log('care',list.data)
+
+                if(list.data.success){
+
+                    commit("SETCLOSEFOLDER",list.data.data)
+
+                }
+
+            })
+            .catch(function(error) {
+                console.log('products_error',error);
+                // Handle Errors here.
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // console.log(error);
+
+                //commit("setError", error);
+
+            });
+
+    },
 
 }
 
@@ -380,6 +436,8 @@ const getters = {
     GETLISTDATA: state => state.listdata,
     GETADDACCIDENT: state => state.listpolice,
     GETUPDATEPATIENTS: state => state.listpatients,
+    GETFINISHACCIDENTS: state => state.listfinish,
+    GETCLOSEFOLDER: state => state.listpatient,
     GetListDossier: state => state.listdossier
 
 }
@@ -399,6 +457,8 @@ const mutations = {
     SETLISTDATA: (state,listdata)=>state.listdata=listdata,
     SETADDACCIDENT: (state,listpolice)=>state.listpolice=listpolice,
     SETUPDATEPATIENTS: (state,listpatients)=>state.listpatients=listpatients,
+    SETFINISHACCIDENTS: (state,listfinish)=>state.listfinish=listfinish,
+    SETCLOSEFOLDER: (state,listpatient)=>state.listpatient=listpatient,
     SETLISTDOSSIER: (state,listdossier)=>state.listdossier=listdossier
 
 }

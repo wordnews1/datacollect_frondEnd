@@ -1,6 +1,51 @@
 <template>
 
   <b-overlay :show="show" rounded="sm">
+    <b-overlay :show="openb" rounded="sm" >
+
+      <b-modal id="openassociate" :title="$t('open_box')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("Associer le dossier patient d'un accidenté")}} </h5>
+        </template>
+
+        <template #default="{  }">
+
+          <b-form-input
+              v-model="valeur"
+              @input="suggestionon(valeur)"
+              type="text"
+              :placeholder="$t('valeur')"
+          ></b-form-input>
+
+
+
+          <b-list-group v-if="filteredSuggestions.length" style="width:90%;float:inherit;position:absolute;z-index:1">
+
+            <b-list-group-item v-for="(s,i) in filteredSuggestions" :key="i"
+                               @click="selected({item:s})">
+
+              Cni: {{s["cni"]}}<br/>
+              {{s[optionsKey]}} {{s["prenom"]}}<br/>
+<!--              Date Accident: {{s["dateNaiss"]}}-->
+            </b-list-group-item>
+
+          </b-list-group>
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="addelements()" v-if="rowe[0].care==0" variant="outline-success" style="margin-right: 15px">
+              {{$t('ajouter')}}</b-button>
+            <b-button @click="addelements()" v-if="rowe[0].care!=0" variant="outline-success" style="margin-right: 15px">
+              {{$t('enlever')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
+    </b-overlay>
 
     <b-modal id="openvehicule" :title="$t('add_vehicle')" hide-footer>
 
@@ -168,7 +213,6 @@
       </template>
 
     </b-modal>
-e
     <b-modal size="lg" class="test-modal" id="openperson" :title="$t('add_person')" hide-footer>
 
       <template #modal-header="{}">
@@ -479,8 +523,11 @@ e
 
         <p></p>
         <div style="text-align: right">
-          <b-button @click="submitperson()" variant="outline-success" style="margin-right: 15px">
+          <b-button v-if="operations" @click="submitperson()" variant="outline-success" style="margin-right: 15px">
             {{$t('ajouter')}}</b-button>
+
+          <b-button v-if="!operations" @click="submiteditperson()" variant="outline-success" style="margin-right: 15px">
+            {{$t('modifier')}}</b-button>
         </div>
 
       </template>
@@ -832,6 +879,11 @@ e
                 <b-button  @click ="addperson()"  variant="success"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
+                <b-button  v-if="rowe.length<=1 && rowe[0].care==0" @click ="associer()"  variant="success"
+                           style="position: relative;right: 0;margin-right: 10px;">{{$t('associer')}}</b-button>
+
+                <b-button  v-if="rowe.length<=1 && rowe[0].care!=0" @click ="desassocier()"  variant="danger"
+                           style="position: relative;right: 0;margin-right: 10px;">{{$t('desassocier')}}</b-button>
 
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
@@ -904,6 +956,7 @@ export default {
   },
   data() {
     return {
+      rowe:{},
       operations:true,
       respdata:{},
       data:{},
@@ -915,7 +968,7 @@ export default {
       valeur1:{},
       filteredSuggestions:[],
       types:"",
-      optionsKey:"name",
+      optionsKey:"nom",
       optionsKey1:"prenom",
       folder_id:0,
       checkEx2Options : [
@@ -1043,6 +1096,50 @@ export default {
 
     ...mapActions(["addpolice","ListData","DetailsAccident"]),
 
+    addelements(value) {
+
+      console.log('selected2', value)
+      console.log('selected2', this.valeur)
+      this.openb = true
+
+      let soin = {
+        careId: this.valeur1.item.id,
+        personAccidentId: this.rowe[0].id
+      };
+
+      axios.post(constants.resource_url+'accidents/join-person-accident', soin)
+          .then(response =>{
+
+            if(response.data.success){
+
+              this.valeur=''
+              this.makeToast(this.$t('added'),1)
+              console.log('products_error',response);
+              this.$bvModal.hide('openassociate')
+            }else{
+              this.makeToast(this.$t('error'),0)
+            }
+            this.openb = false
+
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
+
+        //commit("setError", error);
+
+      });
+
+      /*let soin = {
+        care: this.folder_id,
+        item: this.valeur1.item.id
+      };*/
+    },
+
     timechoose(data){
       console.log('data',data)
     },
@@ -1074,12 +1171,23 @@ export default {
       //console.log("this.vehicles",this.person.vehicleAccidentNumber==null)
       //return;
 
+      this.operations=true
       this.$bvModal.hide('openperson')
       this.person.id=0
       this.person.care=0
       this.persons.push(this.person)
       console.log("this.vehicles",this.persons)
 
+
+      this.person={}
+      this.makeToast(this.$t('added'),1)
+    },
+    submiteditperson(){
+      this.operations=false
+
+      this.$bvModal.hide('openvehicule')
+
+      this.persons.splice(this.checkId(this.persons,this.person.id), 1,  this.person)
 
       this.person={}
       this.makeToast(this.$t('added'),1)
@@ -1094,6 +1202,7 @@ export default {
       this.makeToast(this.$t('added'),1)
     },
     submiteditvehicule(){
+
       this.$bvModal.hide('openvehicule')
       //this.vehicle.vehicleId = 0
       //this.vehicles.push(this.vehicle)
@@ -1110,7 +1219,7 @@ export default {
     },
     selected(value){
       this.filteredSuggestions = []
-      this.valeur = value.item.name
+      this.valeur = value.item.nom+' '+value.item.prenom
       this.valeur1 = value
 
       console.log('selected',value)
@@ -1128,139 +1237,36 @@ export default {
       this.$toasted.show((variant),{type:type})
 
     },
-    addelement(value){
-      console.log('selected2',value)
-      console.log('selected2',this.valeur)
-      this.openb=true
-      let soin = {
-        care: this.folder_id,
-        item: this.valeur1.item.id
-      };
-      switch(this.types){
 
-        case 'examen':
 
-          axios.post(constants.resource_url+'cares/add-exam', soin)
-              .then(response =>{
+    suggestionon(value) {
+      this.openb = true
 
-                this.openb = false
-                this.valeur=''
-                this.makeToast(this.$t('added'),1)
-                console.log('products_error',response);
-                this.listexamen.push(response.data.data.exams)
-                //this.containerClass = 'container';
-                //this.trauma={}
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          }); break;
-        case 'soins':
-
-          axios.post(constants.resource_url+'cares/add-treatment', soin)
-              .then(response =>{
-                this.valeur=''
-                this.makeToast(this.$t('added'),1)
-                console.log('products_error',response);
-                //this.trauma={}
-                this.openb = false
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-        case 'traumatisme':
-          axios.post(constants.resource_url+'cares/add-injury', soin)
-              .then(response =>{
-                this.makeToast(this.$t('added'),1)
-                console.log('products_error',response);
-                this.openb = false
-                this.valeur=''
-                this.listrauma.push(response.data.data.injuries)
-
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-      }
-    },
-    suggestionon(value){
-      console.log('suggestionon',value)
+      console.log('suggestionon', value)
       //this.openb = true
       let params = {};
       params["name"] = value
-      switch(this.types){
 
-        case 'examen':
+      axios.get(constants.resource_url+'cares/search', {params})
+          .then(response =>{
 
-          axios.get(constants.resource_url+'examinations/search', {params})
-              .then(response =>{
+            this.openb = false
+            this.filteredSuggestions = response.data.data
 
-                this.loadanotherpage = false
-                this.filteredSuggestions = response.data.data
-                //this.containerClass = 'container';
-                //this.trauma={}
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
+            // this.$bvModal.hide('openassociate')
 
-            //commit("setError", error);
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
 
-          }); break;
-        case 'soins':
+        //commit("setError", error);
 
-          axios.get(constants.resource_url+'treatments/search', {params})
-              .then(response =>{
-                this.filteredSuggestions = response.data.data
-                //this.containerClass = 'container';
-                //this.trauma={}
-                this.openb = false
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-        case 'traumatisme':
-          axios.get(constants.resource_url+'injuries/search', {params})
-              .then(response =>{
-                this.filteredSuggestions = response.data.data
-                this.openb = false
-
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-      }
+      });
 
     },
     savechange(data) {
@@ -1380,8 +1386,19 @@ export default {
 
 
     },
-    clickRow(){
-      console.log('loadpage','')
+    associer(){
+
+      this.$bvModal.show('openassociate')
+    },
+    desassocier(){
+
+      this.$bvModal.show('openassociate')
+    },
+    clickRow(value){
+
+      this.rowe=value
+      console.log('loadpage',this.rowe)
+
     },
     selectionChanged(){
       console.log('loadpage','')

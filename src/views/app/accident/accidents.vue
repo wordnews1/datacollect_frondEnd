@@ -2,50 +2,7 @@
 
   <div class="main-content">
 
-    <b-overlay :show="openb" rounded="sm" >
 
-      <b-modal id="openassociate" :title="$t('open_box')" hide-footer>
-
-        <template #modal-header="{}">
-          <!-- Emulate built in modal header close button action -->
-          <h5>{{$t("Associer le dossier patient d'un accidenté")}} </h5>
-        </template>
-
-        <template #default="{  }">
-
-          <b-form-input
-              v-model="valeur"
-              @input="suggestionon(valeur)"
-              type="text"
-              :placeholder="$t('valeur')"
-          ></b-form-input>
-
-
-
-          <b-list-group v-if="filteredSuggestions.length" style="width:90%;float:inherit;position:absolute;z-index:1">
-
-            <b-list-group-item v-for="(s,i) in filteredSuggestions" :key="i"
-                               @click="selected({item:s})">
-
-              Cni: {{s["cni"]}}<br/>
-              {{s[optionsKey]}} {{s["prenom"]}}<br/>
-              Née le: {{s["dateNaiss"]}}
-
-            </b-list-group-item>
-
-          </b-list-group>
-
-          <p></p>
-          <div style="text-align: right">
-            <b-button @click="addelement()" variant="outline-success" style="margin-right: 15px">
-              {{$t('ajouter')}}</b-button>
-          </div>
-
-        </template>
-
-      </b-modal>
-
-    </b-overlay>
 
     <b-row>
 
@@ -79,11 +36,41 @@
               </div>
             </div>
 
-            <div v-if=" rowe.length<=1 ">
+<!--            <div v-if=" rowe.length<=1 ">
               <div class="card mb-20">
                 <a href="#"  @click="associer()" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Receipt-3 icon"></i>
                   <span class="icons" >{{$t('associer')}}</span>
+                </a>
+              </div>
+            </div>-->
+            <div v-if="rowe.length<=1 && rowe[0].status!=='READY'">
+              <div class="card mb-20">
+                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                <a href="#"  @click="finish()" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Close icon"></i>
+
+                  <span class="icons">{{$t('terminer')}}</span>
+                </a>
+              </div>
+            </div>
+            <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
+              <div class="card mb-20">
+                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                <a href="#"  @click="acceptorreject(0)" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Close icon"></i>
+
+                  <span class="icons">{{$t('accepter')}}</span>
+                </a>
+              </div>
+            </div>
+            <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
+              <div class="card mb-20">
+                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                <a href="#"  @click="acceptorreject(1)" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Close icon"></i>
+
+                  <span class="icons">{{$t('refuser')}}</span>
                 </a>
               </div>
             </div>
@@ -146,9 +133,11 @@
 
 <script>
 
-import constants from '../../../plugins/constants'
+
+import ListTable from '../components/list-table'
 import axios from 'axios'
-import ListTable from '../components/list-table'/*
+import constants from '../../../plugins/constants'
+/*
     import ListKanban from '../components/list-kanban'
     import ListGraph from '../components/list-graph'*/
 import { mapGetters,mapActions } from "vuex";
@@ -177,10 +166,20 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["GetVueKanban","GetVueGraph","GETLISTACCIDENTS"]),
+    ...mapGetters(["GetVueKanban","GetVueGraph","GETLISTACCIDENTS","GETFINISHACCIDENTS"]),
   },
   methods: {
-    ...mapActions(["FetchVueKanban", "FetchVueGraph", "FetchVueListaccidents"]),
+
+    ...mapActions(["FetchVueKanban", "FetchVueGraph", "FetchVueListaccidents","Finish"]),
+    checkId(obj, id) {
+
+      return obj.map(function(item) { return item.id; }).indexOf(id);
+
+    },
+    removelist(contact,indexIds){
+      contact.splice(indexIds, 1);
+      contact.sort();
+    },
     makeToast(variant = null,type) {
 
       switch (type) {
@@ -194,80 +193,7 @@ export default {
       this.$toasted.show((variant),{type:type})
 
     },
-    addelement(value) {
-      console.log('selected2', value)
-      console.log('selected2', this.valeur)
-      this.openb = true
 
-      let soin = {
-        careId: this.valeur1.item.id,
-        personAccidentId: this.rowe[0].id
-      };
-
-
-
-      axios.post(constants.resource_url+'cares/join-person-accident', soin)
-          .then(response =>{
-
-            if(response.data.success){
-
-            this.valeur=''
-            this.makeToast(this.$t('added'),1)
-            console.log('products_error',response);
-              this.$bvModal.hide('openassociate')
-            }else{
-              this.makeToast(this.$t('error'),0)
-            }
-            this.openb = false
-
-            //this.containerClass = 'container';
-            //this.trauma={}
-          }).catch(function(error) {
-        console.log('products_error',error);
-        // Handle Errors here.
-        // var errorCode = error.code;
-        // var errorMessage = error.message;
-        // console.log(error);
-
-        //commit("setError", error);
-
-      });
-
-      /*let soin = {
-        care: this.folder_id,
-        item: this.valeur1.item.id
-      };*/
-    },
-    suggestionon(value) {
-      this.openb = true
-
-      console.log('suggestionon', value)
-      //this.openb = true
-      let params = {};
-      params["name"] = value
-
-      axios.get(constants.resource_url+'cares/search', {params})
-          .then(response =>{
-
-            this.openb = false
-            this.filteredSuggestions = response.data.data
-
-            // this.$bvModal.hide('openassociate')
-
-            //this.containerClass = 'container';
-            //this.trauma={}
-          }).catch(function(error) {
-        console.log('products_error',error);
-        // Handle Errors here.
-        // var errorCode = error.code;
-        // var errorMessage = error.message;
-        // console.log(error);
-
-        //commit("setError", error);
-
-      });
-
-    },
       selected(value){
 
         this.filteredSuggestions = []
@@ -345,10 +271,77 @@ export default {
 
 
     },
-    associer(){
+    finish(){
 
-      this.$bvModal.show('openassociate')
-    }
+      console.log('rowe',this.rowe[0])
+      this.loadanotherpage=true
+
+      this.Finish(this.rowe[0])
+
+    },
+    acceptorreject(data){
+
+      this.loadanotherpage=true
+
+      if(data===0){
+        axios.get(constants.resource_url+'accidents/accept/'+this.rowe[0].id)
+
+            .then(list => {
+
+              console.log('care',list.data)
+
+              if(list.data.success){
+
+                this.loadanotherpage=false
+                let value = list.data.data
+
+                this.list.splice(this.checkId(this.list,value.id), 1,  value)
+
+              }
+
+            })
+            .catch(function(error) {
+              console.log('products_error',error);
+              // Handle Errors here.
+              // var errorCode = error.code;
+              // var errorMessage = error.message;
+              // console.log(error);
+
+              //commit("setError", error);
+
+            });
+      }else{
+
+        axios.get(constants.resource_url+'accidents/reject/'+this.rowe[0].id)
+
+            .then(list => {
+
+              console.log('care',list.data)
+
+              if(list.data.success){
+
+                this.loadanotherpage=false
+                let value = list.data.data
+
+                this.list.splice(this.checkId(this.list,value.id), 1,  value)
+
+              }
+
+            })
+            .catch(function(error) {
+              console.log('products_error',error);
+              // Handle Errors here.
+              // var errorCode = error.code;
+              // var errorMessage = error.message;
+              // console.log(error);
+
+              //commit("setError", error);
+
+            });
+      }
+
+    },
+
   },
   /**/
   data() {
@@ -405,6 +398,14 @@ export default {
 
   watch:{
 
+    GETFINISHACCIDENTS(value){
+
+      this.loadanotherpage=false
+      console.log('link',value)
+      this.list.splice(this.checkId(this.list,value.id), 1,  value)
+
+
+    },
     GETLISTACCIDENTS(value){
 
       console.log('link',value)

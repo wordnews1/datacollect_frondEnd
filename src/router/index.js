@@ -92,6 +92,12 @@ const routes = [
                         props: true
                     },
                     {
+                        name:"billing",
+                        path: "billing",
+                        component: () => import("../views/app/hopital/billing"),
+                        props: true
+                    },
+                    {
                         name:"accidents",
                         path: "accidents",
                         component: () => import("../views/app/accident/accidents")

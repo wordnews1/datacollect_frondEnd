@@ -60,6 +60,15 @@
 
                                 </div>
                         </div>
+                      <div v-if="rowe.length<=1 && rowe[0].status!=='CLOSED'">
+                        <div class="card mb-20">
+                          <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                          <a href="#"  @click="closes()" class="item item-text-wrap item-button-left  taille">
+                            <i class="i-Close icon"></i>
+                            <span class="icons">{{$t('close')}}</span>
+                          </a>
+                        </div>
+                      </div>
 
 
 
@@ -155,16 +164,24 @@
         },
 
         computed: {
-            ...mapGetters(["GetVueKanban","GetVueGraph","GetVueListPatients"]),
+            ...mapGetters(["GetVueKanban","GetVueGraph","GetVueListPatients","GETCLOSEFOLDER"]),
         },
         methods: {
-            ...mapActions(["FetchVueKanban", "FetchVueGraph", "FetchVueListPatients"]),
+            ...mapActions(["FetchVueKanban", "FetchVueGraph", "FetchVueListPatients","fermerdossier"]),
             addpatient(){
 
                     this.$router.push({name: 'addpatient',params: { rowes:this.rowe }})
 
             },
+          checkId(obj, id) {
 
+            return obj.map(function(item) { return item.id; }).indexOf(id);
+
+          },
+          removelist(contact,indexIds){
+            contact.splice(indexIds, 1);
+            contact.sort();
+          },
             consult(){
                 console.log('parames2', this.rowe);
                 if(Object.keys(this.rowe).length === 0){
@@ -185,6 +202,10 @@
 
                     this.$router.push({name: 'editdossier',params: { rowes:this.rowe }})
 
+            },
+            closes(){
+                this.loadanotherpage = true
+              this.fermerdossier(this.rowe[0])
             },
             clickRow(params) {
 
@@ -268,6 +289,11 @@
                         field: "dateNaiss",
                         hidden: false,
                     },
+                  {
+                        label: "Montant Acceptee ",
+                        field: "amountAccepted",
+                        hidden: false,
+                    },
                     {
                         label: "Status",
                         field: "status",
@@ -279,6 +305,13 @@
         },
 
         watch:{
+
+          GETCLOSEFOLDER(value){
+            console.log('link',value)
+            this.list.splice(this.checkId(this.list,value.id), 1,  value)
+
+            this.loadanotherpage=false
+          },
 
             GetVueListPatients(value){
 
