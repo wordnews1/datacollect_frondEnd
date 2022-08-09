@@ -39,8 +39,8 @@
                             </div>
                         </div>
                         <!--<div v-if="rowe.length<=1  && rowe[0].statutVisite===3">-->
-                        <div v-if="rowe.length>=1">
-                            <!--<div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+<!--                        <div v-if="rowe.length>=1">
+                            &lt;!&ndash;<div v-if=" checkArray(roles,controleur)" class="card mb-20">&ndash;&gt;
                             <div class="card mb-20">
 
                                 <a href="#" class="item item-text-wrap item-button-left  taille">
@@ -48,10 +48,10 @@
                                     <span class="icons">{{$t('archivpatient')}}</span>
                                 </a>
                              </div>
-                        </div>
+                        </div>-->
                         <!--<div v-if="rowe.length<=1  && rowe[0].statutVisite===3">-->
-                            <div v-if="rowe.length>=1">
-                            <!--<div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+<!--                            <div v-if="rowe.length>=1">
+                            &lt;!&ndash;<div v-if=" checkArray(roles,controleur)" class="card mb-20">&ndash;&gt;
                                 <div class="card mb-20">
                                     <a href="#" class="item item-text-wrap item-button-left  taille">
                                         <i class="i-Edit icon"></i>
@@ -59,7 +59,7 @@
                                     </a>
 
                                 </div>
-                        </div>
+                        </div>-->
                       <div v-if="rowe.length<=1 && rowe[0].status!=='CLOSED'">
                         <div class="card mb-20">
                           <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->

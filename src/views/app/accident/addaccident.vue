@@ -18,7 +18,7 @@
         >
 
                             <b-form-input
-
+                                disabled
                                           v-model="vehicle.vehicleAccidentNumber"
                                           type="text"
                             ></b-form-input>
@@ -182,7 +182,7 @@
           >
 
 
-            <b-form-select v-model="person.vehicleAccidentNumber">
+            <b-form-select @change="getSelectedItem" v-model="person.vehicleAccidentNumber">
               <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in vehicles" :value="option.vehicleAccidentNumber" :key="option.vehicleAccidentNumber">
                 {{ option.plate }}
@@ -199,6 +199,7 @@
         >
 
                             <b-form-input
+                                disabled
 
                                           v-model="person.personAccidentNumber"
                                           type="text"
@@ -213,6 +214,7 @@
           >
 
             <b-form-input
+                disabled
                 v-model="person.vehicleLinkedPedestrian"
                 type="text"
             ></b-form-input>
@@ -1030,11 +1032,17 @@ export default {
   methods:{
 
     ...mapActions(["addpolice","ListData"]),
+    getSelectedItem(params){
+      this.person.vehicleLinkedPedestrian = params
+      console.log('paf',params)
+    },
     addperson(){
       this.$bvModal.show('openperson')
+      this.person.personAccidentNumber = this.persons.length + 1
     },
     addvehicules(){
       this.$bvModal.show('openvehicule')
+      this.vehicle.vehicleAccidentNumber = this.vehicles.length + 1
     },
     submitall(){
       //console.log("vehicles",item)

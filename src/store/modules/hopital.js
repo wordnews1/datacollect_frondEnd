@@ -120,6 +120,19 @@ const actions = {
 
             });
     },
+    makeToast(variant = null,type) {
+
+        switch (type) {
+            case 0: type="error"; break;
+            case 1: type="success" ; break;
+            case 2: type="info"; break;
+            case 3: type="warning"; break;
+
+        }
+
+        this.$toasted.show((variant),{type:type})
+
+    },
     addpolice({commit},data){
 
         axios.post(state.resource_url+'accidents',data)
@@ -132,6 +145,8 @@ const actions = {
 
                     commit("SETADDACCIDENT",list.data.data)
 
+                }else{
+                    this.makeToast(this.$t('erreur dans la modification'),0)
                 }
 
             })

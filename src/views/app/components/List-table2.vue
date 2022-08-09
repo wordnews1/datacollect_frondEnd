@@ -68,6 +68,9 @@
                               <a class="btn btn-sm primary"  @click.stop="onEditClick(props.row)"><i class="i-Edit"></i></a>
                               <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Remove"></i></a>
                             </span>
+                          <span v-if="props.column.field == 'firstName'">
+                               {{props.formattedRow[props.column.field]==null?'pas renseigné': props.formattedRow[props.column.field]}}
+                            </span>
                             <span v-if="props.column.field == 'insuranceVisa'">
                               <span v-if="props.formattedRow[props.column.field]==null" class="badge badge-warning"> PENDING</span>
                               <span v-if="props.formattedRow[props.column.field]=='PENDING'" class="badge badge-warning"> {{props.formattedRow[props.column.field]}}</span>

@@ -36,7 +36,7 @@
           <p></p>
           <div style="text-align: right">
             <b-button @click="addelements()" v-if="rowe[0].care==0" variant="outline-success" style="margin-right: 15px">
-              {{$t('ajouter')}}</b-button>
+              {{$t('associer')}}</b-button>
             <b-button @click="addelements()" v-if="rowe[0].care!=0" variant="outline-success" style="margin-right: 15px">
               {{$t('enlever')}}</b-button>
           </div>
@@ -879,10 +879,10 @@
                 <b-button  @click ="addperson()"  variant="success"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
-                <b-button  v-if="rowe.length<=1 && rowe[0].care==0" @click ="associer()"  variant="success"
+                <b-button  v-if="rowe.length==1 && rowe[0].care==0" @click ="associer()"  variant="success"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('associer')}}</b-button>
 
-                <b-button  v-if="rowe.length<=1 && rowe[0].care!=0" @click ="desassocier()"  variant="danger"
+                <b-button  v-if="rowe.length==1 && rowe[0].care!=0" @click ="desassocier()"  variant="danger"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('desassocier')}}</b-button>
 
                 <b-col md="12">
@@ -913,7 +913,7 @@
 
       <b-button  type="submit"
                  variant="outline-success rights"
-                 style="float: right">{{$t('Enregistrer')}}</b-button>
+                 style="float: right">{{$t('Soumettre')}}</b-button>
 
 
 
@@ -1117,7 +1117,11 @@ export default {
               console.log('products_error',response);
               this.$bvModal.hide('openassociate')
             }else{
-              this.makeToast(this.$t('error'),0)
+              if(response.data.status=='202'){
+                this.makeToast('ce dossier patient a déja été associé a un accidenté', 0)
+              }else {
+                this.makeToast(this.$t('error'), 0)
+              }
             }
             this.openb = false
 
@@ -1151,6 +1155,7 @@ export default {
       this.operations=true
     },
     submitall(){
+      this.show=true
       console.log("vehicles",this.rowes.id)
       //if(data.accidentTime)
       //this.data.accidentTime = this.accidentTime.hh +":"+ this.accidentTime.mm
@@ -1290,76 +1295,33 @@ export default {
         case 'soins':
           this.person = params
           this.$bvModal.show('openperson')
+          this.operations=false
 
           break;
 
       }
 
     },
+
+    removelist(contact,indexIds){
+      contact.splice(indexIds, 1);
+      contact.sort();
+    },
     onRowclick(params){
       this.loadanotherpage = true
-      let soin = {
-        care: this.folder_id,
-        item: params.id
-      };
+      console.log('paramis',params)
+
       switch(params.types){
         case 'examen':
-
-          axios.post(constants.resource_url+'cares/remove-exam', soin)
-              .then(response =>{
-                this.listexamen = response.data.data.exams;
-                this.loadanotherpage = false
-                //this.containerClass = 'container';
-                //this.trauma={}
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          }); break;
+          this.removelist(this.vehicles,this.checkId(this.vehicles,params.id))
+          break;
         case 'soins':
-
-          axios.post(constants.resource_url+'cares/remove-treatment', soin)
-              .then(response =>{
-                this.listsoin = response.data.data.treatments;
-                //this.containerClass = 'container';
-                //this.trauma={}
-                this.loadanotherpage = false
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-        case 'trauma':
-          axios.post(constants.resource_url+'cares/remove-injury', soin)
-              .then(response =>{
-                this.listrauma = response.data.data.injuries;
-                this.containerClass = 'container';
-                this.trauma={}
-                this.loadanotherpage = false
-
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
+          this.removelist(this.persons,this.checkId(this.persons,params.id))
+        break;
 
       }
-      console.log('paramis',params)
+      this.loadanotherpage = false
+
 
     },
     editProps(params){
@@ -1392,7 +1354,41 @@ export default {
     },
     desassocier(){
 
-      this.$bvModal.show('openassociate')
+     // this.$bvModal.show('openassociate')
+      this.loadanotherpage = true
+
+      let soin = {
+        careId: this.rowe.care,
+        personAccidentId: this.rowe[0].id
+      };
+
+      axios.post(constants.resource_url+'accidents/unjoin-person-accident', soin)
+          .then(response =>{
+
+            if(response.data.success){
+
+            //  this.valeur=''
+              this.loadanotherpage = false
+              this.makeToast(this.$t('desassocier avec success'),1)
+              console.log('products_error',response);
+              //this.$bvModal.hide('openassociate')
+            }else{
+              this.makeToast(this.$t('error'),0)
+            }
+            this.openb = false
+
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
+
+        //commit("setError", error);
+
+      });
     },
     clickRow(value){
 

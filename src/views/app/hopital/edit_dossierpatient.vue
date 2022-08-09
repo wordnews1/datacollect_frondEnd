@@ -262,9 +262,9 @@
                     <b-collapse id="accordion-1" invisible accordion="my-accordion" role="tabpanel">
                         <b-card-body>
                             <b-row>
-                                <b-col md="6">
+
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('cnis')"
                                             label-for="input-1"
                                     >
@@ -279,7 +279,7 @@
                                         <b-alert
                                                 show
                                                 variant="danger"
-                                                class="error col-md-12 mt-1"
+                                                class="error col-md-6 mt-1"
                                                 v-if="!$v.cni.minLength"
                                         >{{$t('validator_cni')}}
                                             {{ $v.cni.$params.minLength.min }} {{$t('letters')}}  .</b-alert
@@ -287,7 +287,7 @@
 
                                     </b-form-group>
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('prenom_label')"
                                             label-for="input-1"
                                     >
@@ -301,7 +301,7 @@
 
                                     </b-form-group>
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('birthday')"
                                             label-for="input-1"
                                     >
@@ -310,7 +310,7 @@
 
                                     </b-form-group>
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('permi')"
                                             label-for="input-1"
                                     >
@@ -323,10 +323,9 @@
                                         ></b-form-input>
 
                                     </b-form-group>
-                                </b-col>
-                                <b-col md="6">
+
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('nom_label')"
                                             label-for="input-1"
                                     >
@@ -341,7 +340,7 @@
                                         <b-alert
                                                 show
                                                 variant="danger"
-                                                class="error col-md-12 mt-1"
+                                                class="error col-md-6 mt-1"
                                                 v-if="!$v.nom.minLength"
                                         >{{$t('validator_nom')}}
                                             {{ $v.nom.$params.minLength.min }} {{$t('letters')}}  .</b-alert
@@ -350,7 +349,7 @@
 
                                     </b-form-group>
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('tel')"
                                             label-for="input-1"
                                     >
@@ -365,7 +364,7 @@
                                         <b-alert
                                                 show
                                                 variant="danger"
-                                                class="error col-md-12 mt-1"
+                                                class="error col-md-6 mt-1"
                                                 v-if="!$v.phone.minLength"
                                         >{{$t('validator_phone')}}
                                             {{ $v.phone.$params.minLength.min }} {{$t('letters')}}  .</b-alert
@@ -373,20 +372,15 @@
                                         <b-alert
                                                 show
                                                 variant="danger"
-                                                class="error col-md-12 mt-1"
+                                                class="error col-md-6 mt-1"
                                                 v-if="!$v.phone.maxLength"
                                         >{{$t('validator_phone_max')}}
                                             {{ $v.phone.$params.maxLength.max }} {{$t('letters')}}  .</b-alert
                                         >
 
                                     </b-form-group>
-
-
-
-
-
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('passports')"
                                             label-for="input-1"
                                     >
@@ -399,28 +393,35 @@
                                         ></b-form-input>
 
                                     </b-form-group>
-                                    <label>Sexe: </label>
+                                  <b-form-group  style="margin-bottom: 10px"
+                                                 class="col-md-6 mb-30"
+                                                 :label="$t('Sexe')"
+                                                 label-for="input-1"
+                                  >
+
                                     <b-form-select
-                                            :label="$t('sexe')"
-                                            id="sexe"
-                                            name="personGender"
-                                            v-model="personGender"
+                                        :label="$t('sexe')"
+                                        id="sexe"
+                                        name="personGender"
+                                        v-model="personGender"
                                     >
 
-                                        <option value="1">
-                                            Homme
-                                        </option>
+                                      <option value="1">
+                                        Homme
+                                      </option>
 
-                                        <option value="2">
-                                            Femme
-                                        </option>
+                                      <option value="2">
+                                        Femme
+                                      </option>
                                       <option value="9">
-                                            Inconnu
-                                        </option>
+                                        Inconnu
+                                      </option>
 
                                     </b-form-select>
 
-                                </b-col>
+                                  </b-form-group>
+
+
                             </b-row>
 
 
@@ -442,10 +443,8 @@
                         <b-card-body>
                             <b-row>
 
-                                <b-col md="6">
-
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('crashacc')"
                                             label-for="input-1"
                                     >
@@ -453,15 +452,54 @@
 
 <!--                                      <date-picker v-model="crashacc" format="YYYY-MM-DD HH:MM"  valueType="YYYY-MM-DD HH:MM" ></date-picker>-->
                                       <Datepicker format="YYYY-MM-DD H:i"  v-model="crashacc" />
-{{crashacc}}
+
                                     </b-form-group>
-                                    <b-form-group :label="$t('consumalcohol')">
+                              <b-form-group  style="margin-bottom: 10px"
+                                             class="col-md-6 mb-30"
+                                             :label="$t('persontrauma')"
+                                             label-for="input-1"
+                              >
+
+                                <b-form-select
+                                    :label="$t('sexe')"
+                                    id="sexe"
+                                    name="personGender"
+                                    v-model="personGender"
+                                >
+
+                                  <option value="1">
+                                    Traumatisme Mortel
+                                  </option>
+
+                                  <option value="2">
+                                    Traumatisme Grave/sérieux
+                                  </option>
+                                  <option value="3">
+                                    Traumatisme Léger/Mineur
+                                  </option>
+                                  <option value="4">
+                                    pas de Traumatisme
+                                  </option>
+                                  <option value="5">
+                                    Inconnu
+                                  </option>
+
+                                </b-form-select>
+
+                              </b-form-group>
+
+
+                                    <b-form-group
+                                        style="margin-bottom: 20px;margin-top: 10px"
+                                        class="col-md-6 mb-30"
+                                        label-for="input-1"
+                                        :label="$t('consumalcohol')">
 
 
                                         <b-checkbox
                                             
                                             v-model="consumalcohol"
-                                            class="mb-5 right_header"
+                                            class="mb-5 "
                                         >
                                             Oui
                                         </b-checkbox>
@@ -477,42 +515,11 @@
 
                                     </b-form-group>
 
-
-
-
-                                </b-col>
-                                <b-col md="6">
-
-                                    <b-form-group :label="$t('persontrauma')">
-                                        <select
-                                                class="form-control"
-                                                name="persontrauma"
-                                                v-model="persontrauma"
-                                        >
-
-                                          <option value="1">
-                                            Traumatisme Mortel
-                                          </option>
-
-                                          <option value="2">
-                                            Traumatisme Grave/sérieux
-                                          </option>
-                                          <option value="3">
-                                            Traumatisme Léger/Mineur
-                                          </option>
-                                          <option value="4">
-                                            pas de Traumatisme
-                                          </option>
-                                          <option value="5">
-                                            Inconnu
-                                          </option>
-
-
-                                        </select>
-                                    </b-form-group>
-
-
-                                    <b-form-group :label="$t('consumdrugs')">
+                                    <b-form-group
+                                        style="margin-bottom: 20px;margin-top: 10px"
+                                        class="col-md-6 mb-30"
+                                        label-for="input-1"
+                                        :label="$t('consumdrugs')">
 
                                         <b-checkbox
                                                 
@@ -535,7 +542,6 @@
                                     </b-form-group>
 
 
-                                </b-col>
                             </b-row>
 
 
@@ -688,10 +694,10 @@
                         <b-card-body>
                             <b-row>
 
-                                <b-col md="6">
+
 
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('poids')"
                                             label-for="input-1"
                                     >
@@ -705,7 +711,7 @@
 
                                     </b-form-group>
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('temperature')"
                                             label-for="input-1"
                                     >
@@ -718,14 +724,8 @@
                                         ></b-form-input>
 
                                     </b-form-group>
-
-
-                                </b-col>
-                                <b-col md="6">
-
-
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('tension')"
                                             label-for="input-1"
                                     >
@@ -741,7 +741,7 @@
                                     </b-form-group>
 
                                     <b-form-group
-                                            class="col-md-12 mb-30"
+                                            class="col-md-6 mb-30"
                                             :label="$t('pouls')"
                                             label-for="input-1"
                                     >
@@ -756,12 +756,8 @@
                                     </b-form-group>
 
 
-                                </b-col>
                             </b-row>
-                            <b-row>
-                                <br/>
 
-                                <b-col md="12">
                                     <b-form-group :label="$t('param_med_label')">
 
                                             <br/>
@@ -775,6 +771,7 @@
                                             </b-checkbox>
 
                                             <b-checkbox
+                                                md="3"
                                                 
                                                     v-model="cardiaque"
                                                     class="mb-5 right_header"
@@ -783,6 +780,7 @@
                                             </b-checkbox>
                                             <br/>
                                             <b-checkbox
+                                                md="3"
                                                 
                                                     v-model="epilepsie"
                                                     class="mb-5"
@@ -820,8 +818,8 @@
 
 
                                     </b-form-group>
-                                </b-col>
-                            </b-row>
+
+
                             <br/>
 
                         </b-card-body>
