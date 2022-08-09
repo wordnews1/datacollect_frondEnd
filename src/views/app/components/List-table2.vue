@@ -67,10 +67,18 @@
                               <a class="btn btn-sm primary"  @click.stop="onEditClick(props.row)"><i class="i-Edit"></i></a>
                               <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Remove"></i></a>
                             </span>
-                                                <span v-else>
+                            <span v-if="props.column.field == 'insuranceVisa'">
+                              <span v-if="props.formattedRow[props.column.field]==null" class="badge badge-warning"> PENDING</span>
+                              <span v-if="props.formattedRow[props.column.field]=='PENDING'" class="badge badge-warning"> {{props.formattedRow[props.column.field]}}</span>
+                              <span v-if="props.formattedRow[props.column.field]=='ACCEPTED'" class="badge badge-success"> {{props.formattedRow[props.column.field]}}</span>
+                              <span v-if="props.formattedRow[props.column.field]=='REJECTED'" class="badge badge-danger"> {{props.formattedRow[props.column.field]}}</span>
+                            </span>
+                            <span v-else>
                               {{props.formattedRow[props.column.field]}}
                             </span>
                         </template>
+
+
 
 
 

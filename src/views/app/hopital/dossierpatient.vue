@@ -3,6 +3,196 @@
 
     <b-overlay :show="show" rounded="sm">
 
+      <b-modal id="opencontacts" :title="$t('add_contact')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("add_contact")}} </h5>
+        </template>
+
+        <template #default="{  }">
+          <b-row>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('CNI')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+
+                  v-model="contact.cni"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('nom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+                  v-model="contact.firstName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('prenom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-model="contact.lastName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('phone')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+
+                  v-model="contact.phone"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group  style="margin-bottom: 10px"
+                           class="col-md-6 mb-30"
+                           :label="$t('Sexe')"
+                           label-for="input-1"
+            >
+
+              <b-form-select v-model="contact.gender">
+                <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                <option v-for="option in sexes" :value="option.id" :key="option.id">
+                  {{ option.value }}
+                </option>
+              </b-form-select>
+
+
+            </b-form-group>
+
+
+          </b-row>
+
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="submitcontact()" variant="outline-success" style="margin-right: 15px">
+              {{$t('ajouter')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
+      <b-modal id="opencontacts1" :title="$t('add_contact')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("add_contact")}} </h5>
+        </template>
+
+        <template #default="{  }">
+          <b-row>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('CNI')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+
+                  v-model="contact.cni"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('nom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+                  v-model="contact.firstName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('prenom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-model="contact.lastName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('phone')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+
+                  v-model="contact.phone"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group  style="margin-bottom: 10px"
+                           class="col-md-6 mb-30"
+                           :label="$t('Sexe')"
+                           label-for="input-1"
+            >
+
+              <b-form-select v-model="contact.gender">
+                <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                <option v-for="option in sexes" :value="option.id" :key="option.id">
+                  {{ option.value }}
+                </option>
+              </b-form-select>
+
+
+            </b-form-group>
+
+
+          </b-row>
+
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="submiteditcontact()" variant="outline-success" style="margin-right: 15px">
+              {{$t('modifier')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
         <b-overlay :show="openb" rounded="sm" >
 
             <b-modal id="confirmopenAccount" :title="$t('open_box')" hide-footer>
@@ -620,6 +810,41 @@
 
             <p></p>
 
+          <div role="tablist">
+            <b-card no-body class="ul-card__border-radius">
+
+              <b-card-header header-tag="header" class="p-1"  role="tab">
+                <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-10 variant="transparent">
+                  {{$t('contact_patient')}}</b-button>
+              </b-card-header>
+
+              <b-collapse id="accordion-10" invisible accordion="my-accordion" role="tabpanel">
+                <b-card-body>
+                  <b-row>
+                    <b-button  @click ="addcontact()"  variant="success"
+                               style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+
+
+                    <b-col md="12">
+                      <b-overlay :show="loadanotherpage" rounded="sm" >
+
+                        <ListTable :type="'contact'" @onRowclick="onRowclick" @onEditClick="onEditClick" :rows="contacts" :columns="columns" :isCLoseMenu="true"
+                                   :totalPage="totalPagesoin_" :totalElement="totalElementsoin"
+                                   @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
+
+
+                      </b-overlay>
+                    </b-col>
+                  </b-row>
+                  <br/>
+
+                </b-card-body>
+              </b-collapse>
+
+            </b-card>
+          </div>
+          <p></p>
+
             <div role="tablist">
                 <b-card no-body class="ul-card__border-radius">
                     <b-card-header header-tag="header" class="p-1"  role="tab">
@@ -759,6 +984,36 @@
         },
         data() {
             return {
+              contacts:[],
+              contact:{},
+              columns:[
+
+                {
+                  label: "CNI",
+                  field: "cni",
+                  hidden: false,
+                },
+                {
+                  label: "Prenom",
+                  field: "firstName",
+                  hidden: false,
+                },
+                {
+                  label: "Nom",
+                  field: "lastName",
+                  hidden: false,
+                },
+                {
+                  label: "Numero de Telephone",
+                  field: "phone",
+                  hidden: false,
+                },
+                {
+                  label: "actions",
+                  field: "actions",
+                  html: true
+                }
+              ],
               valeur:'',
               valeur1:{},
               filteredSuggestions:[],
@@ -813,10 +1068,11 @@
                         label: "Price",
                         field: "price",
                         hidden: false,
-                    },                    {
+                    },
+                  {
 
-                        label: "Number",
-                        field: "number",
+                        label: "Status",
+                        field: "insuranceVisa",
                         hidden: false,
                     },
                     {
@@ -883,6 +1139,48 @@
         methods:{
 
             ...mapActions(["ListDossierPatient"]),
+          onEditClick(params){
+
+            switch(params.type) {
+              case 'contact':
+                this.contact = params
+                this.$bvModal.show('opencontacts1')
+
+                break;
+
+            }
+          },
+          checkId(obj, id) {
+
+            return obj.map(function(item) { return item.id; }).indexOf(id);
+
+          },
+          removelist(contact,indexIds){
+            contact.splice(indexIds, 1);
+            contact.sort();
+          },
+          submitcontact(){
+
+            this.$bvModal.hide('opencontacts')
+            this.contacts.push(this.contact)
+            this.contact={}
+            this.makeToast(this.$t('added'),1)
+          },
+          submiteditcontact(){
+
+            this.$bvModal.hide('opencontacts1')
+            // this.checkId()
+            //this.contacts.$set( this.checkId(this.contacts,this.contact.id), this.contact)
+            this.contacts.splice(this.checkId(this.contacts,this.contact.id), 1,  this.contact)
+            //this.$set(this.data, 'id', this.rowes.id);
+
+            //this.contacts.push(this.contact)
+            this.contact={}
+            this.makeToast(this.$t('added'),1)
+          },
+          addcontact(){
+            this.$bvModal.show('opencontacts')
+          },
           selected(value){
               this.filteredSuggestions = []
               this.valeur = value.item.name

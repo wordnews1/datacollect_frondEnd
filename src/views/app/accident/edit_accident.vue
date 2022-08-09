@@ -9,7 +9,8 @@
         <h5>{{$t("add_vehicle")}} </h5>
       </template>
 
-      <template #default="{  }">
+      <template #default="{}">
+
         <b-row>
           <b-form-group
               class="col-md-6 mb-30"
@@ -158,7 +159,9 @@
 
         <p></p>
         <div style="text-align: right">
-          <b-button @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
+          <b-button v-if="operations" @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
+            {{$t('ajouter')}}</b-button>
+          <b-button v-if="!operations"  @click="submiteditvehicule()" variant="outline-success" style="margin-right: 15px">
             {{$t('ajouter')}}</b-button>
         </div>
 
@@ -901,6 +904,7 @@ export default {
   },
   data() {
     return {
+      operations:true,
       respdata:{},
       data:{},
       vehicle:{},
@@ -1047,6 +1051,7 @@ export default {
     },
     addvehicules(){
       this.$bvModal.show('openvehicule')
+      this.operations=true
     },
     submitall(){
       console.log("vehicles",this.rowes.id)
@@ -1087,6 +1092,21 @@ export default {
 
       this.vehicle={}
       this.makeToast(this.$t('added'),1)
+    },
+    submiteditvehicule(){
+      this.$bvModal.hide('openvehicule')
+      //this.vehicle.vehicleId = 0
+      //this.vehicles.push(this.vehicle)
+      console.log("this.vehicles",this.vehicles)
+      this.vehicles.splice(this.checkId(this.vehicles,this.vehicle.id), 1,  this.vehicle)
+
+      this.vehicle={}
+      this.makeToast(this.$t('added'),1)
+    },
+    checkId(obj, id) {
+
+      return obj.map(function(item) { return item.id; }).indexOf(id);
+
     },
     selected(value){
       this.filteredSuggestions = []
@@ -1252,11 +1272,12 @@ export default {
 
       console.log('savechange', params);
       console.log('savechange', params.type);
-      
+
       switch(params.type) {
         case 'examen':
           this.vehicle = params
           this.$bvModal.show('openvehicule')
+            this.operations=false
 
           break;
         case 'soins':

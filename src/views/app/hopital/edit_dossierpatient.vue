@@ -98,6 +98,101 @@
 
       </b-modal>
 
+      <b-modal id="opencontacts1" :title="$t('add_contact')" hide-footer>
+
+        <template #modal-header="{}">
+          <!-- Emulate built in modal header close button action -->
+          <h5>{{$t("add_contact")}} </h5>
+        </template>
+
+        <template #default="{  }">
+          <b-row>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('CNI')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+
+                  v-model="contact.cni"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('nom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-uppercase
+                  v-model="contact.firstName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('prenom')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+                  v-model="contact.lastName"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group
+                class="col-md-6 mb-30"
+                :label="$t('phone')"
+                label-for="input-1"
+            >
+
+              <b-form-input
+
+                  v-model="contact.phone"
+                  type="text"
+              ></b-form-input>
+
+
+            </b-form-group>
+            <b-form-group  style="margin-bottom: 10px"
+                           class="col-md-6 mb-30"
+                           :label="$t('Sexe')"
+                           label-for="input-1"
+            >
+
+              <b-form-select v-model="contact.gender">
+                <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                <option v-for="option in sexes" :value="option.id" :key="option.id">
+                  {{ option.value }}
+                </option>
+              </b-form-select>
+
+
+            </b-form-group>
+
+
+          </b-row>
+
+
+          <p></p>
+          <div style="text-align: right">
+            <b-button @click="submiteditcontact()" variant="outline-success" style="margin-right: 15px">
+              {{$t('modifier')}}</b-button>
+          </div>
+
+        </template>
+
+      </b-modal>
+
         <b-overlay :show="openb" rounded="sm" >
 
             <b-modal id="confirmopenAccount" :title="$t('open_box')" hide-footer>
@@ -306,7 +401,7 @@
                                         </option>
 
                                     </b-form-select>
-                               
+
                                 </b-col>
                             </b-row>
 
@@ -736,7 +831,7 @@
                     <b-col md="12">
                       <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                        <ListTable :type="'contact'" @onRowclick="onRowclick" :rows="contacts" :columns="columns" :isCLoseMenu="true"
+                        <ListTable :type="'contact'" @onRowclick="onRowclick" @onEditClick="onEditClick" :rows="contacts" :columns="columns" :isCLoseMenu="true"
                                    :totalPage="totalPagesoin_" :totalElement="totalElementsoin"
                                    @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -752,6 +847,8 @@
             </b-card>
           </div>
           <p></p>
+
+
 
             <div role="tablist">
                 <b-card no-body class="ul-card__border-radius">
@@ -948,7 +1045,7 @@
                 },
                 {
                   label: "Numero de Telephone",
-                  field: "phone",
+                  field: "telephone",
                   hidden: false,
                 },
                 {
@@ -992,11 +1089,12 @@
                         label: "Price",
                         field: "price",
                         hidden: false,
-                    },                    {
+                    },
+                    {
 
-                        label: "Number",
-                        field: "number",
-                        hidden: false,
+                      label: "Status",
+                      field: "insuranceVisa",
+                      hidden: false,
                     },
                     {
                         label: "actions",
@@ -1062,6 +1160,17 @@
         methods:{
 
             ...mapActions(["ListDossierPatient","UpdatePatients"]),
+          onEditClick(params){
+
+            switch(params.type) {
+              case 'contact':
+                this.contact = params
+                this.$bvModal.show('opencontacts1')
+
+                break;
+
+            }
+            },
           checkId(obj, id) {
 
             return obj.map(function(item) { return item.id; }).indexOf(id);
@@ -1075,6 +1184,18 @@
 
             this.$bvModal.hide('opencontacts')
             this.contacts.push(this.contact)
+            this.contact={}
+            this.makeToast(this.$t('added'),1)
+          },
+          submiteditcontact(){
+
+            this.$bvModal.hide('opencontacts1')
+            // this.checkId()
+            //this.contacts.$set( this.checkId(this.contacts,this.contact.id), this.contact)
+          this.contacts.splice(this.checkId(this.contacts,this.contact.id), 1,  this.contact)
+            //this.$set(this.data, 'id', this.rowes.id);
+
+            //this.contacts.push(this.contact)
             this.contact={}
             this.makeToast(this.$t('added'),1)
           },
@@ -1160,7 +1281,9 @@
                          this.makeToast(this.$t('added'),1)
                          console.log('products_error',response);
                          //this.listexamen.push(response.data.data.exams[response.data.data.exams.length-1])
-                         this.listexamen=response.data.data.exams
+                         //this.listexamen=response.data.data.exams
+                         this.listexamen.push(this.valeur1.item)
+                         this.$bvModal.hide('confirmopenAccount')
                        }else{
                          this.makeToast(this.$t('error'),0)
                        }
@@ -1185,10 +1308,12 @@
                        if(response.data.success){
                          this.valeur=''
                          this.makeToast(this.$t('added'),1)
-                         console.log('products_error1',response.data.data.treatments[response.data.data.treatments.length-1]);
+                        // console.log('products_error1',response.data.data.treatments[response.data.data.treatments.length-1]);
 
                          //this.listsoin.push(response.data.data.treatments[response.data.data.treatments.length-1])
-                         this.listsoin=response.data.data.treatments
+                         //this.listsoin=response.data.data.treatments
+                         console.log('products_error1',this.valeur1.item);
+                         this.listsoin.push(this.valeur1.item)
 
 
                          this.$bvModal.hide('confirmopenAccount')
@@ -1218,7 +1343,9 @@
                          this.valeur=''
 
                          //this.listrauma.push(response.data.data.injuries[response.data.data.injuries.length-1])
-                         this.listrauma=response.data.data.injuries
+                         //this.listrauma=response.data.data.injuries
+                         this.listrauma.push(this.valeur1.item)
+                         this.$bvModal.hide('confirmopenAccount')
 
                        }else{
                          this.makeToast(this.$t('error'),0)
@@ -1328,10 +1455,11 @@
 
                         axios.post(constants.resource_url+'cares/remove-exam', soin)
                             .then(response =>{
-                                this.listexamen = response.data.data.exams;
+                              console.log('products_error',response);
+                               // this.listexamen = response.data.data.exams;
+                              this.removelist(this.listexamen,this.checkId(this.listexamen,soin.item))
                                 this.loadanotherpage = false
-                                //this.containerClass = 'container';
-                                //this.trauma={}
+
                             }).catch(function(error) {
                             console.log('products_error',error);
                             // Handle Errors here.
@@ -1346,7 +1474,9 @@
 
                         axios.post(constants.resource_url+'cares/remove-treatment', soin)
                             .then(response =>{
-                                this.listsoin = response.data.data.treatments;
+                              console.log('checkid',response+ ' '+this.checkId(this.listsoin,params.id))
+                              this.removelist(this.listsoin,this.checkId(this.listsoin,soin.item))
+                                //this.listsoin = response.data.data.treatments;
                                 //this.containerClass = 'container';
                                 //this.trauma={}
                                 this.loadanotherpage = false
@@ -1363,7 +1493,11 @@
                     case 'trauma':
                         axios.post(constants.resource_url+'cares/remove-injury', soin)
                             .then(response =>{
-                                this.listrauma = response.data.data.injuries;
+
+                              console.log('products_error',response);
+                              this.removelist(this.listrauma,this.checkId(this.listrauma,soin.item))
+
+                                //this.listrauma = response.data.data.injuries;
                                 this.containerClass = 'container';
                                 this.trauma={}
                                 this.loadanotherpage = false

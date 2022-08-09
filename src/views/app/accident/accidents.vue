@@ -78,14 +78,14 @@
               </div>
             </div>
 
-<!--            <div v-if=" rowe.length<=1 ">
+            <div v-if=" rowe.length<=1 ">
               <div class="card mb-20">
-                <a href="#"  @click="rowClick()" class="item item-text-wrap item-button-left  taille">
+                <a href="#"  @click="associer()" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Receipt-3 icon"></i>
-                  <span class="icons" >{{$t('consulter')}}</span>
+                  <span class="icons" >{{$t('associer')}}</span>
                 </a>
               </div>
-            </div>-->
+            </div>
 
 
           </b-col>
