@@ -2,7 +2,9 @@
 
   <div class="main-content">
 
-
+    <b-overlay :show="openb" rounded="sm" >
+     <Signin :rowes="rowe1" @signature="signaturee"> </Signin>
+    </b-overlay>
 
     <b-row>
 
@@ -47,17 +49,18 @@
             <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
               <div class="card mb-20">
                 <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
-                <a href="#"  @click="finish()" class="item item-text-wrap item-button-left  taille">
+                <a href="#"  @click="signin(0)" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Close icon"></i>
 
                   <span class="icons">{{$t('terminer')}}</span>
                 </a>
               </div>
             </div>
+
             <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
               <div class="card mb-20">
                 <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
-                <a href="#"  @click="acceptorreject(0)" class="item item-text-wrap item-button-left  taille">
+                <a href="#"  @click="signin(1)" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Close icon"></i>
 
                   <span class="icons">{{$t('accepter')}}</span>
@@ -67,7 +70,7 @@
             <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
               <div class="card mb-20">
                 <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
-                <a href="#"  @click="acceptorreject(1)" class="item item-text-wrap item-button-left  taille">
+                <a href="#"  @click="signin(2)" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Close icon"></i>
 
                   <span class="icons">{{$t('refuser')}}</span>
@@ -137,6 +140,7 @@
 import ListTable from '../components/list-table'
 import axios from 'axios'
 import constants from '../../../plugins/constants'
+import Signin from '../visit/signin'
 /*
     import ListKanban from '../components/list-kanban'
     import ListGraph from '../components/list-graph'*/
@@ -151,7 +155,7 @@ export default {
   },
 
   components: {
-    ListTable
+    ListTable,Signin
   },
   mounted(){
 
@@ -171,6 +175,27 @@ export default {
   methods: {
 
     ...mapActions(["FetchVueKanban", "FetchVueGraph", "FetchVueListaccidents","Finish"]),
+    signaturee(data){
+    this.openb=true
+      switch(this.operations){
+        case 0: this.finish(data); break;
+        case 1: this.acceptorreject(data,this.operations);break;
+        case 2: this.acceptorreject(data,this.operations);break;
+      }
+      
+      this.$bvModal.hide('signin')
+    },
+    signin(data){
+      /*if(Object.keys(this.rowe).length === 0){
+          this.makeToast(this.$t('st_signin_error'),'error')
+          return ;
+      }
+
+      this.$router.push({name: 'st_signin',params: { rowes:this.rowe }})*/
+      this.operations = data
+
+      this.$bvModal.show('signin')
+    },
     checkId(obj, id) {
 
       return obj.map(function(item) { return item.id; }).indexOf(id);
@@ -271,26 +296,33 @@ export default {
 
 
     },
-    finish(){
+    finish(data){
 
+      let datae={}
       console.log('rowe',this.rowe[0])
       this.loadanotherpage=true
+      datae.id = this.rowe[0].id
+      datae.signature = data
 
-      this.Finish(this.rowe[0])
+      this.Finish(datae)
 
     },
-    acceptorreject(data){
+    acceptorreject(data1,data){
 
       this.loadanotherpage=true
+      let datae={}
+      datae.id = this.rowe[0].id
+      datae.signature = data
 
-      if(data===0){
-        axios.get(constants.resource_url+'accidents/accept/'+this.rowe[0].id)
+      if(data===1){
+        axios.post(constants.resource_url+'accidents/accept',datae)
 
             .then(list => {
 
               console.log('care',list.data)
 
               if(list.data.success){
+                this.openb=false
 
                 this.loadanotherpage=false
                 let value = list.data.data
@@ -310,15 +342,18 @@ export default {
               //commit("setError", error);
 
             });
+
       }else{
 
-        axios.get(constants.resource_url+'accidents/reject/'+this.rowe[0].id)
+        axios.get(constants.resource_url+'accidents/reject/'+datae.id)
 
             .then(list => {
 
               console.log('care',list.data)
 
               if(list.data.success){
+
+                this.openb=false
 
                 this.loadanotherpage=false
                 let value = list.data.data
@@ -347,6 +382,7 @@ export default {
   data() {
 
     return {
+      operations:0,
       openb:false,
       optionsKey:"nom",
       valeur:'',
@@ -357,6 +393,7 @@ export default {
       links:[],
       list:[],
       rowe:{},
+      rowe1:[],
       columns:[
         {
           label: "Id ",
@@ -401,6 +438,7 @@ export default {
     GETFINISHACCIDENTS(value){
 
       this.loadanotherpage=false
+      this.openb=false
       console.log('link',value)
       this.list.splice(this.checkId(this.list,value.id), 1,  value)
 

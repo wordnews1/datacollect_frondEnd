@@ -54,7 +54,8 @@
                     >
 
                         <div slot="emptystate" style="text-align: center;">
-                            <span class="spinner-glow spinner-glow-info mr-5 mb-4"></span>
+<!--                            <span class="spinner-glow spinner-glow-info mr-5 mb-4"></span>-->
+                          Pas de donnee
 
                         </div>
 

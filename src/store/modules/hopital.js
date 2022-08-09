@@ -230,7 +230,7 @@ const actions = {
     },
     Finish({commit},data){
 
-        axios.get(state.resource_url+'accidents/finish/'+data.id)
+        axios.post(state.resource_url+'accidents/finish',data)
 
             .then(list => {
 

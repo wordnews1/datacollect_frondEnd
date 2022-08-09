@@ -9,8 +9,8 @@
                                  :options="{onBegin: () => {$refs.signaturePad.resizeCanvas()}}" />
 
                 <div>
-                    <b-button  variant="outline-danger" @click="$router.go(-1)" style="margin-right: 10px">{{$t('Annuler')}}</b-button>
-                    <b-button type="submit" variant="outline-success rights" @click="save()" >{{$t('Enregistrer')}}</b-button>
+                    <b-button  variant="outline-danger" @click="$router.go(-1)" style="margin-left: 10px">{{$t('Annuler')}}</b-button>
+                    <b-button type="submit" variant="outline-success rights"  style="margin-right:10px;float: right" @click="save()" >{{$t('Enregistrer')}}</b-button>
 
                 </div>
 
@@ -62,12 +62,13 @@
             },
             save() {
 
-                this.openb=true
+               // this.openb=true
                 const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
                 console.log(isEmpty);
                 //console.log(data);
                 // if(isEmpty){
-                this.savesignature({imageValue:data,visiteId:this.rowes[0].id})
+              this.$emit('signature',data)
+                //this.savesignature({imageValue:data,id:this.rowes[0].id})
 
                 /* }else{
                      this.makeToast(this.$t('signature_empty'),0)
