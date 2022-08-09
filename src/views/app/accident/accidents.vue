@@ -182,7 +182,7 @@ export default {
         case 1: this.acceptorreject(data,this.operations);break;
         case 2: this.acceptorreject(data,this.operations);break;
       }
-      
+
       this.$bvModal.hide('signin')
     },
     signin(data){

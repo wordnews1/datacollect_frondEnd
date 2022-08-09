@@ -83,6 +83,23 @@
 
 
             </b-form-group>
+            <b-form-group  style="margin-bottom: 10px"
+                           class="col-md-6 mb-30"
+                           :label="$t('Filiation')"
+                           label-for="input-1"
+            >
+
+              <b-form-select v-model="contact.filiation">
+                <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                <option value="frere">Frere</option>
+                <option value="soeur">Soeur</option>
+                <option value="passant">Passant</option>
+                <option value="passant">Autorite Etatique</option>
+
+              </b-form-select>
+
+
+            </b-form-group>
 
 
           </b-row>
@@ -288,7 +305,8 @@
                                             :label="$t('birthday')"
                                             label-for="input-1"
                                     >
-                                        <b-form-datepicker id="example-datepicker"  v-model="birthday" class="mb-2"></b-form-datepicker>
+                                      <date-picker v-model="birthday" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></date-picker>
+<!--                                        <b-form-datepicker id="example-datepicker"  v-model="birthday" class="mb-2"></b-form-datepicker>-->
 
                                     </b-form-group>
                                     <b-form-group
@@ -433,7 +451,8 @@
                                     >
 <!--                                        <b-form-datepicker id="example-datepicker"  v-model="crashacc" class="mb-2"></b-form-datepicker>-->
 
-                                      <date-picker v-model="crashacc" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></date-picker>
+<!--                                      <date-picker v-model="crashacc" format="YYYY-MM-DD HH:MM"  valueType="YYYY-MM-DD HH:MM" ></date-picker>-->
+                                      <Datepicker format="YYYY-MM-DD H:i"  v-model="crashacc" />
 {{crashacc}}
                                     </b-form-group>
                                     <b-form-group :label="$t('consumalcohol')">
@@ -959,7 +978,7 @@
             </div>
 
           <b-col md="12">
-            <b-button class="mt-3" type="submit" variant="primary">Submit</b-button>
+            <b-button class="mt-3" type="submit" style="float:right" variant="primary">Enregistrer</b-button>
           </b-col>
 
 
@@ -975,7 +994,7 @@
     import { required, minLength, maxLength } from "vuelidate/lib/validators";
     // import partnersVue from "../partners/list"
     import axios from 'axios'
-    import DatePicker from 'vue2-datepicker';
+    import Datepicker from 'vuejs-datetimepicker';
     import 'vue2-datepicker/index.css';
     import { mapGetters,mapActions } from "vuex";
     export default {
@@ -986,7 +1005,7 @@
         },
 
         components: {
-            ListTable,DatePicker
+            ListTable,Datepicker
         },
         mounted(){
             console.log('rowe',this.rowes)

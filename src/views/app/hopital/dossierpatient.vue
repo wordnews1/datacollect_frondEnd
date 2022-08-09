@@ -288,7 +288,8 @@
                                             :label="$t('birthday')"
                                             label-for="input-1"
                                     >
-                                        <b-form-datepicker id="example-datepicker"  v-model="birthday" class="mb-2"></b-form-datepicker>
+                                      <date-picker v-model="birthday" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></date-picker>
+<!--                                        <b-form-datepicker id="example-datepicker"  v-model="birthday" class="mb-2"></b-form-datepicker>-->
 
                                     </b-form-group>
                                     <b-form-group
