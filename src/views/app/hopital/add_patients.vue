@@ -83,6 +83,23 @@
 
 
             </b-form-group>
+            <b-form-group  style="margin-bottom: 10px"
+                           class="col-md-6 mb-30"
+                           :label="$t('Filiation')"
+                           label-for="input-1"
+            >
+
+              <b-form-select v-model="contact.filiation">
+                <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                <option value="frere">Frere</option>
+                <option value="soeur">Soeur</option>
+                <option value="passant">Passant</option>
+                <option value="passant">Autorite Etatique</option>
+
+              </b-form-select>
+
+
+            </b-form-group>
 
 
           </b-row>
@@ -147,14 +164,18 @@
 
                                     </b-form-group>
                                     <b-form-group
+                                        style="margin-bottom: 20px"
                                             class="col-md-12 mb-30"
                                             :label="$t('birthday')"
                                             label-for="input-1"
                                     >
-                                        <b-form-datepicker id="example-datepicker"  v-model="birthday" class="mb-2"></b-form-datepicker>
 
+                                      <date-picker v-model="birthday" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></date-picker>
 
                                     </b-form-group>
+
+
+
                                     <b-form-group
                                             class="col-md-12 mb-30"
                                             :label="$t('permi')"
@@ -241,13 +262,17 @@
                                         ></b-form-input>
 
                                     </b-form-group>
-                                      <label>Sexe: </label>
-                                    <b-form-select
+                                      <label style="margin-left: 15px;font-size: 12px;color: #1b406c;margin-bottom: 4px;">Sexe: </label>
+<!--                                    <b-form-select
                                         :label="$t('sexe')"
                                         id="sexe"
                                         name="personGender"
                                         v-model="personGender"
-                                        >
+                                        >-->
+                                      <select
+                                          name="personGender"
+                                          v-model="personGender"
+                                          style="margin-left: 15px" class="form-control">
 
                                         <option value=1>
                                             Male
@@ -261,7 +286,7 @@
                                         Inconnu
                                       </option>
 
-                                    </b-form-select>
+                                      </select>
                                 </b-col>
                             </b-row>
 
@@ -293,7 +318,8 @@
                                     >
 <!--                                        <b-form-datepicker id="example-datepicker"
                                                            class="mb-2"></b-form-datepicker>-->
-                                      <Datepicker format="YYYY-MM-DD H:i"  v-model="crashacc" />
+                                      <DatePickers format="YYYY-MM-DD H:i"  v-model="crashacc" />
+
 
                                     </b-form-group>
 
@@ -327,6 +353,7 @@
 
                                     <b-form-group :label="$t('persontrauma')">
                                         <select
+                                            required
                                                 class="form-control"
                                                 name="persontrauma"
                                                 v-model="persontrauma"
@@ -364,6 +391,7 @@
                                             >
                                                 Oui
                                             </b-form-checkbox>
+
 
                                             <b-form-checkbox
                                                     v-model="consumdrugs"
@@ -629,7 +657,10 @@
     import ListTable from '../components/list-table'
    // import partnersVue from "../partners/list"
     import { mapGetters,mapActions } from "vuex";
-    import Datepicker from 'vuejs-datetimepicker';
+    import DatePickers from 'vuejs-datetimepicker';
+
+    import DatePicker from 'vue2-datepicker';
+    import 'vue2-datepicker/index.css';
     export default {
 
         name:"registerPartners",
@@ -639,11 +670,12 @@
             type:String,
             statut:Boolean
         },
-        components:{Datepicker,ListTable},
+        components:{DatePicker,DatePickers,ListTable},
 
         data() {
             return {
 
+              persontrauma:1,
               sexes:[{
                 id:1,
                 value:"Homme"
