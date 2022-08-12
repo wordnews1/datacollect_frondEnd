@@ -62,16 +62,19 @@
 
                             <template slot="table-row" slot-scope="props">
 
+
                               <div v-if="props.column.field == 'identity' ">
 
                                 <span> {{props.row.nom}} {{props.row.prenom}}</span>
 
                               </div>
+
                               <div v-if="props.column.field == 'personTraumaSeverity' ">
 
                                 <span> {{traumas[props.row.accparams.persontrauma]}}</span>
 
                               </div>
+
 
                               <span v-if="props.column.field == 'brand'">
                               <span> TOYOTA</span>
@@ -83,6 +86,7 @@
                               <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Eye-Visible"></i></a>
                             </span>
 
+
                               <span v-if="props.column.field == 'status'">
                               <span v-if="props.formattedRow[props.column.field]=='ACCEPTED'" class="badge badge-success"> {{props.formattedRow[props.column.field]}}</span>
                               <span v-if="props.formattedRow[props.column.field]=='REJECTED'" class="badge badge-danger"> {{props.formattedRow[props.column.field]}}</span>
@@ -90,6 +94,7 @@
                               <span v-if="props.formattedRow[props.column.field]=='READY'" class="badge badge-warning"> {{props.formattedRow[props.column.field]}}</span>
                               <span v-if="props.formattedRow[props.column.field]=='CLOSED'" class="badge badge-secondary"> {{props.formattedRow[props.column.field]}}</span>
                               </span>
+
 
 
                               <span v-else>
@@ -213,6 +218,7 @@
                 filter:"",
               traumas:[
                 "Traumatisme Mortel","Traumatisme Grave/sérieux",
+                "Traumatisme Léger/Mineur",
                 "pas de Traumatisme","Inconnu"
               ],
 

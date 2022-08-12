@@ -2,9 +2,9 @@
 
     <b-modal scrollable no-close-on-backdrop   id="tests" size="lg" hide-footer>
 
-        <template >
+        <template>
 
-            <div class="container" >
+            <div class="container">
 
                 <div v-if="encaissements.operationCaisse!=null" class="card" id="printMe">
 

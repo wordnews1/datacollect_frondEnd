@@ -707,6 +707,27 @@
               <b-row>
                 <b-form-group
                     class="col-md-6 mb-30"
+                    :label="$t('Causes')"
+                    label-for="input-1"
+                >
+                  <vue-multi-select
+                      v-model="data.causes"
+                      search
+                      historyButton
+                      :filters="filters"
+                      :options="options"
+                      :selectOptions="respdata.directCauseResp">
+                    <template v-slot:option="{option}">
+                      <span>{{option.name}}</span>
+                    </template>
+
+                  </vue-multi-select>
+
+
+                </b-form-group>
+
+                <b-form-group
+                    class="col-md-6 mb-30"
                     :label="$t('type de Route')"
                     label-for="input-1"
                 >
@@ -924,6 +945,9 @@
 
 <script>
 
+import vueMultiSelect from 'vue-multi-select';
+import 'vue-multi-select/dist/lib/vue-multi-select.css';
+
 import constants from '../../../plugins/constants'
 import ListTable from '../components/List-table2'
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
@@ -942,7 +966,7 @@ export default {
   },
 
   components: {
-    ListTable,DatePicker,VueTimepicker
+    ListTable,DatePicker,VueTimepicker,vueMultiSelect
   },
   mounted(){
     console.log('rowe',this.rowes)
@@ -956,6 +980,23 @@ export default {
   },
   data() {
     return {
+      filters: [{
+        nameAll: 'Select all',
+        nameNotAll: 'Deselect all',
+        func() {
+          return true;
+        },
+      }, {
+        nameAll: 'select <= 10',
+        nameNotAll: 'Deselect <= 10',
+        func(elem) {
+          return elem;
+        },
+      }],
+      options: {
+        multi: true,
+        groups: false,
+      },
       rowe:{},
       operations:true,
       respdata:{},

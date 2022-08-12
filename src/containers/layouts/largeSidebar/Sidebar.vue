@@ -118,6 +118,15 @@
                       :class="{ 'd-block': selectedParentMenu == 'crm' }"
               >
 
+                <!--<li class="nav-item">
+                  <router-link :to="{ name: 'billing'}">
+                    <a class="nav-item-hold" href="#">
+                      <i class="nav-icon i-Add-User"></i>
+                      <span class="nav-text">{{ $t("Billing") }}</span>
+                    </a>
+                  </router-link>
+                </li>-->
+
                   <li class="nav-item">
                       <router-link :to="{ name: 'hospital'}">
                           <a class="nav-item-hold" href="#">
@@ -169,11 +178,12 @@
                   </a>
                 </router-link>
               </li>
+
               <li class="nav-item">
-                <router-link :to="{ name: 'billing'}">
+                <router-link :to="{ name: 'pv'}">
                   <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Add-User"></i>
-                    <span class="nav-text">{{ $t("Billing") }}</span>
+                    <span class="nav-text">{{ $t("Proces verbal") }}</span>
                   </a>
                 </router-link>
               </li>

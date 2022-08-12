@@ -286,6 +286,7 @@
 
 
           </b-form-group>
+
           <b-form-group  style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Type d\' usager de la Route')"
@@ -488,6 +489,55 @@
 
     <b-form :aria-hidden="show ? 'true' : null" @submit.prevent="submitall">
 
+
+      <div role="tablist">
+        <b-card no-body class="ul-card__border-radius">
+          <b-card-header header-tag="header" class="p-1"  role="tab">
+            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
+              {{$t('Carte GPS')}}</b-button>
+          </b-card-header>
+
+          <b-collapse id="accordion-1" invisible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <b-row>
+              <b-form-group
+                  class="col-md-6 mb-30"
+                  :label="$t('longitude')"
+                  label-for="input-1"
+              >
+                <b-form-input disabled
+
+
+                    v-model="data.longitude"
+                    type="text"
+                ></b-form-input>
+
+              </b-form-group>
+              <b-form-group
+                  class="col-md-6 mb-30"
+                  :label="$t('latitude')"
+                  label-for="input-1"
+              >
+                <b-form-input disabled
+
+                    v-model="data.latitude"
+                    type="text"
+                ></b-form-input>
+
+              </b-form-group>
+              </b-row>
+        <l-map ref="myMap" style="height: 300px" :zoom="zoom" :center="center" @click="addMarker">
+          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+          <l-marker v-for="(marker, index) in markerLatLng" :lat-lng="marker" :key="marker"  @click="removeMarker(index)"></l-marker>
+
+        </l-map>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+
+        <br/>
+
+      </div>
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
@@ -498,6 +548,28 @@
           <b-collapse id="accordion-1" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
+<!--                <l-map ref="myMap" style="height: 300px" @ready="doSomethingOnReady()"></l-map>-->
+
+                <b-form-group
+                    class="col-md-6 mb-30"
+                    :label="$t('Causes')"
+                    label-for="input-1"
+                >
+                  <vue-multi-select
+                      v-model="data.causes"
+                      search
+                      historyButton
+                      :filters="filters"
+                      :options="options"
+                      :selectOptions="respdata.directCauseResp">
+                    <template v-slot:option="{option}">
+                      <span>{{option.name}}</span>
+                    </template>
+
+                  </vue-multi-select>
+
+
+                </b-form-group>
 
                 <b-form-group
                     class="col-md-6 mb-30"
@@ -871,12 +943,17 @@
 </template>
 
 <script>
-
+import L from 'leaflet';
+import vueMultiSelect from 'vue-multi-select';
+import 'vue-multi-select/dist/lib/vue-multi-select.css';
 import constants from '../../../plugins/constants'
 import ListTable from '../components/List-table2'
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
+
+import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+import "leaflet/dist/leaflet.css"
 
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
 // import partnersVue from "../partners/list"
@@ -888,18 +965,45 @@ export default {
   props:{
     rowes:Array
   },
-
   components: {
-    ListTable,DatePicker,VueTimepicker
+    ListTable,DatePicker,VueTimepicker, LMap,
+    LTileLayer,
+    LMarker,vueMultiSelect
   },
   mounted(){
     console.log('rowe',this.rowes)
     //this.ListDossierPatient(this.rowes[0].id)
     this.ListData()
+    this.$refs.myMap.mapObject._onResize();
+
 
   },
   data() {
     return {
+      filters: [{
+        nameAll: 'Select all',
+        nameNotAll: 'Deselect all',
+        func() {
+          return true;
+        },
+      }, {
+        nameAll: 'select <= 10',
+        nameNotAll: 'Deselect <= 10',
+        func(elem) {
+          return elem;
+        },
+      }],
+      options: {
+        multi: true,
+        groups: false,
+      },
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution:
+          '',
+      zoom: 1,
+      center: [51.505, -0.159],
+      markerLatLng: [L.latLng(6.84, -346.50)],
+
       respdata:{},
       data:{},
       vehicle:{},
@@ -1031,7 +1135,22 @@ export default {
   },
   methods:{
 
+    removeMarker(index) {
+      this.markers.splice(index, 1);
+    },
+    addMarker(event) {
+      console.log('event',event)
+      this.markerLatLng=[]
+      this.markerLatLng.push(event.latlng);
+      this.data.latitude = event.latlng.lat
+      this.data.longitude = event.latlng.lng
+    },
+
     ...mapActions(["addpolice","ListData"]),
+    doSomethingOnReady() {
+      this.map = this.$refs.myMap.mapObject
+    },
+
     getSelectedItem(params){
       this.person.vehicleLinkedPedestrian = params
       console.log('paf',params)

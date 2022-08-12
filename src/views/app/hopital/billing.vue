@@ -1,51 +1,97 @@
 <template>
 
-<!--  <b-modal scrollable no-close-on-backdrop   id="tests" size="lg" hide-footer>
-<template>-->
+  <!--  <b-modal scrollable no-close-on-backdrop   id="tests" size="lg" hide-footer>
+  <template>-->
+
+  <div class="container">
 
 
-      <div class="container" >
 
-        <div  class="card" id="printMe">
+    <div  class="card" id="printMe">
 
-          <div class="card-header">
+      <div class="card-header">
 
-            <h3  style="display: flex; align-items: center; justify-content: center" class="center">{{$t('Facture')}}</h3>
-            <br>
+        <h3  style="display: flex; align-items: center; justify-content: center" class="center">{{$t('Facture')}}</h3><br/>
 
-            <span class="float-left"> <strong>{{$t('num_ticket')}}:</strong></span>
+        <span class="float-left"> <strong>{{$t('num_ticket')}}:</strong>{{new Date().getTime()}}</span><br/>
+        <span class="float-left"> <strong>{{$t('Unité de Santé:')}}:</strong>{{rowes[0].hopital}}</span>
 
-            <span class="float-right"> <strong>dates</strong> </span><br>
-            <div>
-              <strong class="float-right">nom prenom</strong>
-            </div><br>
+        <span class="float-right"> <strong>{{new Date().toLocaleString()}}</strong> </span><br>
+        <div>
+          <span class="float-right">Patient : <b>{{rowes[0].nom}}  {{rowes[0].prenom}}</b></span>
+        </div><br>
 
-            <div class="float-right">
-              telephone
-            </div><br>
-            <div  class="float-right"> lieu de naissance</div>
+        <div class="float-right">
+          Telephone: {{rowes[0].telephone}}
+        </div><br>
+        <div  class="float-right">  Née le:{{rowes[0].dateNaiss}}</div>
 
-          </div>
-          <div class="card-body">
+      </div>
+      <div class="card-body">
+        <div role="tablist">
+
+                  <span style="font-size:20px; display: table;
+    margin: 0 auto;" >
+                    {{$t('traumatisme')}}</span><br/>
+
+          <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
 
             <div class="table-responsive-sm">
               <table class="table table-bordered">
-                <thead>
+                <thead style="background-color: rgba(25,22,22,0.07)">
+
+                <tr>
+                  <th class="center">#</th>
+                  <th>{{$t('Désignation')}}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr class="item" v-if="testtrauma.length===0">
+                  <td>{{$t('no_data')}}</td>
+                </tr>
+                <tr class="item" v-else v-for="(item,index) in testtrauma"  :key="index">
+                  <td class="center">{{index+1}}</td>
+                  <td class="left">{{item.name}} </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </b-collapse>
+
+
+        </div>
+        <div role="tablist">
+
+               <span style="font-size:20px; display: table;
+    margin: 0 auto;" >
+                    {{$t('examens')}}</span><br/>
+
+          <b-collapse id="accordion-1"  accordion="my-accordion" role="tabpanel">
+
+            <div class="table-responsive-sm">
+              <table class="table table-bordered">
+                <thead style="background-color: rgba(25,22,22,0.07)">
+
                 <tr>
                   <th class="center">#</th>
                   <th>{{$t('Désignation')}}</th>
                   <th>{{$t('Prix')}}</th>
                 </tr>
+
                 </thead>
                 <tbody>
-                <tr class="item" v-if="!encaissements==null">
+                <tr class="item" v-if="examens.length==0">
                   <td>{{$t('no_data')}}</td>
                 </tr>
-<!--                <tr class="item" v-else v-for="(item,index) in encaissements.detailVentes"  :key="index">-->
-                <tr class="item" >
-                  <td class="center">1</td>
-                  <td class="left"><b>Vehicule: </b> reference; description  libelle</td>
-                  <td class="left">prix devise</td>
+                <tr class="item" v-else v-for="(item,index) in examens"  :key="index">
+                  <template v-if="item.insuranceVisa=='ACCEPTED'">
+                    <td class="center">{{index+1}}</td>
+                    <td class="left">{{ item.name }} </td>
+                    <td class="left">{{item.price|currencys('CM','XAF')}}</td>
+                  </template>
+
 
                 </tr>
                 </tbody>
@@ -60,32 +106,100 @@
                 <table class="table table-clear table-bordered">
                   <tbody>
 
-                  <tr>
-                    <td class="left">
-                      <strong>{{$t('amount_tax')}}</strong>
-                    </td>
-                    <td class="right">12.500 HT</td>
-                  </tr>
+                  <!--                          <tr>
+                                              <td class="left">
+                                                <strong>{{$t('amount_tax')}}</strong>
+                                              </td>
+                                              <td class="right">12.500 HT</td>
+                                            </tr>
+
+                                            <tr>
+                                              <td class="left">
+                                                <strong>(19,25%)</strong>
+                                              </td>
+                                              <td class="right">invoice_tax</td>
+                                            </tr>-->
 
                   <tr>
                     <td class="left">
-                      <strong>(19,25%)</strong>
+                      <strong>{{$t('SOUS TOTAL')}}</strong>
                     </td>
-                    <td class="right">invoice_tax</td>
+                    <td class="right">{{totalexamen|currencys('CM','XAF')}}</td>
                   </tr>
+
+
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+
+          </b-collapse>
+
+        </div>
+        <div role="tablist">
+
+                 <span style="font-size:20px; display: table;
+    margin: 0 auto;" >
+                    {{$t('soins')}}</span><br/>
+
+
+          <b-collapse id="accordion-1"  accordion="my-accordion" role="tabpanel">
+
+            <div class="table-responsive-sm">
+              <table class="table table-bordered">
+                <thead style="background-color: rgba(25,22,22,0.07)">
+
+                <tr>
+                  <th class="center">#</th>
+                  <th>{{$t('Désignation')}}</th>
+                  <th>{{$t('Prix')}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="item" v-if="soins.length==0">
+                  <td>{{$t('no_data')}}</td>
+                </tr>
+                <tr class="item" v-else v-for="(item,index) in soins"  :key="index">
+                  <template v-if="item.insuranceVisa=='ACCEPTED'">
+                    <td class="center">{{index+1}}</td>
+                    <td class="left">{{ item.name }} </td>
+                    <td class="left">{{item.price|currencys('CM','XAF')}}</td>
+                  </template>
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-sm-5">
+
+              </div>
+
+              <div class="col-lg-7 col-sm-7 ml-auto">
+                <table class="table table-clear table-bordered">
+                  <tbody>
+
+                  <!--                          <tr>
+                                              <td class="left">
+                                                <strong>{{$t('amount_tax')}}</strong>
+                                              </td>
+                                              <td class="right">12.500 HT</td>
+                                            </tr>
+
+                                            <tr>
+                                              <td class="left">
+                                                <strong>(19,25%)</strong>
+                                              </td>
+                                              <td class="right">invoice_tax</td>
+                                            </tr>-->
 
                   <tr>
                     <td class="left">
-                      <strong>{{$t('TTCAmount')}}</strong>
+                      <strong>{{$t('SOUS TOTAL')}}</strong>
                     </td>
-                    <td class="right">25.000 TTC</td>
-                  </tr>
-
-                  <tr >
-                    <td class="left">
-                      <strong>{{$t('Montant_Encaisse')}}</strong>
-                    </td>
-                    <td class="right">25.000</td>
+                    <td class="right">{{totalsoins|currencys('CM','XAF')}}</td>
                   </tr>
 
                   </tbody>
@@ -94,40 +208,59 @@
               </div>
 
             </div>
-            <div class="row">
 
-              <span  style="margin-left: 15px">{{$t('Net_a_Payer')}}:</span><span>Argent en Lettres</span><br>
+          </b-collapse>
+
+
+        </div>
+        <div role="tablist">
+          <div class="row">
+            <div class="col-lg-4 col-sm-5">
 
             </div>
-            <br>
-            <!--align-items: center; justify-content: center"-->
-            <span style="display: flex;margin-top: 15px;margin-left: 30px;"
-                  v-html="'Cameroun'"> </span><br>
-          </div>
-        </div>
 
-        <p></p>
-
-        <div style="text-align: right">
-          <b-button  @click="cancels()" class="lefts" variant="outline-danger" style="margin-right: 15px">{{$t('Annuler')}}</b-button>
-          <!-- <b-button  variant="outline-success" style="margin-right: 15px">Pdf</b-button>-->
-          <b-button  variant="outline-success" @click="prints()" style="margin-right: 15px">{{$t('print')}}</b-button>
-        </div>
-
-
+            <div class="col-lg-7 col-sm-7 ml-auto">
+              <div class="table-responsive-sm">
+                <table class="table table-bordered" style="background-color: rgba(25,22,22,0.07)">
+                  <thead>
+                  <tr>
+                    <td class="left">
+                      <strong>{{$t('TTCAmount')}}</strong>
+                    </td>
+                    <td class="right">{{rowes[0].amountAccepted|currencys('CM','XAF')}}</td>
+                  </tr>
+                  </thead>
+                </table>
+              </div>
+            </div></div></div>
+        <br>
       </div>
+    </div>
+
+    <p></p>
+
+    <div style="text-align: right">
+      <b-button  @click="$router.go(-1)" class="lefts" variant="outline-danger" style="margin-right: 15px">{{$t('Annuler')}}</b-button>
+      <!-- <b-button  variant="outline-success" style="margin-right: 15px">Pdf</b-button>-->
+      <b-button  variant="outline-success" @click="prints()" style="margin-right: 15px">{{$t('print')}}</b-button>
+    </div>
+
+
+  </div>
 
 
 
-<!-- </template>  </b-modal>-->
+  <!-- </template>  </b-modal>-->
 
 </template>
 
 <script>
 import moment from 'moment'
+import { mapGetters,mapActions } from "vuex";
 export default {
-  name: "salesreceipt",
+  name: "billing",
   props: {
+
     box: Boolean,
     encaissements:Object,
     listproducts:Array,
@@ -137,14 +270,20 @@ export default {
     dates:new Date().toLocaleString(),
     codepays:String,
     devise:String,
-    country:String
-
+    country:String,
+    rowes:Array
 
   },
 
   data(){
     return {
+      examens:[{"id":6,"name":"Scanner","price":25000.0,"number":0,"care":41,"insuranceVisa":"ACCEPTED"}],
+      traumatisme:[],
 
+      soins:[],
+      totalsoins:0,
+      totalexamen:0,
+      subtotals:0
     }
   },
   filters:{
@@ -157,24 +296,99 @@ export default {
     }
   },
   methods:{
+    ...mapActions(["ListDossierPatient"]),
+
     prints(){
-      this.$emit('print');
+      this.$htmlToPaper('printMe');
     },
     cancels(){
       this.$emit('cancels');
     }},
   mounted(){
 
-    console.log('listproductys',this.listproducts)
+    console.log('listproductys',this.rowes)
+
+    this.ListDossierPatient(this.rowes[0].id)
+
   },
   computed: {
-    /*total() {
-        return this.items.reduce(
-            (acc, item) => acc + item.price * item.quantity,
-            0
-        );
-    }*/
+    ...mapGetters(["GetListDossier"]),
+    testtrauma() {
+      // `this` points to the component instance
+      return this.traumatisme
+    },
+    invoiceTotal(list,type) {
+
+      var subtotal,total,invoice_total;
+      if(type=='soins'){
+
+        subtotal = list.soins.reduce(function(sum, item) {
+          var cost = parseFloat(item.price);
+          if (!isNaN(cost)) {
+            return sum + cost;
+          }
+        }, 0);
+
+        console.log('listere',subtotal)
+      }else if(type=='examens'){
+
+        subtotal = list.examens.reduce(function(sum, item) {
+          var cost = parseFloat(item.price);
+          if (!isNaN(cost)) {
+            return sum + cost;
+          }
+        }, 0);
+
+        console.log('listere',subtotal)
+      }
+      console.log('listere',subtotal)
+
+      // tax
+      //total = this.invoice_tax + subtotal;
+      total = parseFloat(this.subtotals.toFixed(2));
+      if (!isNaN(total)) {
+        invoice_total = total.toFixed(2);
+      } else {
+        invoice_total = "0.00";
+      }
+      return invoice_total;
+
+    },
   },
+  watch:{
+    GetListDossier(data){
+      console.log('data',data)
+      this.examens = data.exams
+      this.traumatisme = data.injuries
+      this.soins = data.treatments
+      this.totalsoins = this.soins.reduce(function(sums, item) {
+
+        //console.log('datare',item.insuranceVisa)
+        if(item.insuranceVisa==='ACCEPTED') {
+          console.log('datare',item.insuranceVisa)
+          var costs = parseFloat(item.price);
+          if (!isNaN(costs)) {
+            return sums + costs;
+          }
+        }
+
+      }, 0);
+      this.totalexamen = this.examens.reduce(function(sum, item) {
+
+        if(item.insuranceVisa=='ACCEPTED'){
+          var cost = parseFloat(item.price);
+          if (!isNaN(cost)) {
+            return sum + cost;
+          }
+        }
+
+      }, 0);
+
+
+
+
+    }
+  }
 
 }
 

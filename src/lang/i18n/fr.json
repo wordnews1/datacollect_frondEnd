@@ -1,7 +1,7 @@
 {
   "dashboard": "Tableau de bord",
   "caisse":"caisse",
-  "num_ticket":"Numéro de ticket",
+  "num_ticket":"Numéro de Facture",
   "approbation":"Approbation",
   "approved":"Approuvé",
   "Reference":"Réference",
@@ -155,6 +155,7 @@
   "details_ventes":"Détails vente",
 
   "crashacc":"Date de l'Accident",
+  "crashouracc":"Heure de l'Accident",
   "veh_success":"Visite enregitré",
   "approved_success":"Approuvé avec succès",
   "veh_failed":"Visite échoué",

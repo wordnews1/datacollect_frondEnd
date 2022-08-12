@@ -305,7 +305,8 @@
                                             :label="$t('birthday')"
                                             label-for="input-1"
                                     >
-                                      <date-picker v-model="birthday" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></date-picker>
+                                      <Datepicker2 v-model="birthday" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></Datepicker2>
+
 <!--                                        <b-form-datepicker id="example-datepicker"  v-model="birthday" class="mb-2"></b-form-datepicker>-->
 
                                     </b-form-group>
@@ -461,10 +462,9 @@
                               >
 
                                 <b-form-select
-                                    :label="$t('sexe')"
-                                    id="sexe"
-                                    name="personGender"
-                                    v-model="personGender"
+                                    id="persontrauma"
+                                    name="persontrauma"
+                                    v-model="persontrauma"
                                 >
 
                                   <option value="1">
@@ -993,6 +993,7 @@
     // import partnersVue from "../partners/list"
     import axios from 'axios'
     import Datepicker from 'vuejs-datetimepicker';
+    import Datepicker2 from 'vue2-datepicker';
     import 'vue2-datepicker/index.css';
     import { mapGetters,mapActions } from "vuex";
     export default {
@@ -1003,7 +1004,7 @@
         },
 
         components: {
-            ListTable,Datepicker
+            ListTable,Datepicker,Datepicker2
         },
         mounted(){
             console.log('rowe',this.rowes)
@@ -1069,6 +1070,7 @@
                   field: "telephone",
                   hidden: false,
                 },
+
                 {
                   label: "actions",
                   field: "actions",
@@ -1085,8 +1087,15 @@
                         label: "Name",
                         field: "name",
                         hidden: false,
-                    }
-                    ,{
+                    },
+                  {
+
+                    label: "Status",
+                    field: "insuranceVisa",
+                    hidden: false,
+                  },
+
+                    {
                         label: "actions",
                         field: "actions",
                         hidden: false,

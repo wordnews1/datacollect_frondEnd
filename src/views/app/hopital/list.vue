@@ -2,7 +2,6 @@
 
     <div class="main-content">
 
-
         <b-row>
 
             <div style="background: white;" >
@@ -69,6 +68,15 @@
                           </a>
                         </div>
                       </div>
+                      <div v-if="rowe.length<=1 && rowe[0].status=='CLOSED'">
+                        <div class="card mb-20">
+                          <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                          <a href="#"  @click="billing()" class="item item-text-wrap item-button-left  taille">
+                            <i class="i-Billing icon"></i>
+                            <span class="icons">{{$t('facture')}}</span>
+                          </a>
+                        </div>
+                      </div>
 
 
 
@@ -83,7 +91,7 @@
             <b-col md="12" class="mb-30" style="margin-top: 3px;max-width: 89%!important">
 
                 <b-card
-                        class="card   mb-30"
+                        class="card mb-30"
                         header=""
                         header-bg-variant="transparent">
                     <b-tabs pills >
@@ -115,7 +123,8 @@
 
                                 <ListTable :rows="list" :columns="columns" :isCLoseMenu="true"
                                            :totalPage="totalPages_" :totalElement="totalElement" :links="links"
-                                           @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
+                                           @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage"
+                                           @selectionChanged="clickRow"></ListTable>
 
 
                             </b-overlay>
@@ -207,6 +216,12 @@
                 this.loadanotherpage = true
               this.fermerdossier(this.rowe[0])
             },
+            billing(){
+             // this.loadanotherpage = true
+              this.$router.push({name: 'billing',params: { rowes:this.rowe }})
+              console.log('parames', this.rowe);
+            },
+
             clickRow(params) {
 
                 if(params.length>0){
@@ -281,6 +296,11 @@
                     {
                         label: "Gravite des traumatismes ",
                         field: "personTraumaSeverity",
+                       hidden: false,
+                    },
+                    {
+                        label: "hopital",
+                        field: "hopital",
                        hidden: false,
                     },
 

@@ -643,6 +643,7 @@
 
         data() {
             return {
+
               sexes:[{
                 id:1,
                 value:"Homme"

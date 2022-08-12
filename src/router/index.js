@@ -98,6 +98,12 @@ const routes = [
                         props: true
                     },
                     {
+                        name:"pv",
+                        path: "pv",
+                        component: () => import("../views/app/accident/pv"),
+                        props: true
+                    },
+                    {
                         name:"accidents",
                         path: "accidents",
                         component: () => import("../views/app/accident/accidents")

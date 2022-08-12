@@ -49,7 +49,7 @@
             <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
               <div class="card mb-20">
                 <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
-                <a href="#"  @click="signin(0)" class="item item-text-wrap item-button-left  taille">
+                <a href="#"  @click="openpv(0)" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Close icon"></i>
 
                   <span class="icons">{{$t('terminer')}}</span>
@@ -184,6 +184,12 @@ export default {
       }
 
       this.$bvModal.hide('signin')
+    },
+    openpv(data){
+
+      this.rowe.indicateur = data
+      this.$router.push({name: 'pv',params: { rowes:this.rowe }})
+
     },
     signin(data){
       /*if(Object.keys(this.rowe).length === 0){
@@ -419,6 +425,26 @@ export default {
           label: "Date Accident",
           field: "crashDate",
           hidden: false,
+        },
+        {
+          label: "Heure Accident",
+          field: "crashTime",
+          hidden: false,
+        },
+        {
+          label: "Heure Accident",
+          field: "roadtype",
+          hidden: true,
+        },
+        {
+          label: "Heure Accident",
+          field: "roadstate",
+          hidden: true,
+        },
+        {
+          label: "Heure Accident",
+          field: "crashDate",
+          hidden: true,
         },
         {
           label: "Status",

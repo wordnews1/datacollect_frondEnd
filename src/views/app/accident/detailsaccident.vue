@@ -1395,6 +1395,7 @@ export default {
   cursor: pointer;
 }
 
+
 .form-control{
   font-size: 0.8rem!important;
 }

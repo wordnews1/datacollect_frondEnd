@@ -1,11 +1,25 @@
 import Vue from 'vue'
+import L from 'leaflet';
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import 'leaflet/dist/leaflet.css';
+delete L.Icon.Default.prototype._getIconUrl
+import vueMultiSelect from 'vue-multi-select';
+import 'vue-multi-select/dist/lib/vue-multi-select.css';
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+})
+import VueCompositionAPI from '@vue/composition-api'
 
 import App from './App.vue'
+Vue.use(VueCompositionAPI)
+Vue.use(vueMultiSelect)
 import router from './router'
 import VueHtmlToPaper from 'vue-html-to-paper';
 import store from './store'
 import GullKit from "./plugins/gull.kit";
-import VueCompositionAPI from '@vue/composition-api'
+
 import Breadcumb from "./components/breadcumb";
 import i18n from "./lang/lang";
 import axios from 'axios'
@@ -31,6 +45,9 @@ Vue.config.productionTip = false
 Vue.use(VueSSE)
 Vue.use(VueTimepicker)
 
+Vue.component('l-map', LMap);
+Vue.component('l-tile-layer', LTileLayer);
+Vue.component('l-marker', LMarker);
 
 // set Authorization header used by axios
 /*var authHeader = 'Bearer ' + Vue.prototype.$keycloak.token;
@@ -38,10 +55,11 @@ axios.defaults.headers.common['Authorization'] = authHeader;*/
 
 
 Vue.use(GullKit);
-Vue.use(VueCompositionAPI);
+//Vue.use(VueCompositionAPI);
 
 import VueAutosuggest from "vue-autosuggest";
 Vue.use(VueAutosuggest);
+
 
 
 
