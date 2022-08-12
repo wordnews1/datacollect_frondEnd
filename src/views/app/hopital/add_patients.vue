@@ -70,7 +70,7 @@
             </b-form-group>
             <b-form-group  style="margin-bottom: 10px"
                            class="col-md-6 mb-30"
-                           :label="$t('Sexe')"
+                           :label="$t('Genre')"
                            label-for="input-1"
             >
 
@@ -264,7 +264,7 @@
                                     </b-form-group>
                                       <label style="margin-left: 15px;font-size: 12px;color: #1b406c;margin-bottom: 4px;">Sexe: </label>
 <!--                                    <b-form-select
-                                        :label="$t('sexe')"
+                                        :label="$t(''Genre')"
                                         id="sexe"
                                         name="personGender"
                                         v-model="personGender"

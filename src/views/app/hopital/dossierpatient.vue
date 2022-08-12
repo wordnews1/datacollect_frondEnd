@@ -70,7 +70,7 @@
             </b-form-group>
             <b-form-group  style="margin-bottom: 10px"
                            class="col-md-6 mb-30"
-                           :label="$t('Sexe')"
+                           :label="$t('Genre')"
                            label-for="input-1"
             >
 
@@ -165,7 +165,7 @@
             </b-form-group>
             <b-form-group  style="margin-bottom: 10px"
                            class="col-md-6 mb-30"
-                           :label="$t('Sexe')"
+                           :label="$t('Genre')"
                            label-for="input-1"
             >
 
@@ -384,7 +384,7 @@
                                     </b-form-group>
                                     <label>Sexe: </label>
                                     <b-form-select
-                                            :label="$t('sexe')"
+                                            :label="$t('Genre')"
                                             id="sexe"
                                             name="personGender"
                                             v-model="personGender"
@@ -933,7 +933,7 @@
                                 <b-col md="12">
                                     <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                                        <ListTable :type="'trauma'" @onRowclick="onRowclick" :rows="listrauma" :columns="columnexamen" :isCLoseMenu="true"
+                                        <ListTable :type="'trauma'" @onRowclick="onRowclick" :rows="listrauma" :columns="columntrauma" :isCLoseMenu="true"
                                                    :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                                    @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -1034,6 +1034,26 @@
                 loadanotherpage:false,
                 totalElementsoin:0,
                 linksoin:[],
+              columntrauma:[
+                {
+                  label: "Id",
+                  field: "id",
+                  hidden: false,
+                },
+                {
+                  label: "Name",
+                  field: "name",
+                  hidden: false,
+                },
+
+                {
+                  label: "actions",
+                  field: "actions",
+                  hidden: false,
+                  html: true,
+                }
+
+              ],
                 columnexamen:[
                     {
                         label: "Id",
@@ -1044,8 +1064,15 @@
                         label: "Name",
                         field: "name",
                         hidden: false,
-                    }
-                    ,{
+                    },
+                  {
+
+                    label: "Status",
+                    field: "insuranceVisa",
+                    hidden: false,
+                  },
+
+                  {
                         label: "actions",
                         field: "actions",
                         hidden: false,
@@ -1203,6 +1230,7 @@
 
           },
           addelement(value){
+
             console.log('selected2',value)
             console.log('selected2',this.valeur)
             this.openb=true
@@ -1212,67 +1240,100 @@
             };
             switch(this.type){
 
-               case 'examen':
+              case 'examen':
 
-                 axios.post(constants.resource_url+'cares/add-exam', soin)
-                     .then(response =>{
+                axios.post(constants.resource_url+'cares/add-exam', soin)
+                    .then(response =>{
 
-                       this.openb = false
-                       this.valeur=''
-                       this.makeToast(this.$t('added'),1)
-                       console.log('products_error',response);
-                       this.listexamen.push(response.data.data.exams)
-                       //this.containerClass = 'container';
-                       //this.trauma={}
-                     }).catch(function(error) {
-                   console.log('products_error',error);
-                   // Handle Errors here.
-                   // var errorCode = error.code;
-                   // var errorMessage = error.message;
-                   // console.log(error);
+                      if(response.data.success){
+                        this.openb = false
+                        this.valeur=''
+                        this.makeToast(this.$t('added'),1)
+                        console.log('products_error',response);
+                        //this.listexamen.push(response.data.data.exams[response.data.data.exams.length-1])
+                        //this.listexamen=response.data.data.exams
+                        this.listexamen.push(this.valeur1.item)
+                        this.$bvModal.hide('confirmopenAccount')
+                      }else{
+                        this.makeToast(this.$t('error'),0)
+                      }
 
-                   //commit("setError", error);
+                      //this.listexamen.push(response.data.data.exams)
+                      //this.containerClass = 'container';
+                      //this.trauma={}
+                    }).catch(function(error) {
+                  console.log('products_error',error);
+                  // Handle Errors here.
+                  // var errorCode = error.code;
+                  // var errorMessage = error.message;
+                  // console.log(error);
 
-                 }); break;
-               case 'soins':
+                  //commit("setError", error);
 
-                 axios.post(constants.resource_url+'cares/add-treatment', soin)
-                     .then(response =>{
-                       this.valeur=''
-                       this.makeToast(this.$t('added'),1)
-                       console.log('products_error',response);
-                       //this.trauma={}
-                       this.openb = false
-                     }).catch(function(error) {
-                   console.log('products_error',error);
-                   // Handle Errors here.
-                   // var errorCode = error.code;
-                   // var errorMessage = error.message;
-                   // console.log(error);
+                }); break;
+              case 'soins':
 
-                   //commit("setError", error);
+                axios.post(constants.resource_url+'cares/add-treatment', soin)
+                    .then(response =>{
+                      if(response.data.success){
+                        this.valeur=''
+                        this.makeToast(this.$t('added'),1)
+                        // console.log('products_error1',response.data.data.treatments[response.data.data.treatments.length-1]);
 
-                 });break;
-               case 'traumatisme':
-                 axios.post(constants.resource_url+'cares/add-injury', soin)
-                     .then(response =>{
-                       this.makeToast(this.$t('added'),1)
-                       console.log('products_error',response);
-                       this.openb = false
-                       this.valeur=''
-                       this.listrauma.push(response.data.data.injuries)
+                        //this.listsoin.push(response.data.data.treatments[response.data.data.treatments.length-1])
+                        //this.listsoin=response.data.data.treatments
+                        console.log('products_error1',this.valeur1.item);
+                        this.listsoin.push(this.valeur1.item)
 
-                     }).catch(function(error) {
-                   console.log('products_error',error);
-                   // Handle Errors here.
-                   // var errorCode = error.code;
-                   // var errorMessage = error.message;
-                   // console.log(error);
 
-                   //commit("setError", error);
+                        this.$bvModal.hide('confirmopenAccount')
+                        this.openb = false
+                      }else{
+                        this.makeToast(this.$t('error'),0)
+                      }
 
-                 });break;
-             }
+                    }).catch(function(error) {
+                  console.log('products_error',error);
+                  // Handle Errors here.
+                  // var errorCode = error.code;
+                  // var errorMessage = error.message;
+                  // console.log(error);
+
+                  //commit("setError", error);
+
+                });break;
+              case 'traumatisme':
+                axios.post(constants.resource_url+'cares/add-injury', soin)
+                    .then(response =>{
+                      if(response.data.success){
+
+                        this.makeToast(this.$t('added'),1)
+                        console.log('products_error',response);
+                        this.openb = false
+                        this.valeur=''
+
+                        //this.listrauma.push(response.data.data.injuries[response.data.data.injuries.length-1])
+                        //this.listrauma=response.data.data.injuries
+                        this.listrauma.push(this.valeur1.item)
+                        this.$bvModal.hide('confirmopenAccount')
+
+                      }else{
+                        this.makeToast(this.$t('error'),0)
+                      }
+
+
+
+                    }).catch(function(error) {
+                  console.log('products_error',error);
+                  // Handle Errors here.
+                  // var errorCode = error.code;
+                  // var errorMessage = error.message;
+                  // console.log(error);
+
+                  //commit("setError", error);
+
+                });break;
+            }
           },
             suggestionon(value){
               console.log('suggestionon',value)
@@ -1347,72 +1408,85 @@
               console.log('savechange', value);
               this.$bvModal.show('confirmopenAccount')
             },
-            onRowclick(params){
-                this.loadanotherpage = true
-                let soin = {
-                    care: this.folder_id,
-                    item: params.id
-                };
-                switch(params.types){
-                    case 'examen':
+          onRowclick(params){
+            this.loadanotherpage = true
+            let soin = {
+              care: this.folder_id,
+              item: params.id
+            };
+            switch(params.types){
+              case 'contact':
+                console.log('checkid',this.checkId(this.contacts,params.id))
 
-                        axios.post(constants.resource_url+'cares/remove-exam', soin)
-                            .then(response =>{
-                                this.listexamen = response.data.data.exams;
-                                this.loadanotherpage = false
-                                //this.containerClass = 'container';
-                                //this.trauma={}
-                            }).catch(function(error) {
-                            console.log('products_error',error);
-                            // Handle Errors here.
-                            // var errorCode = error.code;
-                            // var errorMessage = error.message;
-                            // console.log(error);
+                this.removelist(this.contacts,this.checkId(this.contacts,params.id))
+                this.loadanotherpage = false
+                break;
+              case 'examen':
 
-                            //commit("setError", error);
+                axios.post(constants.resource_url+'cares/remove-exam', soin)
+                    .then(response =>{
+                      console.log('products_error',response);
+                      // this.listexamen = response.data.data.exams;
+                      this.removelist(this.listexamen,this.checkId(this.listexamen,soin.item))
+                      this.loadanotherpage = false
 
-                        }); break;
-                    case 'soins':
+                    }).catch(function(error) {
+                  console.log('products_error',error);
+                  // Handle Errors here.
+                  // var errorCode = error.code;
+                  // var errorMessage = error.message;
+                  // console.log(error);
 
-                        axios.post(constants.resource_url+'cares/remove-treatment', soin)
-                            .then(response =>{
-                                this.listsoin = response.data.data.treatments;
-                                //this.containerClass = 'container';
-                                //this.trauma={}
-                                this.loadanotherpage = false
-                            }).catch(function(error) {
-                            console.log('products_error',error);
-                            // Handle Errors here.
-                            // var errorCode = error.code;
-                            // var errorMessage = error.message;
-                            // console.log(error);
+                  //commit("setError", error);
 
-                            //commit("setError", error);
+                }); break;
+              case 'soins':
 
-                        });break;
-                    case 'trauma':
-                        axios.post(constants.resource_url+'cares/remove-injury', soin)
-                            .then(response =>{
-                                this.listrauma = response.data.data.injuries;
-                                this.containerClass = 'container';
-                                this.trauma={}
-                                this.loadanotherpage = false
+                axios.post(constants.resource_url+'cares/remove-treatment', soin)
+                    .then(response =>{
+                      console.log('checkid',response+ ' '+this.checkId(this.listsoin,params.id))
+                      this.removelist(this.listsoin,this.checkId(this.listsoin,soin.item))
+                      //this.listsoin = response.data.data.treatments;
+                      //this.containerClass = 'container';
+                      //this.trauma={}
+                      this.loadanotherpage = false
+                    }).catch(function(error) {
+                  console.log('products_error',error);
+                  // Handle Errors here.
+                  // var errorCode = error.code;
+                  // var errorMessage = error.message;
+                  // console.log(error);
 
-                            }).catch(function(error) {
-                            console.log('products_error',error);
-                            // Handle Errors here.
-                            // var errorCode = error.code;
-                            // var errorMessage = error.message;
-                            // console.log(error);
+                  //commit("setError", error);
 
-                            //commit("setError", error);
+                });break;
+              case 'trauma':
+                axios.post(constants.resource_url+'cares/remove-injury', soin)
+                    .then(response =>{
 
-                        });break;
+                      console.log('products_error',response);
+                      this.removelist(this.listrauma,this.checkId(this.listrauma,soin.item))
 
-                }
-                console.log('paramis',params)
+                      //this.listrauma = response.data.data.injuries;
+                      this.containerClass = 'container';
+                      this.trauma={}
+                      this.loadanotherpage = false
 
-            },
+                    }).catch(function(error) {
+                  console.log('products_error',error);
+                  // Handle Errors here.
+                  // var errorCode = error.code;
+                  // var errorMessage = error.message;
+                  // console.log(error);
+
+                  //commit("setError", error);
+
+                });break;
+
+            }
+            console.log('paramis',params)
+
+          },
             editProps(params){
 
                 console.log('params',params)

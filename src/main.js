@@ -15,6 +15,11 @@ import VueCompositionAPI from '@vue/composition-api'
 import App from './App.vue'
 Vue.use(VueCompositionAPI)
 Vue.use(vueMultiSelect)
+
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload)
+
 import router from './router'
 import VueHtmlToPaper from 'vue-html-to-paper';
 import store from './store'

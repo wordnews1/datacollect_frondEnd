@@ -14,7 +14,7 @@
         <h3  style="display: flex; align-items: center; justify-content: center" class="center">{{$t('Facture')}}</h3><br/>
 
         <span class="float-left"> <strong>{{$t('num_ticket')}}:</strong>{{new Date().getTime()}}</span><br/>
-        <span class="float-left"> <strong>{{$t('Unité de Santé:')}}:</strong>{{rowes[0].hopital}}</span>
+        <span class="float-left"> <strong>{{$t('Unité de Santé')}}:</strong>{{rowes[0].hopital}}</span>
 
         <span class="float-right"> <strong>{{new Date().toLocaleString()}}</strong> </span><br>
         <div>

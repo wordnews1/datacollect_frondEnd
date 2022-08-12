@@ -261,7 +261,7 @@
           </b-form-group>
           <b-form-group  style="margin-bottom: 10px"
                          class="col-md-6 mb-30"
-                         :label="$t('Sexe')"
+                         :label="$t('Genre')"
                          label-for="input-1"
           >
 

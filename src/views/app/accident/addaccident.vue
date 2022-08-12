@@ -10,8 +10,26 @@
       </template>
 
       <template #default="{  }">
+        <b-row style="margin-bottom: 20px">
+          <div class="col-md-12">
+            <vue-upload-multiple-image
+                idUpload="vehicle"
+                @upload-success="uploadImageSuccess1"
+                @before-remove="beforeRemove"
+                @edit-image="editImage"
+                :dragText="''"
+                :popupText="''"
+                :browseText="'Ajouter Images'"
+                :primaryText="''"
+                :markIsPrimaryText="''"
+                :data-images="images1"
+            ></vue-upload-multiple-image>
+
+          </div>
+        </b-row>
         <b-row>
-        <b-form-group
+
+          <b-form-group
             class="col-md-6 mb-30"
             :label="$t('Numéro Véhicule')"
             label-for="input-1"
@@ -156,6 +174,8 @@
         </b-row>
 
 
+
+
         <p></p>
         <div style="text-align: right">
           <b-button @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
@@ -174,6 +194,23 @@
       </template>
 
       <template #default="{  }">
+        <b-row style="margin-bottom: 20px">
+          <div class="col-md-12">
+            <vue-upload-multiple-image
+                idUpload="person"
+                @upload-success="uploadImageSuccess1"
+                @before-remove="beforeRemove"
+                @edit-image="editImage"
+                :dragText="''"
+                :popupText="''"
+                :browseText="'Ajouter Images'"
+                :primaryText="''"
+                :markIsPrimaryText="''"
+                :data-images="images1"
+            ></vue-upload-multiple-image>
+
+          </div>
+        </b-row>
         <b-row>
           <b-form-group  style="margin-bottom: 10px"
               class="col-md-12 mb-30"
@@ -493,6 +530,25 @@
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
+            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-44 variant="transparent">
+              {{$t('Image Accident')}}</b-button>
+          </b-card-header>
+
+          <b-collapse id="accordion-44" invisible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <b-row>
+
+              </b-row>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+
+      </div>
+      <br/>
+
+      <div role="tablist">
+        <b-card no-body class="ul-card__border-radius">
+          <b-card-header header-tag="header" class="p-1"  role="tab">
             <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
               {{$t('Carte GPS')}}</b-button>
           </b-card-header>
@@ -500,6 +556,7 @@
           <b-collapse id="accordion-1" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
+
               <b-form-group
                   class="col-md-6 mb-30"
                   :label="$t('longitude')"
@@ -944,6 +1001,7 @@
 
 <script>
 import L from 'leaflet';
+import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import vueMultiSelect from 'vue-multi-select';
 import 'vue-multi-select/dist/lib/vue-multi-select.css';
 import constants from '../../../plugins/constants'
@@ -968,7 +1026,7 @@ export default {
   components: {
     ListTable,DatePicker,VueTimepicker, LMap,
     LTileLayer,
-    LMarker,vueMultiSelect
+    LMarker,vueMultiSelect,VueUploadMultipleImage
   },
   mounted(){
     console.log('rowe',this.rowes)
@@ -980,6 +1038,8 @@ export default {
   },
   data() {
     return {
+      images:[],
+      images1:[],
       filters: [{
         nameAll: 'Select all',
         nameNotAll: 'Deselect all',
@@ -1003,7 +1063,6 @@ export default {
       zoom: 1,
       center: [51.505, -0.159],
       markerLatLng: [L.latLng(6.84, -346.50)],
-
       respdata:{},
       data:{},
       vehicle:{},
@@ -1134,6 +1193,41 @@ export default {
     }
   },
   methods:{
+
+    uploadImageSuccess(formData, index, fileList) {
+      this.images.push(fileList[index].path)
+
+      console.log('data', this.images.length)
+      console.log('data', formData, index, fileList)
+      // Upload image api
+      // axios.post('http://your-url-upload', formData).then(response => {
+      //   console.log(response)
+      // })
+    },
+    uploadImageSuccess1(formData1, index1, fileList1) {
+      this.images1.push(fileList1[index1].path)
+
+      console.log('data', this.images1.length)
+      console.log('data', formData1, index1, fileList1)
+      // Upload image api
+      // axios.post('http://your-url-upload', formData).then(response => {
+      //   console.log(response)
+      // })
+    },
+
+    beforeRemove (index, done, fileList) {
+      console.log('index', index, fileList)
+      var r = confirm("remove image")
+      if (r == true) {
+        done()
+        this.images.splice(index,1)
+      }
+    },
+    editImage (formData, index, fileList) {
+      console.log('edit data', formData, index, fileList)
+      this.images.splice(index,1,fileList[index].path)
+    },
+
 
     removeMarker(index) {
       this.markers.splice(index, 1);

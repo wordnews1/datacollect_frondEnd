@@ -70,7 +70,7 @@
             </b-form-group>
             <b-form-group  style="margin-bottom: 10px"
                            class="col-md-6 mb-30"
-                           :label="$t('Sexe')"
+                           :label="$t('Genre')"
                            label-for="input-1"
             >
 
@@ -83,6 +83,7 @@
 
 
             </b-form-group>
+
             <b-form-group  style="margin-bottom: 10px"
                            class="col-md-6 mb-30"
                            :label="$t('Filiation')"
@@ -182,7 +183,7 @@
             </b-form-group>
             <b-form-group  style="margin-bottom: 10px"
                            class="col-md-6 mb-30"
-                           :label="$t('Sexe')"
+                           :label="$t('Genre')"
                            label-for="input-1"
             >
 
@@ -396,12 +397,12 @@
                                     </b-form-group>
                                   <b-form-group  style="margin-bottom: 10px"
                                                  class="col-md-6 mb-30"
-                                                 :label="$t('Sexe')"
+                                                 :label="$t('Genre')"
                                                  label-for="input-1"
                                   >
 
                                     <b-form-select
-                                        :label="$t('sexe')"
+                                        :label="$t('Genre')"
                                         id="sexe"
                                         name="personGender"
                                         v-model="personGender"
@@ -956,7 +957,7 @@
                                 <b-col md="12">
                                     <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                                        <ListTable :type="'trauma'" @onRowclick="onRowclick" :rows="listrauma" :columns="columnexamen" :isCLoseMenu="true"
+                                        <ListTable :type="'trauma'" @onRowclick="onRowclick" :rows="listrauma" :columns="columntrauma" :isCLoseMenu="true"
                                                    :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                                    @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -1076,6 +1077,26 @@
                   field: "actions",
                   html: true
                 }
+              ],
+              columntrauma:[
+                {
+                  label: "Id",
+                  field: "id",
+                  hidden: false,
+                },
+                {
+                  label: "Name",
+                  field: "name",
+                  hidden: false,
+                },
+
+                {
+                  label: "actions",
+                  field: "actions",
+                  hidden: false,
+                  html: true,
+                }
+
               ],
                 columnexamen:[
                     {
