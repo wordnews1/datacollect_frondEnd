@@ -130,7 +130,7 @@
                   <li class="nav-item">
                       <router-link :to="{ name: 'hospital'}">
                           <a class="nav-item-hold" href="#">
-                              <i class="nav-icon i-Lock-User"></i>
+                              <i class="nav-icon i-Ambulance"></i>
                               <span class="nav-text">{{ $t("patients") }}</span>
                           </a>
                       </router-link>
@@ -139,7 +139,7 @@
                   <li class="nav-item">
                       <router-link :to="{ name: 'soins'}">
                           <a class="nav-item-hold" href="#">
-                              <i class="nav-icon i-care"></i>
+                              <i class="nav-icon i-Medicine-2"></i>
                               <span class="nav-text">{{ $t("soins") }}</span>
                           </a>
                       </router-link>
@@ -148,7 +148,7 @@
                   <li class="nav-item">
                       <router-link :to="{ name: 'exams'}">
                           <a class="nav-item-hold" href="#">
-                              <i class="nav-icon i-Billing"></i>
+                              <i class="nav-icon i-Microscope"></i>
                               <span class="nav-text">{{ $t("exams") }}</span>
                           </a>
                       </router-link>
@@ -156,7 +156,7 @@
                   <li class="nav-item">
                       <router-link :to="{ name: 'traumatisme'}">
                           <a class="nav-item-hold" href="#">
-                              <i class="nav-icon i-Billing"></i>
+                              <i class="nav-icon i-Medicine-3"></i>
                               <span class="nav-text">{{ $t("traumatisme") }}</span>
                           </a>
                       </router-link>
@@ -173,7 +173,7 @@
               <li class="nav-item">
                 <router-link :to="{ name: 'addaccident'}">
                   <a class="nav-item-hold" href="#">
-                    <i class="nav-icon i-Add-User"></i>
+                    <i class="nav-icon i-Road"></i>
                     <span class="nav-text">{{ $t("Ajouter Accident") }}</span>
                   </a>
                 </router-link>
@@ -191,7 +191,7 @@
               <li class="nav-item">
                 <router-link :to="{ name: 'accidents'}">
                   <a class="nav-item-hold" href="#">
-                    <i class="nav-icon i-Lock-User"></i>
+                    <i class="nav-icon i-Book"></i>
                     <span class="nav-text">{{ $t("Liste des Declarations") }}</span>
                   </a>
                 </router-link>

@@ -28,7 +28,7 @@
 
               Cni: {{s["cni"]}}<br/>
               {{s[optionsKey]}} {{s["prenom"]}}<br/>
-<!--              Date Accident: {{s["dateNaiss"]}}-->
+              <!--              Date Accident: {{s["dateNaiss"]}}-->
             </b-list-group-item>
 
           </b-list-group>
@@ -57,16 +57,27 @@
       <template #default="{}">
 
         <b-row>
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                dragText="'Image du Vehicule'"
+                @upload-success="fileAddedVehicles"
+                @before-remove="fileRemovedVehicles"
+                :data-images="vehicle.vehicleImages"
+                idUpload="myIdUpload1"
+            ></vue-upload-multiple-image>
+
+          </div>
           <b-form-group
               class="col-md-6 mb-30"
               :label="$t('Numéro Véhicule')"
               label-for="input-1"
           >
 
-            <b-form-input 
+            <b-form-input
 
-                          v-model="vehicle.vehicleAccidentNumber"
-                          type="text"
+                v-model="vehicle.vehicleAccidentNumber"
+                type="text"
             ></b-form-input>
 
 
@@ -78,11 +89,11 @@
               label-for="input-1"
           >
 
-            <b-form-input 
-                          v-uppercase
+            <b-form-input
+                v-uppercase
 
-                          v-model="vehicle.plate"
-                          type="text"
+                v-model="vehicle.plate"
+                type="text"
             ></b-form-input>
 
 
@@ -94,10 +105,10 @@
               label-for="input-1"
           >
 
-            <b-form-input 
+            <b-form-input
 
-                          v-model="vehicle.fabricationYear"
-                          type="text"
+                v-model="vehicle.fabricationYear"
+                type="text"
             ></b-form-input>
 
 
@@ -108,10 +119,10 @@
               label-for="input-1"
           >
 
-            <b-form-input 
+            <b-form-input
 
-                          v-model="vehicle.cylinderCapacity"
-                          type="text"
+                v-model="vehicle.cylinderCapacity"
+                type="text"
             ></b-form-input>
 
 
@@ -138,8 +149,6 @@
               :label="$t('Type de véhicule')"
               label-for="input-1"
           >
-
-
 
             <b-form-select  v-model="vehicle.type">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
@@ -222,6 +231,17 @@
 
       <template #default="{  }">
         <b-row>
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                @upload-success="fileAddedPersons"
+                @before-remove="fileRemovedPersons"
+                :data-images="person.images"
+                idUpload="myIdUpload2"
+            ></vue-upload-multiple-image>
+
+
+          </div>
           <b-form-group  style="margin-bottom: 10px"
                          class="col-md-12 mb-30"
                          :label="$t('véhicules concerné')"
@@ -245,10 +265,10 @@
                          label-for="input-1"
           >
 
-            <b-form-input 
+            <b-form-input
 
-                          v-model="person.personAccidentNumber"
-                          type="text"
+                v-model="person.personAccidentNumber"
+                type="text"
             ></b-form-input>
 
 
@@ -259,9 +279,9 @@
                          label-for="input-1"
           >
 
-            <b-form-input 
-                          v-model="person.vehicleLinkedPedestrian"
-                          type="text"
+            <b-form-input
+                v-model="person.vehicleLinkedPedestrian"
+                type="text"
             ></b-form-input>
 
 
@@ -273,10 +293,10 @@
                          label-for="input-1"
           >
 
-            <b-form-input 
+            <b-form-input
 
-                          v-model="person.firstName"
-                          type="text"
+                v-model="person.firstName"
+                type="text"
             ></b-form-input>
 
 
@@ -287,11 +307,11 @@
                          label-for="input-1"
           >
 
-            <b-form-input 
-                          v-uppercase
+            <b-form-input
+                v-uppercase
 
-                          v-model="person.lastName"
-                          type="text"
+                v-model="person.lastName"
+                type="text"
             ></b-form-input>
 
 
@@ -539,8 +559,35 @@
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
+            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-44 variant="transparent">
+              {{$t('Image Accident')}}</b-button>
+          </b-card-header>
+
+          <b-collapse id="accordion-44" invisible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <b-row>
+
+                <vue-upload-multiple-image
+                    @upload-success="fileAdded"
+                    @before-remove="fileRemoved"
+                    :data-images="images"
+                    idUpload="myIdUpload"
+                ></vue-upload-multiple-image>
+
+
+              </b-row>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+
+      </div>
+      <br/>
+
+      <div role="tablist">
+        <b-card no-body class="ul-card__border-radius">
+          <b-card-header header-tag="header" class="p-1"  role="tab">
             <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
-              {{$t('accident')}}</b-button>
+              {{$t('Carte GPS')}}</b-button>
           </b-card-header>
 
           <b-collapse id="accordion-1" invisible accordion="my-accordion" role="tabpanel">
@@ -549,12 +596,71 @@
 
                 <b-form-group
                     class="col-md-6 mb-30"
+                    :label="$t('longitude')"
+                    label-for="input-1"
+                >
+                  <b-form-input disabled
+
+
+                                v-model="data.longitude"
+                                type="text"
+                  ></b-form-input>
+
+                </b-form-group>
+                <b-form-group
+                    class="col-md-6 mb-30"
+                    :label="$t('latitude')"
+                    label-for="input-1"
+                >
+                  <b-form-input disabled
+
+                                v-model="data.latitude"
+                                type="text"
+                  ></b-form-input>
+
+                </b-form-group>
+              </b-row>
+              <l-map ref="myMap" style="height: 300px;width: 1104px" :zoom="zoom" :center="center" @click="addMarker">
+                <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                <l-marker v-for="(marker, index) in markerLatLng" :lat-lng="marker" :key="marker"  @click="removeMarker(index)"></l-marker>
+
+              </l-map>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+
+        <br/>
+
+      </div>
+
+      <div role="tablist">
+        <b-card no-body class="ul-card__border-radius">
+          <b-card-header header-tag="header" class="p-1"  role="tab">
+            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
+              {{$t('accident')}}</b-button>
+          </b-card-header>
+
+          <b-collapse id="accordion-1" invisible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <b-row>
+
+                <DropZone
+                    :maxFiles="Number(10000000000)"
+                    url="http://localhost:5000/item"
+                    :uploadOnDrop="true"
+                    :multipleUpload="true"
+                    :parallelUpload="3"
+                    @addedFile="onFileAdd"
+                />
+
+                <b-form-group
+                    class="col-md-6 mb-30"
                     :label="$t('Type Accident')"
                     label-for="input-1"
                 >
 
-                  <!--                  <b-form-input 
-                  
+                  <!--                  <b-form-input
+
                                                   v-model="data.accidentType"
                                                   type="text"
                                     ></b-form-input>-->
@@ -674,11 +780,11 @@
                     :label="$t('place')"
                     label-for="input-1"
                 >
-                  <b-form-input 
+                  <b-form-input
 
 
-                                v-model="data.place"
-                                type="text"
+                      v-model="data.place"
+                      type="text"
                   ></b-form-input>
 
                 </b-form-group>
@@ -947,7 +1053,7 @@
 
 import vueMultiSelect from 'vue-multi-select';
 import 'vue-multi-select/dist/lib/vue-multi-select.css';
-
+import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import constants from '../../../plugins/constants'
 import ListTable from '../components/List-table2'
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
@@ -966,7 +1072,7 @@ export default {
   },
 
   components: {
-    ListTable,DatePicker,VueTimepicker,vueMultiSelect
+    ListTable,DatePicker,VueTimepicker,vueMultiSelect,VueUploadMultipleImage
   },
   mounted(){
     console.log('rowe',this.rowes)
@@ -980,6 +1086,13 @@ export default {
   },
   data() {
     return {
+      images:[],
+      images1:[],
+      images2:[],
+      images3:[],
+      images4:[],
+      images5:[],
+
       filters: [{
         nameAll: 'Select all',
         nameNotAll: 'Deselect all',
@@ -1136,6 +1249,271 @@ export default {
   methods:{
 
     ...mapActions(["addpolice","ListData","DetailsAccident"]),
+    fileAddedVehicles(formData, index, fileList){
+
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-vehicle-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //
+              //this.imagevehicles.push(list.data.data)
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.vehicle.vehicleImages.push(objet)
+
+              // this.vehicle.vehicleImages.push(list.data.data.name)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
+    fileAddedPersons(formData, index, fileList){
+
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-person-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //
+              //this.imagepersons.push(list.data.data)
+
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.person.images.push(objet)
+              //this.person.images.push(list.data.data.name)
+
+              this.images4.push(list.data.data)
+              this.images5.push(list.data.data.name)
+
+            }else{
+              this.makeToast(this.$t("erreur lors de l'ajout de l'image"),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
+    onFileAdd(files){
+
+      console.log('files122',files)
+    },
+    fileRemovedVehicles(index, done, fileList) {
+
+
+      console.log('data', (index), done, fileList)
+      console.log('data', this.vehicle.vehicleImages[index].path)
+      let size = this.vehicle.vehicleImages[index].path + ''
+      let sizes = size.split('/')
+
+
+      /* let formdata = new FormData();
+       formdata.append('name',(sizes)[sizes.length-1])
+       formdata.append('vehicleId',this.vehicle.id)*/
+
+
+
+      let send={}
+      send.name = (sizes)[sizes.length-1]
+      send.id = this.vehicle.id
+
+      axios.post(constants.resource_url+'accidents/delete-vehicle-image',send,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              this.vehicle.vehicleImages.splice(index, 1);
+
+              this.makeToast(this.$t('Image supprime avec success'),1)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
+    fileRemovedPersons(index, done, fileList) {
+
+      console.log('data', (index), done, fileList)
+      //console.log('data', this.vehicle.vehicleImages[index].path)
+
+      let size = this.person.images[index].path + ''
+      let sizes = size.split('/')
+
+
+      /*let formdata = new FormData();
+      formdata.append('name',(sizes)[sizes.length-1])
+      formdata.append('personId',this.person.id)*/
+
+
+      let send={}
+      send.name = (sizes)[sizes.length-1]
+      send.id = this.person.id
+
+
+      axios.post(constants.resource_url+'accidents/delete-person-image',send,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+
+              this.person.images.splice(index,1)
+
+              this.makeToast(this.$t('Image supprime avec success'),1)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
+
+    fileRemoved(index, done, fileList) {
+
+      console.log('data', done, index, fileList)
+
+      let size = this.images[index].path + ''
+      let sizes = size.split('/')
+
+
+      //let formdata = new FormData();
+
+      //let si = ((sizes)[sizes.length-1]).split('.')
+      /*formdata.append('name',si[0])
+      formdata.append('accidentId',this.data.id)*/
+
+      let send={}
+      send.name = (sizes)[sizes.length-1]
+      send.id = this.data.id
+
+      console.log('datae', send)
+
+      //console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/delete-crash-image',send,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }}
+      )
+
+          .then(list => {
+
+            if(list.data.success){
+
+              this.images.splice(index, 1)
+
+              this.makeToast(this.$t('Image supprime avec success'),1)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de la suppression de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+
+    },
+    fileAdded(formData, index, fileList) {
+
+      // this.imagetest.push(files)
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-crash-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //
+              /* this.images.push(list.data.data)
+
+               this.images1.push(list.data.data.name)*/
+
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.images.push(objet)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+
+    },
 
     addelements(value) {
 
@@ -1196,6 +1574,7 @@ export default {
       this.operations=true
     },
     submitall(){
+
       this.show=true
       console.log("vehicles",this.rowes.id)
       //if(data.accidentTime)
@@ -1205,10 +1584,16 @@ export default {
       this.data.vehicules = this.vehicles
       this.data.persons = this.persons
 
+      this.data.crashImages = this.images
+
       this.data.id = this.rowes.id
       console.log("vehicles",this.data)
 
-      this.addpolice(this.data)
+      let formdata = new FormData();
+
+      formdata.append('accidentReq',JSON.stringify(this.data))
+
+      this.addpolice(formdata)
 
     },
     submitperson(){
@@ -1253,10 +1638,13 @@ export default {
       //this.vehicle.vehicleId = 0
       //this.vehicles.push(this.vehicle)
       console.log("this.vehicles",this.vehicles)
+
       this.vehicles.splice(this.checkId(this.vehicles,this.vehicle.id), 1,  this.vehicle)
 
       this.vehicle={}
       this.makeToast(this.$t('added'),1)
+
+
     },
     checkId(obj, id) {
 
@@ -1330,7 +1718,7 @@ export default {
           this.vehicle = params
           console.log('savechange', this.vehicle);
           this.$bvModal.show('openvehicule')
-            this.operations=false
+          this.operations=false
 
           break;
         case 'soins':
@@ -1358,7 +1746,7 @@ export default {
           break;
         case 'soins':
           this.removelist(this.persons,this.checkId(this.persons,params.id))
-        break;
+          break;
 
       }
       this.loadanotherpage = false
@@ -1395,7 +1783,7 @@ export default {
     },
     desassocier(){
 
-     // this.$bvModal.show('openassociate')
+      // this.$bvModal.show('openassociate')
       this.loadanotherpage = true
 
       let soin = {
@@ -1408,7 +1796,7 @@ export default {
 
             if(response.data.success){
 
-            //  this.valeur=''
+              //  this.valeur=''
               this.loadanotherpage = false
               this.makeToast(this.$t('desassocier avec success'),1)
               console.log('products_error',response);
@@ -1461,6 +1849,21 @@ export default {
       this.data = data
       this.vehicles = data.vehicules
       this.persons = data.persons
+      this.images = data.crashImages
+
+      data.crashImages.map(function(value) {
+        this.images1.push(value.name)
+      });
+
+      data.vehicules.vehicleImages.map(function(value) {
+        this.images3.push(value.name)
+      });
+
+      data.person.images.map(function(value) {
+        this.images5.push(value.name)
+      });
+
+
 
       console.log('datae',this.persons)
 

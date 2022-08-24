@@ -10,7 +10,15 @@
       </template>
 
       <template #default="{  }">
-        <b-row>
+        <b-row style="margin-bottom: 20px">
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                :data-images="vehicle.vehicleImages"
+                idUpload="myIdUpload1"
+            ></vue-upload-multiple-image>
+
+          </div>
           <b-form-group
               class="col-md-6 mb-30"
               :label="$t('Numéro Véhicule')"
@@ -158,8 +166,6 @@
 
         <p></p>
         <div style="text-align: right">
-          <b-button @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
-            {{$t('ajouter')}}</b-button>
         </div>
 
       </template>
@@ -175,6 +181,14 @@
 
       <template #default="{  }">
         <b-row>
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                :data-images="person.images"
+                idUpload="myIdUpload2"
+            ></vue-upload-multiple-image>
+
+          </div>
           <b-form-group  style="margin-bottom: 10px"
                          class="col-md-12 mb-30"
                          :label="$t('véhicules concerné')"
@@ -489,6 +503,34 @@
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
+            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-44 variant="transparent">
+              {{$t('Image Accident')}}</b-button>
+          </b-card-header>
+
+          <b-collapse id="accordion-44" invisible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <b-row>
+
+                <vue-upload-multiple-image
+                    :data-images="images"
+                    idUpload="myIdUpload"
+                ></vue-upload-multiple-image>
+
+
+
+              </b-row>
+            </b-card-body>
+          </b-collapse>
+
+
+        </b-card>
+
+      </div>
+      <br/>
+
+      <div role="tablist">
+        <b-card no-body class="ul-card__border-radius">
+          <b-card-header header-tag="header" class="p-1"  role="tab">
             <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
               {{$t('accident')}}</b-button>
           </b-card-header>
@@ -797,7 +839,7 @@
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                    <ListTable :type="'examen'" @onRowclick="onRowclick" :rows="vehicles" :columns="columnexamen" :isCLoseMenu="true"
+                    <ListTable :type="'examen'" @onRowclick="onRowclick" @onEditClick="onEditClick" :rows="vehicles" :columns="columnexamen" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -833,7 +875,7 @@
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
 
-                    <ListTable :type="'soins'" :rows="persons" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
+                    <ListTable :type="'soins'" :rows="persons" @onEditClick="onEditClick" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -874,6 +916,7 @@ import ListTable from '../components/List-table2'
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
+import VueUploadMultipleImage from 'vue-upload-multiple-image'
 
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
 // import partnersVue from "../partners/list"
@@ -887,7 +930,7 @@ export default {
   },
 
   components: {
-    ListTable,DatePicker,VueTimepicker
+    ListTable,DatePicker,VueTimepicker,VueUploadMultipleImage
   },
   mounted(){
     console.log('rowe',this.rowes)
@@ -905,6 +948,7 @@ export default {
       data:{},
       vehicle:{},
       vehicles:[],
+      images:[],
       person:{},
       persons:[],
       valeur:'',
@@ -1038,6 +1082,26 @@ export default {
   methods:{
 
     ...mapActions(["addpolice","ListData","DetailsAccident"]),
+
+    onEditClick(params){
+
+      switch(params.types) {
+        case 'examen':
+
+          this.vehicle = params
+          this.$bvModal.show('openvehicule')
+
+          break;
+
+        case 'soins':
+
+          this.person = params
+          this.$bvModal.show('openperson')
+
+          break;
+
+      }
+    },
 
     timechoose(data){
       console.log('data',data)
@@ -1365,6 +1429,16 @@ export default {
       this.data = data
       this.vehicles = data.vehicules
       this.persons = data.persons
+      this.images = data.crashImages
+
+      //this.images = data.vehicules[0].images
+      console.log('imagesr',this.images)
+      /*const reader = new FileReader()
+      reader.readAsDataURL(this.images)
+      reader.onload = e => {
+        this.images = e.target.result
+        console.log('imagesr',this.images)
+      }*/
 
       console.log('datae',this.persons)
 

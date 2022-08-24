@@ -95,6 +95,7 @@
                 <option value="soeur">Soeur</option>
                 <option value="passant">Passant</option>
                 <option value="passant">Autorite Etatique</option>
+                <option value="passant">Autres</option>
 
               </b-form-select>
 

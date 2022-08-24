@@ -5,6 +5,11 @@ import 'leaflet/dist/leaflet.css';
 delete L.Icon.Default.prototype._getIconUrl
 import vueMultiSelect from 'vue-multi-select';
 import 'vue-multi-select/dist/lib/vue-multi-select.css';
+
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload)
+
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
     iconUrl: require('leaflet/dist/images/marker-icon.png'),
@@ -16,7 +21,6 @@ import App from './App.vue'
 Vue.use(VueCompositionAPI)
 Vue.use(vueMultiSelect)
 
-import VueLazyload from 'vue-lazyload'
 
 Vue.use(VueLazyload)
 

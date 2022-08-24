@@ -12,18 +12,32 @@
       <template #default="{  }">
         <b-row style="margin-bottom: 20px">
           <div class="col-md-12">
+
             <vue-upload-multiple-image
-                idUpload="vehicle"
-                @upload-success="uploadImageSuccess1"
-                @before-remove="beforeRemove"
-                @edit-image="editImage"
-                :dragText="''"
-                :popupText="''"
-                :browseText="'Ajouter Images'"
-                :primaryText="''"
-                :markIsPrimaryText="''"
+                @upload-success="fileAddedVehicles"
                 :data-images="images1"
+                idUpload="myIdUpload1"
             ></vue-upload-multiple-image>
+
+<!--            <upload-image is="upload-image"
+                          :url="forms.create.url"
+                          :max_files="5"
+                          name="files[]"
+                          :resize_enabled="true"
+                          :resize_max_width="640"
+                          :button_class="'button is-primary'"
+                          v-on:upload-image-success="uploadImageSuccess"
+            ></upload-image>-->
+
+<!--            <vue-dropzone
+                ref="myVueDropzones1"
+                :useCustomSlot="true"
+                id="dropzones1"
+                :options="dropzoneOptions"
+                @vdropzone-file-added="fileAddedVehicles"
+                @vdropzone-removed-file="removeVehicles"
+            ></vue-dropzone>-->
+
 
           </div>
         </b-row>
@@ -174,8 +188,6 @@
         </b-row>
 
 
-
-
         <p></p>
         <div style="text-align: right">
           <b-button @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
@@ -196,18 +208,20 @@
       <template #default="{  }">
         <b-row style="margin-bottom: 20px">
           <div class="col-md-12">
+
             <vue-upload-multiple-image
-                idUpload="person"
-                @upload-success="uploadImageSuccess1"
-                @before-remove="beforeRemove"
-                @edit-image="editImage"
-                :dragText="''"
-                :popupText="''"
-                :browseText="'Ajouter Images'"
-                :primaryText="''"
-                :markIsPrimaryText="''"
-                :data-images="images1"
+                @upload-success="fileAddedPersons"
+                :data-images="images2"
+                idUpload="myIdUpload2"
             ></vue-upload-multiple-image>
+
+<!--            <vue-dropzone
+                ref="myVueDropzones"
+                :useCustomSlot="true"
+                id="dropzones"
+                :options="dropzoneOptions"
+                @vdropzone-file-added="fileAddedPersons"
+            ></vue-dropzone>-->
 
           </div>
         </b-row>
@@ -538,6 +552,22 @@
             <b-card-body>
               <b-row>
 
+                <vue-upload-multiple-image
+                    @upload-success="fileAdded"
+                    :data-images="images"
+                    idUpload="myIdUpload"
+                ></vue-upload-multiple-image>
+
+
+<!--                <vue-dropzone
+                    ref="myVueDropzone"
+                    :useCustomSlot="true"
+                    id="dropzone"
+                    width="500px"
+                    :options="dropzoneOptions"
+                    @vdropzone-file-added="fileAdded"
+                ></vue-dropzone>-->
+
               </b-row>
             </b-card-body>
           </b-collapse>
@@ -583,7 +613,7 @@
 
               </b-form-group>
               </b-row>
-        <l-map ref="myMap" style="height: 300px" :zoom="zoom" :center="center" @click="addMarker">
+        <l-map ref="myMap" style="height: 300px;width: 1104px" :zoom="zoom" :center="center" @click="addMarker">
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
           <l-marker v-for="(marker, index) in markerLatLng" :lat-lng="marker" :key="marker"  @click="removeMarker(index)"></l-marker>
 
@@ -598,11 +628,11 @@
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
-            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
+            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-11 variant="transparent">
               {{$t('accident')}}</b-button>
           </b-card-header>
 
-          <b-collapse id="accordion-1" invisible accordion="my-accordion" role="tabpanel">
+          <b-collapse id="accordion-11" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
 <!--                <l-map ref="myMap" style="height: 300px" @ready="doSomethingOnReady()"></l-map>-->
@@ -925,7 +955,6 @@
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
 
-
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
 
@@ -1000,8 +1029,10 @@
 </template>
 
 <script>
-import L from 'leaflet';
+
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
+
+import L from 'leaflet';
 import vueMultiSelect from 'vue-multi-select';
 import 'vue-multi-select/dist/lib/vue-multi-select.css';
 import constants from '../../../plugins/constants'
@@ -1028,18 +1059,25 @@ export default {
     LTileLayer,
     LMarker,vueMultiSelect,VueUploadMultipleImage
   },
+
   mounted(){
     console.log('rowe',this.rowes)
+
     //this.ListDossierPatient(this.rowes[0].id)
     this.ListData()
-    this.$refs.myMap.mapObject._onResize();
+    //this.$refs.myMap.mapObject._onResize();
 
 
   },
   data() {
     return {
+      forms:{
+        create:{url:"",confirm:"confirmer"},
+
+      },
       images:[],
       images1:[],
+      images2:[],
       filters: [{
         nameAll: 'Select all',
         nameNotAll: 'Deselect all',
@@ -1053,6 +1091,12 @@ export default {
           return elem;
         },
       }],
+      dropzoneOptions: {
+        url: 'https://httpbin.org/post',
+        thumbnailWidth: 150,
+        maxFilesize: 10,
+        headers: { "My-Awesome-Header": "header value" }
+      },
       options: {
         multi: true,
         groups: false,
@@ -1066,6 +1110,10 @@ export default {
       respdata:{},
       data:{},
       vehicle:{},
+      imagetest2:{},
+      imagetest:[],
+      imagepersons:[],
+      imagevehicles:[],
       vehicles:[],
       person:{},
       persons:[],
@@ -1130,7 +1178,7 @@ export default {
         },
         {
           label: "Name",
-          field: this.someComputed,
+          field: "firstName",
           hidden: false,
         },
         {
@@ -1193,41 +1241,132 @@ export default {
     }
   },
   methods:{
-
-    uploadImageSuccess(formData, index, fileList) {
-      this.images.push(fileList[index].path)
-
-      console.log('data', this.images.length)
+    uploadImageSuccess(files){
+      console.log('files',files)
+    },
+    uploadImageSuccess1(formData, index, fileList){
       console.log('data', formData, index, fileList)
-      // Upload image api
-      // axios.post('http://your-url-upload', formData).then(response => {
-      //   console.log(response)
-      // })
-    },
-    uploadImageSuccess1(formData1, index1, fileList1) {
-      this.images1.push(fileList1[index1].path)
-
-      console.log('data', this.images1.length)
-      console.log('data', formData1, index1, fileList1)
-      // Upload image api
-      // axios.post('http://your-url-upload', formData).then(response => {
-      //   console.log(response)
-      // })
     },
 
-    beforeRemove (index, done, fileList) {
-      console.log('index', index, fileList)
-      var r = confirm("remove image")
-      if (r == true) {
-        done()
-        this.images.splice(index,1)
-      }
+    handleImages(files){
+
+      console.log('files',files)
+      this.images = files
+
     },
-    editImage (formData, index, fileList) {
-      console.log('edit data', formData, index, fileList)
-      this.images.splice(index,1,fileList[index].path)
+    fileAdded(formData, index, fileList) {
+
+      // this.imagetest.push(files)
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-crash-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //build object path
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.imagetest.push(objet)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+
     },
 
+    fileAddedVehicles(formData, index, fileList){
+
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-vehicle-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.imagevehicles.push(objet)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
+
+    removeVehicles(thisFile){
+      this.$refs.myVueDropzones1.removeFile(thisFile)
+      console.log("File removed!")
+    },
+
+    fileAddedPersons(formData, index, fileList){
+
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-person-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.imagepersons.push(objet)
+
+            }else{
+              this.makeToast(this.$t("erreur lors de l'ajout de l'image"),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
 
     removeMarker(index) {
       this.markers.splice(index, 1);
@@ -1263,13 +1402,26 @@ export default {
       this.data.road = 0
       this.data.vehicules = this.vehicles
       this.data.persons = this.persons
-
-
-
+      this.data.crashImages = this.imagetest
       this.data.id = 0
-      console.log("vehicles",this.data)
+      console.log("vehicles",this.images)
 
-      this.addpolice(this.data)
+      let formdata = new FormData();
+
+      formdata.append('accidentReq',JSON.stringify(this.data))
+      //console.log('append',this.images.length)
+      // formdata.append('images',this.imagetest)
+      // formdata.append('imagesvehicles',this.imagevehicles)
+      // formdata.append('imagespersons',this.imagepersons)
+
+      /*const reader = new FileReader()
+            reader.readAsDataURL(this.file)
+            reader.onload = e => {
+                this.image = e.target.result
+                console.log(this.image)
+            }*/
+
+      this.addpolice(formdata)
 
     },
     submitperson(){
@@ -1281,6 +1433,9 @@ export default {
       this.$bvModal.hide('openperson')
       this.person.id=0
       this.person.care=0
+      this.person.images=this.imagepersons
+      this.imagepersons = []
+
       this.persons.push(this.person)
       console.log("this.vehicles",this.persons)
 
@@ -1291,9 +1446,10 @@ export default {
     submitvehicule(){
       this.$bvModal.hide('openvehicule')
       this.vehicle.vehicleId = 0
+      this.vehicle.vehicleImages = this.imagevehicles
       this.vehicles.push(this.vehicle)
       console.log("this.vehicles",this.vehicles)
-
+      this.imagevehicles = []
       this.vehicle={}
       this.makeToast(this.$t('added'),1)
     },

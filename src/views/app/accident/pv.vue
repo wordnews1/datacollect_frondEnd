@@ -326,7 +326,15 @@
                     :label="$t('Nous :')"
                     label-for="input-1"
                 >
-                  <wysiwyg v-model="nous" />
+                  <b-form-textarea
+                      id="textarea"
+                      v-model="nous"
+                      placeholder="ecrivez ici..."
+                      rows="3"
+                      max-rows="6"
+                  ></b-form-textarea>
+
+
                 </b-form-group>
 
 
@@ -335,7 +343,13 @@
                     :label="$t('Assiste De: ')"
                     label-for="input-1"
                 >
-                  <wysiwyg v-model="assiste" />
+                  <b-form-textarea
+                      id="textarea"
+                      v-model="assiste"
+                      placeholder="ecrivez ici..."
+                      rows="3"
+                      max-rows="6"
+                  ></b-form-textarea>
                 </b-form-group>
 
                 <b-form-group
@@ -343,7 +357,14 @@
                     :label="$t('Avons constate Accident: ')"
                     label-for="input-1"
                 >
-                  <wysiwyg v-model="constate" />
+                  <b-form-textarea
+                      id="textarea"
+                      v-model="constate"
+                      placeholder="ecrivez ici..."
+                      rows="3"
+                      max-rows="6"
+                  ></b-form-textarea>
+
                 </b-form-group>
 
                 <b-form-group
@@ -352,14 +373,19 @@
                     label-for="input-1"
                 >
 
-                  <wysiwyg v-model="circulation" />
+                  <b-form-textarea
+                      id="textarea"
+                      v-model="circulation"
+                      placeholder="ecrivez ici..."
+                      rows="3"
+                      max-rows="6"
+                  ></b-form-textarea>
+
 
                 </b-form-group>
 
 
               </b-row>
-
-
 
             </b-card-body>
 
@@ -403,16 +429,45 @@ export default {
   },
   mounted(){
 
+
+
     console.log('rowe',this.rowes)
+    console.log('rowe1',typeof this.rowes)
+    console.log('rowe1',typeof this.rowes=='undefined')
     //this.ListDossierPatient(9)
 
-    this.idacc = this.rowes[0].id
-    this.crashacc = this.rowes[0].crashDate
-    this.crashouracc = this.rowes[0].crashDate
+    if(typeof this.rowes === "undefined"){
+
+      console.log('rowe1',JSON.parse(localStorage.getItem('infospv')))
+
+      this.data = JSON.parse(localStorage.getItem('infospv'))
+      console.log('rowe1',this.data.id)
+
+      this.idacc = this.data.idacc
+      this.crashacc = this.data.crashacc
+      this.crashouracc = this.data.crashouracc
+      this.patrouille = this.data.patrouille
+      this.nous = this.data.nous
+      this.assiste = this.data.assiste
+      this.avons = this.data.avons
+      this.constate = this.data.constate
+      this.circulation = this.data.circulation
+
+    }else{
+      console.log('rowe2',this.idacc)
+
+      this.idacc = this.rowes[0].id
+      this.crashacc = this.rowes[0].crashDate
+      this.crashouracc = this.rowes[0].crashDate
+    }
+
+
+
 
   },
   data() {
     return {
+      data:{},
       options: {
         penColor: "#000000",
       },
@@ -510,7 +565,22 @@ export default {
     },
     addcroquis(){
       console.log('click','click')
-      this.$bvModal.show('opencroquis')
+      //this.$bvModal.show('opencroquis')
+
+      this.data.idacc = this.idacc
+      this.data.crashacc = this.crashacc
+      this.data.crashouracc = this.crashouracc
+
+      this.data.patrouille = this.patrouille
+      this.data.nous = this.nous
+      this.data.assiste = this.assiste
+      this.data.avons = this.avons
+      this.data.constate = this.constate
+      this.data.circulation = this.circulation
+
+      localStorage.setItem('infospv',JSON.stringify(this.data))
+
+      this.$router.push({ name: 'croquis',params: { rowes:this.data }})
 
     },
     onEditClick(params){

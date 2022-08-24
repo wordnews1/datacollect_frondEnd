@@ -135,7 +135,12 @@ const actions = {
     },
     addpolice({commit},data){
 
-        axios.post(state.resource_url+'accidents',data)
+        axios.post(state.resource_url+'accidents',data,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }}
+                )
 
             .then(list => {
 

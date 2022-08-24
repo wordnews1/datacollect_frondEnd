@@ -71,6 +71,12 @@ const routes = [
                         props: true
                     },
                     {
+                        name:"croquis",
+                        path: "croquis",
+                        component: () => import("../views/app/accident/croquis"),
+                        props: true
+                    },
+                    {
                         name:"traumatisme",
                         path: "traumatisme",
                         component: () => import("../views/app/hopital/traumatisme")
