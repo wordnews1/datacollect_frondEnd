@@ -586,7 +586,7 @@
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
-            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
+            <b-button class="card-title mb-0" @click="modalShown()" block href="#" v-b-toggle.accordion-1 variant="transparent">
               {{$t('Carte GPS')}}</b-button>
           </b-card-header>
 
@@ -1249,6 +1249,14 @@ export default {
   methods:{
 
     ...mapActions(["addpolice","ListData","DetailsAccident"]),
+    modalShown() {
+      setTimeout(() => {
+        console.log('clear')
+        //mapObject is a property that is part of leaflet
+        this.$refs.myMap.mapObject.invalidateSize();
+
+      }, 100);
+    },
     fileAddedVehicles(formData, index, fileList){
 
       let formdata = new FormData();

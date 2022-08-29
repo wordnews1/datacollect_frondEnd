@@ -73,7 +73,13 @@ const routes = [
                     {
                         name:"croquis",
                         path: "croquis",
-                        component: () => import("../views/app/accident/croquis"),
+                        component: () => import("../views/app/accident/croquis2"),
+                        props: true
+                    },
+                    {
+                        name:"genererpv",
+                        path: "genererpv",
+                        component: () => import("../views/app/accident/genererpv"),
                         props: true
                     },
                     {

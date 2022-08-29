@@ -886,6 +886,7 @@
                                 <b-col md="12">
                                     <b-overlay :show="loadanotherpage" rounded="sm" >
 
+
                                         <ListTable :type="'soins'" :rows="listsoin" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
                                                    :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                                    @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import L from 'leaflet';
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
-import 'leaflet/dist/leaflet.css';
+
 delete L.Icon.Default.prototype._getIconUrl
 import vueMultiSelect from 'vue-multi-select';
 import 'vue-multi-select/dist/lib/vue-multi-select.css';
@@ -74,7 +74,7 @@ Vue.use(VueAutosuggest);
 
 // CSS
 import 'vue2-timepicker/dist/VueTimepicker.css'
-
+import 'leaflet/dist/leaflet.css';
 //Vue.prototype.$keycloak.token
 import {vueImgPreview} from 'vue-img-preview'
 

@@ -1,6 +1,45 @@
 <template>
 
   <div class="main-content">
+    <b-modal scrollable no-close-on-backdrop   id="choose" size="lg" hide-footer>
+
+
+      <b-row  >
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="imports()" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Importer')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="draw()" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Dessiner')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+      </b-row>
+
+    </b-modal>
 
     <b-overlay :show="openb" rounded="sm" >
      <Signin :rowes="rowe1" @signature="signaturee"> </Signin>
@@ -49,10 +88,32 @@
             <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
               <div class="card mb-20">
                 <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
-                <a href="#"  @click="openpv(0)" class="item item-text-wrap item-button-left  taille">
-                  <i class="i-Close icon"></i>
+                <a href="#"  @click="addcroquis()" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Drag icon"></i>
 
-                  <span class="icons">{{$t('terminer')}}</span>
+                  <span class="icons">{{$t('Ajouter Croquis')}}</span>
+                </a>
+              </div>
+            </div>
+
+            <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
+              <div class="card mb-20">
+                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                <a href="#"  @click="openpv(0)" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Receipt icon"></i>
+                  <span class="icons">{{$t('Constituer le PV')}}</span>
+
+                </a>
+              </div>
+            </div>
+
+            <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
+              <div class="card mb-20">
+                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                <a href="#" @click="genererpv()" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Building   icon"></i>
+
+                  <span class="icons">{{$t('Generer le PV')}}</span>
                 </a>
               </div>
             </div>
@@ -191,6 +252,9 @@ export default {
       this.$router.push({name: 'pv',params: { rowes:this.rowe }})
 
     },
+    genererpv(){
+      this.$router.push({name: 'genererpv'})
+    },
     signin(data){
       /*if(Object.keys(this.rowe).length === 0){
           this.makeToast(this.$t('st_signin_error'),'error')
@@ -249,6 +313,18 @@ export default {
 
       this.$router.push({name: 'editaccident',params: { rowes:this.rowe[0] }})
     },
+    draw(){
+      this.$router.push({ name: 'croquis',params: { rowes:this.rowe[0] }})
+    },
+    addcroquis(){
+
+      if(Object.keys(this.rowe).length === 0){
+        this.makeToast(this.$t('Select_accident'),'error')
+        return ;
+      }
+      this.$bvModal.show('choose')
+    },
+
     consult(){
       console.log('parames2', this.rowe);
       if(Object.keys(this.rowe).length === 0){

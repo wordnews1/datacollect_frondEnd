@@ -75,6 +75,7 @@
   "soins":"Soins",
   "traumatisme":"Traumatismes",
   "Select_patient":"Selectionner un Patient",
+  "Select_accident":"Selectionner une declaration daccident",
   "exams":"Examens",
   "param_med":"Parametres Medicaux",
   "param_med_label":"Cochez les conditions qui s'appliquent à vous ou à tout membre de votre famille proche.",

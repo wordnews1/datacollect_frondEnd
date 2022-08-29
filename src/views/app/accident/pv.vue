@@ -79,7 +79,8 @@
             ></b-form-input>
 
             <!--
-                              <date-picker  v-model="crashacc" format="YYYY-MM-DD"  valueType="YYYY-MM-DD" ></date-picker>
+            <date-picker  v-model="crashacc" format="YYYY-MM-DD"
+            valueType="YYYY-MM-DD" ></date-picker>
             -->
 
           </b-form-group>
@@ -92,6 +93,7 @@
                 class="noborder"
                 v-model="crashouracc"
                 type="text"
+                required
 
             ></b-form-input>
 
@@ -316,6 +318,7 @@
 
                       v-model="patrouille"
                       type="text"
+                      required
                       :placeholder="$t('Patrouille')"
                   ></b-form-input>
 
@@ -331,6 +334,7 @@
                       v-model="nous"
                       placeholder="ecrivez ici..."
                       rows="3"
+                      required
                       max-rows="6"
                   ></b-form-textarea>
 
@@ -348,6 +352,7 @@
                       v-model="assiste"
                       placeholder="ecrivez ici..."
                       rows="3"
+                      required
                       max-rows="6"
                   ></b-form-textarea>
                 </b-form-group>
@@ -360,6 +365,7 @@
                   <b-form-textarea
                       id="textarea"
                       v-model="constate"
+                      required
                       placeholder="ecrivez ici..."
                       rows="3"
                       max-rows="6"
@@ -374,11 +380,13 @@
                 >
 
                   <b-form-textarea
+                      required
                       id="textarea"
                       v-model="circulation"
                       placeholder="ecrivez ici..."
                       rows="3"
                       max-rows="6"
+
                   ></b-form-textarea>
 
 
@@ -396,7 +404,6 @@
 
       <b-col md="12">
         <b-button class="mt-3" type="submit" style="float:right" variant="primary">Enregistrer</b-button>
-        <b-button class="mt-3" type="button"  @click ="addcroquis()"  style="float:right;margin-right: 10px" variant="success">Croquis</b-button>
 
       </b-col>
 
@@ -616,42 +623,42 @@ export default {
     },
     submitedit(){
 
-      this.$bvModal.show('visualise')
 
-      /*let test={}
-      test = {cni: this.cni, nom: this.nom,prenom:this.prenom,crashDate:this.crashacc,
-        telephone:this.phone,dateNaiss:this.birthday,
-        passport:this.passport,permis:this.permi_de_conduire,description:this.description,gender:this.personGender}
-      let params = {}
-      params = {poids:this.poids,temperature:this.temperature,pouls:this.pouls,tension:this.tension,params:this.checkedNames}
-      let accparams = {}
-      accparams = {persontrauma:this.persontrauma,consumalcohol:this.consumalcohol,
-        consumdrugs: this.consumdrugs}
-      test.accparams = accparams
-      test.parametre = params
-      test.contacts = this.contacts
-      //test.folder_id=this.folder_id
+      this.data.idaccident = this.idacc
+      this.data.patrouille = this.patrouille
+      this.data.nous = this.nous
+      this.data.assiste = this.assiste
+      this.data.constate = this.constate
+      this.data.circulation = this.circulation
+      this.data.reportId = 0
 
-      this.show = !this.show
-      this.$v.$touch();
+      axios.post(constants.resource_url+'accidents/send-report',this.data,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }}
+      )
+          .then(list => {
 
-      if (this.$v.$invalid) {
+            if(list.data.success){
 
-        this.submitStatus = "ERROR";
-        this.show = !this.show
-      } else {
-        // do your submit logic here
-        this.submitStatus = "PENDING";
-        setTimeout(() => {
-          this.submitStatus = "OK";
-          // this.$emit("registerpartners",test);
-          test.id = this.folder_id
-          this.UpdatePatients(test)
+             // this.$bvModal.show('visualise')
+              this.makeToast(this.$t('les Informations du Proces Verbal ajoutés avec succèss'),1)
+              this.$router.push({name: 'accidents'})
 
-          console.log('test',test)
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
 
-        }, 1000);
-      }*/
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+
+
 
     },
     selected(value){

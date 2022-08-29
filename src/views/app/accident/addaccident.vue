@@ -2,6 +2,8 @@
 
   <b-overlay :show="show" rounded="sm">
 
+
+
     <b-modal id="openvehicule" :title="$t('add_vehicle')" hide-footer>
 
       <template #modal-header="{}">
@@ -579,7 +581,7 @@
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
-            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-1 variant="transparent">
+            <b-button class="card-title mb-0" @click="modalShown" block href="#" v-b-toggle.accordion-1 variant="transparent">
               {{$t('Carte GPS')}}</b-button>
           </b-card-header>
 
@@ -613,11 +615,13 @@
 
               </b-form-group>
               </b-row>
-        <l-map ref="myMap" style="height: 300px;width: 1104px" :zoom="zoom" :center="center" @click="addMarker">
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          <l-marker v-for="(marker, index) in markerLatLng" :lat-lng="marker" :key="marker"  @click="removeMarker(index)"></l-marker>
+              <div class="foobar1">
+                  <l-map ref="myMap"  :zoom="zoom" :center="center" @click="addMarker">
+                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                    <l-marker v-for="(marker, index) in markerLatLng" :lat-lng="marker" :key="marker"  @click="removeMarker(index)"></l-marker>
 
-        </l-map>
+                  </l-map>
+              </div>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -956,7 +960,7 @@
 
 
                 <b-col md="12">
-                  <b-overlay :show="loadanotherpage" rounded="sm" >
+                  <b-overlay :show="loadanotherpage" rounded="sm">
 
                     <ListTable :type="'examen'" @onRowclick="onRowclick" :rows="vehicles" :columns="columnexamen" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
@@ -1244,6 +1248,14 @@ export default {
     uploadImageSuccess(files){
       console.log('files',files)
     },
+    modalShown() {
+      setTimeout(() => {
+        console.log('clear')
+        //mapObject is a property that is part of leaflet
+        this.$refs.myMap.mapObject.invalidateSize();
+
+      }, 100);
+    },
     uploadImageSuccess1(formData, index, fileList){
       console.log('data', formData, index, fileList)
     },
@@ -1373,6 +1385,7 @@ export default {
     },
     addMarker(event) {
       console.log('event',event)
+
       this.markerLatLng=[]
       this.markerLatLng.push(event.latlng);
       this.data.latitude = event.latlng.lat
@@ -1613,70 +1626,31 @@ export default {
       console.log('savechange', data);
     },
 
+    removelist(contact,indexIds){
+      contact.splice(indexIds, 1);
+      contact.sort();
+    },
     onRowclick(params){
+
       this.loadanotherpage = true
-      let soin = {
-        care: this.folder_id,
-        item: params.id
-      };
+      console.log('paramis',params)
+
       switch(params.types){
+
         case 'examen':
-
-          axios.post(constants.resource_url+'cares/remove-exam', soin)
-              .then(response =>{
-                this.listexamen = response.data.data.exams;
-                this.loadanotherpage = false
-                //this.containerClass = 'container';
-                //this.trauma={}
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          }); break;
+          this.removelist(this.vehicles,this.checkId(this.vehicles,params.id))
+          break;
         case 'soins':
-
-          axios.post(constants.resource_url+'cares/remove-treatment', soin)
-              .then(response =>{
-                this.listsoin = response.data.data.treatments;
-                //this.containerClass = 'container';
-                //this.trauma={}
-                this.loadanotherpage = false
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-        case 'trauma':
-          axios.post(constants.resource_url+'cares/remove-injury', soin)
-              .then(response =>{
-                this.listrauma = response.data.data.injuries;
-                this.containerClass = 'container';
-                this.trauma={}
-                this.loadanotherpage = false
-
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
+          this.removelist(this.persons,this.checkId(this.persons,params.id))
+          break;
 
       }
-      console.log('paramis',params)
+      this.loadanotherpage = false
+
+    },
+    checkId(obj, id) {
+
+      return obj.map(function(item) { return item.id; }).indexOf(id);
 
     },
     editProps(params){
@@ -1748,7 +1722,12 @@ export default {
 .cursor-pointer {
   cursor: pointer;
 }
+.foobar1{
+  width: 100%;
+  height: 300px;
 
+}
+/* style="height: 300px;width: 1104px"*/
 .form-control{
   font-size: 0.8rem!important;
 }

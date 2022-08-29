@@ -40,9 +40,11 @@
             },
             methods:{
               saveimage(){
+
                 console.log('image')
                 const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
                 console.log(isEmpty);
+
                 this.image = data
                 console.log('image',data);
 
