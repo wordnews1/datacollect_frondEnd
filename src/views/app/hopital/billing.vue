@@ -361,31 +361,46 @@ export default {
       this.examens = data.exams
       this.traumatisme = data.injuries
       this.soins = data.treatments
-      this.totalsoins = this.soins.reduce(function(sums, item) {
 
-        console.log('datare',sums)
-        console.log('datare',item.insuranceVisa)
-        if(item.insuranceVisa==='ACCEPTED') {
-          console.log('datare',item.insuranceVisa)
-          var costs = parseFloat(item.price);
-          if (!isNaN(costs)) {
-            return sums + costs;
-          }
+      var total = 0;
+      console.log('datare',total)
+      this.soins.map(function(value, key) {
+        console.log('datare',key)
+        if(value.insuranceVisa==='ACCEPTED') {
+         total += value.price
         }
+      });
+      this.totalsoins  = total
 
-      }, 0);
-      this.totalexamen = this.examens.reduce(function(sum, item) {
+      var total1 = 0;
+      console.log('datare',total1)
 
-        console.log('datare1',sum)
-        console.log('datare1',item.insuranceVisa)
-        if(item.insuranceVisa=='ACCEPTED'){
+      this.examens.map(function(value, key) {
+        console.log('datare',key)
+        if(value.insuranceVisa==='ACCEPTED') {
+          total1 += value.price
+        }
+      });
+     this.totalexamen  = total1
+
+     /* this.totalexamen = this.examens.reduce(function(sum, item) {
+        if(item.insuranceVisa==='ACCEPTED') {
           var cost = parseFloat(item.price);
           if (!isNaN(cost)) {
             return sum + cost;
           }
         }
 
-      }, 0);
+      }, 0);*/
+
+      /*this.totalexamen = this.examens.reduce(function(sum, item) {
+
+        if(item.insuranceVisa=='ACCEPTED'){
+          somme += parseFloat(item.price);
+
+        }
+
+      }, 0);*/
 
 
 

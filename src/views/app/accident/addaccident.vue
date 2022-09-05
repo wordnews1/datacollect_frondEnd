@@ -1639,6 +1639,10 @@ export default {
 
       console.log('savechange', data);
     },
+    removelist(contact,indexIds){
+      contact.splice(indexIds, 1);
+      contact.sort();
+    },
 
     onRowclick(params){
       this.loadanotherpage = true

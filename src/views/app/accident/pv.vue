@@ -465,7 +465,7 @@ export default {
 
       this.idacc = this.rowes[0].id
       this.crashacc = this.rowes[0].crashDate
-      this.crashouracc = this.rowes[0].crashDate
+      this.crashouracc = this.rowes[0].crashTime
     }
 
 

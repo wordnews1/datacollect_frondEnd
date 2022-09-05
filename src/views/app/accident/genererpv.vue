@@ -1,5 +1,5 @@
 <template>
-  <vue-html2pdf
+<!--  <vue-html2pdf
       :show-layout="true"
       :float-layout="true"
       :enable-download="true"
@@ -14,8 +14,8 @@
       ref="html2Pdf"
   >
 
-    <section slot="pdf-content">
-
+    <section slot="pdf-content">-->
+  <b-overlay :show="loadanotherpage" rounded="sm" >
       <b-card no-body style="size: A4">
 
 
@@ -124,22 +124,26 @@
 
 
       </b-card>
+  </b-overlay>
 
-    </section>
+<!--    </section>
 
-  </vue-html2pdf>
+  </vue-html2pdf>-->
 </template>
 
 <script>
-import VueHtml2pdf from 'vue-html2pdf'
+import axios from 'axios'
+import constants from '../../../plugins/constants'
+//import VueHtml2pdf from 'vue-html2pdf'
 export default {
 
   name:"genererpv",
   components: {
-    VueHtml2pdf
+    /*VueHtml2pdf*/
   },
   data() {
     return {
+      loadanotherpage:true,
       data: {},
       options: {
         penColor: "#000000",
@@ -155,7 +159,41 @@ export default {
       circulation: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ',
       image:""
     }
+  },
+  props:{
+    rowes:Array
+  },
+  mounted() {
+
+    axios.get(constants.resource_url + 'accidents/get-report/'+this.rowes[0].id,{}
+    )
+        .then(list => {
+
+          this.loadanotherpage=false
+          if (list.data.success) {
+            console.log('products_error', list.data.data.nous);
+
+            this.idacc = this.rowes[0].id
+            this.crashacc = this.rowes[0].crashDate
+            this.crashouracc = this.rowes[0].crashTime
+
+            this.patrouille = list.data.data.patrouille
+            this.nous = list.data.data.nous
+            this.assiste = list.data.data.assiste
+            this.constate = list.data.data.constate
+            this.circulation = list.data.data.circulation
+
+          }
+        })
+        .catch(function (error) {
+          this.loadanotherpage=false
+          console.log('products_error', error);
+          // Handle Errors here.
+          // var errorCode = error.code;
+
+        });
   }
+
 }
 
 </script>
