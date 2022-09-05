@@ -148,7 +148,7 @@
     import { mapGetters,mapActions } from "vuex";
    // import constants from '../../../plugins/constants'
     //import axios from 'axios'
-   // import { getRequestParams  } from '../../../plugins/functions'
+    import { getRequestParams  } from '../../../plugins/functions'
     export default {
 
         display: "Liste des Patients",
@@ -164,7 +164,7 @@
 
             console.log('fetchvuelistpatient','patient')
 
-            this.FetchVueListPatients()
+            this.FetchVueListPatients(getRequestParams(this.filter,this.currentpage,10,this.$i18n.locale))
 
         },
         metaInfo: {
@@ -256,6 +256,7 @@
                 console.log('loadpage',params)
                 this.currentpage = params
                 this.loadanotherpage = true
+              this.FetchVueListPatients(getRequestParams(this.filter,this.currentpage,10,this.$i18n.locale))
 
                // this.visiteenattente(getRequestParams(this.filter,this.currentpage,this.pagesize,this.$i18n.locale))
 
@@ -266,6 +267,8 @@
         data() {
 
             return {
+              currentpage:1,
+              filter:"",
                 totalPages_:0,
                 loadanotherpage:false,
                 totalElement:0,

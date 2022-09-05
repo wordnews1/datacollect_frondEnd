@@ -208,7 +208,7 @@ import Signin from '../visit/signin'
     import ListKanban from '../components/list-kanban'
     import ListGraph from '../components/list-graph'*/
 import { mapGetters,mapActions } from "vuex";
-// import { getRequestParams  } from '../../../plugins/functions'
+ import { getRequestParams  } from '../../../plugins/functions'
 export default {
 
   display: "Liste des Patients",
@@ -224,7 +224,7 @@ export default {
 
     console.log('fetchvuelistpatient','patient')
 
-    this.FetchVueListaccidents()
+    this.FetchVueListaccidents(getRequestParams(this.filter,this.currentpage,10,this.$i18n.locale))
 
   },
   metaInfo: {
@@ -373,8 +373,11 @@ export default {
     loadpage(params){
 
       console.log('loadpage',params)
+
       this.currentpage = params
       this.loadanotherpage = true
+
+      this.FetchVueListaccidents(getRequestParams(this.filter,this.currentpage,10,this.$i18n.locale))
 
       // this.visiteenattente(getRequestParams(this.filter,this.currentpage,this.pagesize,this.$i18n.locale))
 
@@ -466,6 +469,8 @@ export default {
   data() {
 
     return {
+      currentpage:1,
+      filter:"",
       operations:0,
       openb:false,
       optionsKey:"nom",

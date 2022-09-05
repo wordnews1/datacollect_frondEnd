@@ -194,9 +194,9 @@ const actions = {
 
             });
     },
-    FetchVueListPatients({commit}){
+    FetchVueListPatients({commit},params){
 
-        axios.get(state.resource_url+'cares')
+        axios.get(state.resource_url+'cares',{params})
 
             .then(list => {
 
@@ -221,13 +221,14 @@ const actions = {
             });
 
     },
-    FetchVueListaccidents({commit}){
+    FetchVueListaccidents({commit},params){
 
-        axios.get(state.resource_url+'accidents')
+        axios.get(state.resource_url+'accidents',{params})
 
             .then(list => {
 
                 console.log('care',list.data)
+
 
                 if(list.data.success){
 
