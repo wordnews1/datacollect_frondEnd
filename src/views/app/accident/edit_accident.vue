@@ -61,6 +61,9 @@
 
             <vue-upload-multiple-image
                 dragText="'Image du Vehicule'"
+                browseText=""
+                primaryText=""
+                dropText=""
                 @upload-success="fileAddedVehicles"
                 @before-remove="fileRemovedVehicles"
                 :data-images="vehicle.vehicleImages"
@@ -234,6 +237,10 @@
           <div class="col-md-12">
 
             <vue-upload-multiple-image
+                dragText="Image des accidentés"
+                browseText=""
+                primaryText=""
+                dropText=""
                 @upload-success="fileAddedPersons"
                 @before-remove="fileRemovedPersons"
                 :data-images="person.images"
@@ -249,7 +256,7 @@
           >
 
 
-            <b-form-select  v-model="person.vehicleAccidentNumber">
+            <b-form-select @change="getSelectedItem" v-model="person.vehicleAccidentNumber">
               <option :value="null" >&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in vehicles" :value="option.vehicleAccidentNumber" :key="option.vehicleAccidentNumber">
                 {{ option.plate }}
@@ -568,6 +575,10 @@
               <b-row>
 
                 <vue-upload-multiple-image
+                    dragText="Image Accident"
+                    browseText=""
+                    primaryText=""
+                    dropText=""
                     @upload-success="fileAdded"
                     @before-remove="fileRemoved"
                     :data-images="images"
@@ -1183,8 +1194,13 @@ export default {
           hidden: false,
         },
         {
-          label: "Name",
+          label: "Prenom",
           field: "firstName",
+          hidden: false,
+        },
+        {
+          label: "Nom",
+          field: "lastName",
           hidden: false,
         },
         {
@@ -1256,6 +1272,11 @@ export default {
         this.$refs.myMap.mapObject.invalidateSize();
 
       }, 100);
+    },
+    getSelectedItem(params){
+      this.person.vehicleLinkedPedestrian = params
+
+      console.log('paf',params)
     },
     fileAddedVehicles(formData, index, fileList){
 

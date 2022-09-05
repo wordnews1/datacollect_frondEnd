@@ -77,7 +77,7 @@
               </div>
             </div>
 
-<!--            <div v-if=" rowe.length<=1 ">
+            <!--            <div v-if=" rowe.length<=1 ">
               <div class="card mb-20">
                 <a href="#"  @click="associer()" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Receipt-3 icon"></i>
@@ -85,6 +85,7 @@
                 </a>
               </div>
             </div>-->
+
             <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
               <div class="card mb-20">
                 <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
@@ -92,6 +93,7 @@
                   <i class="i-Drag icon"></i>
 
                   <span class="icons">{{$t('Ajouter Croquis')}}</span>
+
                 </a>
               </div>
             </div>
@@ -523,6 +525,12 @@ export default {
           hidden: true,
         },
         {
+          label: "Croquis",
+          field: "drawing",
+          html:true,
+          hidden: true,
+        },
+        {
           label: "Status",
           field: "status",
           hidden: false,
@@ -551,10 +559,10 @@ export default {
       console.log('link',value)
 
       this.list = value.content;
-      this.links = value.links;
+     // this.links = value.links;
       this.totalElement = value.totalElements;
 
-      this.totalPages_ = value.totalPages;
+      this.totalPages_ = value.size;
       this.loadanotherpage = false
 
       console.log('typelist',this.list)

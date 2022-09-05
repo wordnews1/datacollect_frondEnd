@@ -3,7 +3,6 @@
   <b-overlay :show="show" rounded="sm">
 
 
-
     <b-modal id="openvehicule" :title="$t('add_vehicle')" hide-footer>
 
       <template #modal-header="{}">
@@ -16,8 +15,13 @@
           <div class="col-md-12">
 
             <vue-upload-multiple-image
+                dragText="Image du véhicule"
+                browseText=""
+                primaryText=""
+                dropText=""
+                @before-remove="fileRemovedVehicles"
                 @upload-success="fileAddedVehicles"
-                :data-images="images1"
+                :data-images="imagevehicles"
                 idUpload="myIdUpload1"
             ></vue-upload-multiple-image>
 
@@ -68,10 +72,23 @@
 
           <b-form-input
               v-uppercase
-
+              @input="suggestionon(valeur)"
               v-model="vehicle.plate"
               type="text"
           ></b-form-input>
+
+          <b-list-group v-if="filteredSuggestions.length" style="width:90%;float:inherit;
+           position:absolute;z-index:1">
+
+            <b-list-group-item v-for="(s,i) in filteredSuggestions" :key="i"
+                               @click="selected({item:s})">
+
+
+            </b-list-group-item>
+
+          </b-list-group>
+
+          <p></p>
 
 
         </b-form-group>
@@ -212,8 +229,13 @@
           <div class="col-md-12">
 
             <vue-upload-multiple-image
+                dragText="Image des accidentés"
+                browseText=""
+                primaryText=""
+                dropText=""
+                @before-remove="fileRemovedPersons"
                 @upload-success="fileAddedPersons"
-                :data-images="images2"
+                :data-images="imagepersons"
                 idUpload="myIdUpload2"
             ></vue-upload-multiple-image>
 
@@ -555,11 +577,15 @@
               <b-row>
 
                 <vue-upload-multiple-image
+                    dragText="Image Accident"
+                    browseText=""
+                    primaryText=""
+                    dropText=""
+                    @before-remove="fileRemoved"
                     @upload-success="fileAdded"
-                    :data-images="images"
+                    :data-images="imagetest"
                     idUpload="myIdUpload"
                 ></vue-upload-multiple-image>
-
 
 <!--                <vue-dropzone
                     ref="myVueDropzone"
@@ -1181,8 +1207,13 @@ export default {
           hidden: false,
         },
         {
-          label: "Name",
+          label: "Prenom",
           field: "firstName",
+          hidden: false,
+        },
+        {
+          label: "Nom",
+          field: "lastName",
           hidden: false,
         },
         {
@@ -1245,8 +1276,52 @@ export default {
     }
   },
   methods:{
+    fileRemovedVehicles(index, done, fileList) {
+
+      console.log('data', done, index, fileList)
+      this.imagevehicles.splice(index, 1);
+    },
+    fileRemovedPersons(index, done, fileList) {
+
+      console.log('data', done, index, fileList)
+      this.imagepersons.splice(index, 1);
+    },
+    fileRemoved(index, done, fileList) {
+      console.log('data', done, index, fileList)
+      this.imagetest.splice(index, 1);
+    },
     uploadImageSuccess(files){
       console.log('files',files)
+    },
+    suggestionon(value) {
+      this.openb = true
+
+      console.log('suggestionon', constants.resource_url_visit+'public/search/cartegrise/assurance')
+      //this.openb = true
+      let params = {};
+      params["name"] = value
+
+      axios.get(constants.resource_url_visit+'public/search/cartegrise/assurance', {params})
+          .then(response =>{
+
+            this.openb = false
+            this.filteredSuggestions = response.data.data
+
+            // this.$bvModal.hide('openassociate')
+
+            //this.containerClass = 'container';
+            //this.trauma={}
+          }).catch(function(error) {
+        console.log('products_error',error);
+        // Handle Errors here.
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // console.log(error);
+
+        //commit("setError", error);
+
+      });
+
     },
     modalShown() {
       setTimeout(() => {
@@ -1399,6 +1474,7 @@ export default {
 
     getSelectedItem(params){
       this.person.vehicleLinkedPedestrian = params
+
       console.log('paf',params)
     },
     addperson(){
@@ -1558,85 +1634,17 @@ export default {
           });break;
       }
     },
-    suggestionon(value){
-      console.log('suggestionon',value)
-      //this.openb = true
-      let params = {};
-      params["name"] = value
-      switch(this.type){
 
-        case 'examen':
-
-          axios.get(constants.resource_url+'examinations/search', {params})
-              .then(response =>{
-
-                this.loadanotherpage = false
-                this.filteredSuggestions = response.data.data
-                //this.containerClass = 'container';
-                //this.trauma={}
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          }); break;
-        case 'soins':
-
-          axios.get(constants.resource_url+'treatments/search', {params})
-              .then(response =>{
-                this.filteredSuggestions = response.data.data
-                //this.containerClass = 'container';
-                //this.trauma={}
-                this.openb = false
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-        case 'traumatisme':
-          axios.get(constants.resource_url+'injuries/search', {params})
-              .then(response =>{
-                this.filteredSuggestions = response.data.data
-                this.openb = false
-
-              }).catch(function(error) {
-            console.log('products_error',error);
-            // Handle Errors here.
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // console.log(error);
-
-            //commit("setError", error);
-
-          });break;
-      }
-
-    },
     savechange(data) {
 
       console.log('savechange', data);
     },
 
-    removelist(contact,indexIds){
-      contact.splice(indexIds, 1);
-      contact.sort();
-    },
     onRowclick(params){
-
       this.loadanotherpage = true
       console.log('paramis',params)
 
       switch(params.types){
-
         case 'examen':
           this.removelist(this.vehicles,this.checkId(this.vehicles,params.id))
           break;

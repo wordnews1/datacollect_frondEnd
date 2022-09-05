@@ -74,23 +74,21 @@
                                 <span> {{traumas[props.row.accparams.persontrauma]}}</span>
 
                               </div>
-
-
-                              <span v-if="props.column.field == 'brand'">
+<!--                              <span v-if="props.column.field == 'brand'">
                               <span> TOYOTA</span>
-                            </span>
-
-
+                            </span>-->
 
                               <span v-if="props.column.field == 'actions'">
                               <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Eye-Visible"></i></a>
                             </span>
 
 
+
+
                               <span v-if="props.column.field == 'status'">
                               <span v-if="props.formattedRow[props.column.field]=='ACCEPTED'" class="badge badge-success"> {{props.formattedRow[props.column.field]}}</span>
                               <span v-if="props.formattedRow[props.column.field]=='REJECTED'" class="badge badge-danger"> {{props.formattedRow[props.column.field]}}</span>
-                              <span v-if="props.formattedRow[props.column.field]=='OPENED'" class="badge badge-primary"> {{props.formattedRow[props.column.field]}}</span>
+                                <span v-if="props.formattedRow[props.column.field]=='OPENED'" class="badge badge-primary"><span v-if="props.formattedRow['drawing']!=null"><i class="badge badge-success">hello</i></span> {{props.formattedRow[props.column.field]}}</span>
                               <span v-if="props.formattedRow[props.column.field]=='READY'" class="badge badge-warning"> {{props.formattedRow[props.column.field]}}</span>
                               <span v-if="props.formattedRow[props.column.field]=='CLOSED'" class="badge badge-secondary"> {{props.formattedRow[props.column.field]}}</span>
                               </span>
@@ -100,6 +98,7 @@
                               <span v-else>
                               {{props.formattedRow[props.column.field]}}
                             </span>
+
 
 
 
