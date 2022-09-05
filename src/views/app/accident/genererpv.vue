@@ -16,7 +16,7 @@
 
     <section slot="pdf-content">-->
   <b-overlay :show="loadanotherpage" rounded="sm" >
-      <b-card no-body style="size: A4">
+      <b-card no-body style="size: A4" id="printMe">
 
 
         <b-card-body >
@@ -118,6 +118,15 @@
 
 
         </b-card-body>
+        <p></p>
+
+
+        <div style="text-align: right">
+          <b-button  @click="$router.go(-1)" class="lefts" variant="outline-danger" style="margin-right: 15px">{{$t('Annuler')}}</b-button>
+          <!-- <b-button  variant="outline-success" style="margin-right: 15px">Pdf</b-button>-->
+          <b-button  variant="outline-success" @click="prints()" style="margin-right: 15px">{{$t('print')}}</b-button>
+        </div>
+
         <b-row style="display: block;margin: 0 auto">
           <img v-bind:src="image" />
         </b-row>
@@ -162,6 +171,11 @@ export default {
   },
   props:{
     rowes:Array
+  },
+  methods:{
+    prints(){
+      this.$htmlToPaper('printMe');
+    }
   },
   mounted() {
 
