@@ -1561,6 +1561,8 @@ export default {
             if(response.data.success){
 
               this.valeur=''
+              this.rowe[0].care=1
+
               this.makeToast(this.$t('added'),1)
               console.log('products_error',response);
               this.$bvModal.hide('openassociate')
@@ -1826,7 +1828,9 @@ export default {
             if(response.data.success){
 
               //  this.valeur=''
+              this.rowe[0].care=0
               this.loadanotherpage = false
+
               this.makeToast(this.$t('desassocier avec success'),1)
               console.log('products_error',response);
               //this.$bvModal.hide('openassociate')

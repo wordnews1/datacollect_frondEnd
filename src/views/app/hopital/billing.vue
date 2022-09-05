@@ -363,7 +363,8 @@ export default {
       this.soins = data.treatments
       this.totalsoins = this.soins.reduce(function(sums, item) {
 
-        //console.log('datare',item.insuranceVisa)
+        console.log('datare',sums)
+        console.log('datare',item.insuranceVisa)
         if(item.insuranceVisa==='ACCEPTED') {
           console.log('datare',item.insuranceVisa)
           var costs = parseFloat(item.price);
@@ -375,6 +376,8 @@ export default {
       }, 0);
       this.totalexamen = this.examens.reduce(function(sum, item) {
 
+        console.log('datare1',sum)
+        console.log('datare1',item.insuranceVisa)
         if(item.insuranceVisa=='ACCEPTED'){
           var cost = parseFloat(item.price);
           if (!isNaN(cost)) {
