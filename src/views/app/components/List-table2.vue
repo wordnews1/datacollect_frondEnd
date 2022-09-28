@@ -65,6 +65,7 @@
 
                         <template slot="table-row" slot-scope="props">
                             <span v-if="props.column.field == 'actions'">
+                              <a class="btn btn-sm primary"  @click.stop="onDocumentClick(props.row)"><i class="i-Folder-With-Document"></i></a>
                               <a class="btn btn-sm primary"  @click.stop="onEditClick(props.row)"><i class="i-Edit"></i></a>
                               <a class="btn btn-sm primary"  @click.stop="onRowClick(props.row)"><i class="i-Remove"></i></a>
                             </span>
@@ -184,6 +185,7 @@
         data() {
 
             return {
+              operations:true,
                 customStyles,
                 customLabels,
                 currentPage:1,
@@ -210,6 +212,11 @@
                 console.log('onrow',value)
                 value.types=this.type
                 this.$emit('onEditClick',value)
+            },
+          onDocumentClick(value){
+                console.log('onrow',value)
+                value.types=this.type
+                this.$emit('onDocumentClick',value)
             },
 
                 changeColor(row){

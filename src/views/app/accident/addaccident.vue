@@ -2,6 +2,61 @@
 
   <b-overlay :show="show" rounded="sm">
 
+    <b-modal scrollable no-close-on-backdrop   id="choose" size="lg" hide-footer>
+
+      <b-row>
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="addperson(0)" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Chauffeur')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="addperson(1)" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Passager')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="addperson(2)" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Pieton')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+
+      </b-row>
+
+    </b-modal>
 
     <b-modal id="openvehicule" :title="$t('add_vehicle')" hide-footer>
 
@@ -21,7 +76,7 @@
                 dropText=""
                 @before-remove="fileRemovedVehicles"
                 @upload-success="fileAddedVehicles"
-                :data-images="imagevehicles"
+                :data-images="vehicle.vehicleImages"
                 idUpload="myIdUpload1"
             ></vue-upload-multiple-image>
 
@@ -72,7 +127,7 @@
 
           <b-form-input
               v-uppercase
-              @input="suggestionon(valeur)"
+              @input="suggestionon"
               v-model="vehicle.plate"
               type="text"
           ></b-form-input>
@@ -82,7 +137,7 @@
 
             <b-list-group-item v-for="(s,i) in filteredSuggestions" :key="i"
                                @click="selected({item:s})">
-
+              {{s.numImmatriculation}}
 
             </b-list-group-item>
 
@@ -209,9 +264,239 @@
 
         <p></p>
         <div style="text-align: right">
-          <b-button @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
+          <b-button v-if="operations"  @click="submitvehicule()" variant="outline-success" style="margin-right: 15px">
             {{$t('ajouter')}}</b-button>
+
+          <b-button  v-if="!operations" @click="submiteditvehicule()" variant="outline-success" style="margin-right: 15px">
+            {{$t('modifier')}}</b-button>
         </div>
+
+
+      </template>
+
+    </b-modal>
+
+    <b-modal id="opendocumentperson" :title="$t('add_document')" hide-footer>
+
+      <template #modal-header="{}">
+        <!-- Emulate built in modal header close button action -->
+        <h5>{{$t("add_document")}} </h5>
+      </template>
+
+      <template #default="{  }">
+        <b-row style="margin-bottom: 20px">
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                dragText="Document"
+                browseText=""
+                primaryText=""
+                dropText=""
+                @before-remove="fileRemovedDocumentperson"
+                @upload-success="fileAddedDocumentperson"
+                :data-images="document1.image"
+                idUpload="myIdUpload2"
+            ></vue-upload-multiple-image>
+
+          </div>
+        </b-row>
+        <b-row>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Type de Document')"
+              label-for="input-1"
+          >
+            <b-form-select v-model="document1.type">
+              <option :value="null" disabled>-- Please select an option --</option>
+              <option v-for="option in respdata.documentTypeResp" :value="option.id" :key="option.id">
+                {{ option.name }}
+              </option>
+            </b-form-select>
+
+          </b-form-group>
+
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Identification')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-uppercase
+                v-model="document1.identification"
+                type="text"
+            ></b-form-input>
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Prenom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document1.recipientFirstname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Nom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document1.recipientLastname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date de Delivrance')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document1.issueDate" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date dexpiration')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document1.expireAt" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+
+        </b-row>
+
+
+        <p></p>
+        <div style="text-align: right">
+          <b-button v-if="operations"  @click="submitdocumentperson()" variant="outline-success" style="margin-right: 15px">
+            {{$t('ajouter')}}</b-button>
+
+          <b-button  v-if="!operations" @click="submiteditdocumentperson()" variant="outline-success" style="margin-right: 15px">
+            {{$t('modifier')}}</b-button>
+        </div>
+
+
+      </template>
+
+    </b-modal>
+
+    <b-modal id="opendocument" :title="$t('add_document')" hide-footer>
+
+      <template #modal-header="{}">
+        <!-- Emulate built in modal header close button action -->
+        <h5>{{$t("add_document")}} </h5>
+      </template>
+
+      <template #default="{  }">
+        <b-row style="margin-bottom: 20px">
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                dragText="Document"
+                browseText=""
+                primaryText=""
+                dropText=""
+                @before-remove="fileRemovedDocument"
+                @upload-success="fileAddedDocument"
+                :data-images="document.image"
+                idUpload="myIdUpload1"
+            ></vue-upload-multiple-image>
+
+          </div>
+        </b-row>
+        <b-row>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Type de Document')"
+              label-for="input-1"
+          >
+            <b-form-select v-model="document.type">
+              <option :value="null" disabled>-- Please select an option --</option>
+              <option v-for="option in respdata.documentTypeResp" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
+
+
+          </b-form-group>
+
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Identification')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-uppercase
+                v-model="document.identification"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Prenom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document.recipientFirstname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Nom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document.recipientLastname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date de Delivrance')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document.issueDate" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date dexpiration')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document.expireAt" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+
+        </b-row>
+
+
+        <p></p>
+        <div style="text-align: right">
+          <b-button v-if="operations"  @click="submitdocument()" variant="outline-success" style="margin-right: 15px">
+            {{$t('ajouter')}}</b-button>
+
+          <b-button  v-if="!operations" @click="submiteditdocumentvehicule()" variant="outline-success" style="margin-right: 15px">
+            {{$t('modifier')}}</b-button>
+        </div>
+
 
       </template>
 
@@ -235,7 +520,7 @@
                 dropText=""
                 @before-remove="fileRemovedPersons"
                 @upload-success="fileAddedPersons"
-                :data-images="imagepersons"
+                :data-images="person.images"
                 idUpload="myIdUpload2"
             ></vue-upload-multiple-image>
 
@@ -261,6 +546,22 @@
               <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in vehicles" :value="option.vehicleAccidentNumber" :key="option.vehicleAccidentNumber">
                 {{ option.plate }}
+              </option>
+            </b-form-select>
+
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+              class="col-md-6 mb-30"
+              :label="$t('Profession')"
+              label-for="input-1"
+          >
+
+
+            <b-form-select  v-model="person.profession">
+              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option v-for="option in respdata.professionResp" :value="option.id" :key="option.id">
+                {{ option.name }}
               </option>
             </b-form-select>
 
@@ -296,6 +597,21 @@
 
 
           </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('CNI')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-uppercase
+
+                v-model="data.cni"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
 
         <b-form-group  style="margin-bottom: 10px"
             class="col-md-6 mb-30"
@@ -326,6 +642,7 @@
 
 
         </b-form-group>
+
           <b-form-group  style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Date de Naissance')"
@@ -333,9 +650,40 @@
           >
             <date-picker v-model="person.birthDate" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
 
+          </b-form-group>
+
+          <b-form-group
+              v-if="nopermisdisabled"
+              class="col-md-6 mb-30"
+              :label="$t('Numero Permis')"
+              label-for="input-1"
+          >
+            <b-form-input
+                          v-model="person.nopermis"
+                          type="text"
+            ></b-form-input>
+
+          </b-form-group>
+
+
+          <b-form-group
+              v-if="typepermisdisabled"
+              style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Type de Permis')"
+                         label-for="input-1"
+          >
+
+            <b-form-select v-model="person.typepermis"  >
+              <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+              <option v-for="option in permises" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
 
 
           </b-form-group>
+
           <b-form-group  style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Sexe')"
@@ -351,12 +699,14 @@
 
 
           </b-form-group>
-          <b-form-group  style="margin-bottom: 10px"
+          <b-form-group
+              v-if="drivingLicenceYeardisabled"
+              style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Annee d\'obtention du permis')"
               label-for="input-1"
           >
-            <date-picker v-model="person.drivingLicenceYear" format="DD/MM/YYYY"  valueType="DD/MM/YYYY"></date-picker>
+            <date-picker v-model="person.drivingLicenceYear"  format="DD/MM/YYYY"  valueType="DD/MM/YYYY"></date-picker>
 
 
 
@@ -376,7 +726,9 @@
             </b-form-select>
 
           </b-form-group>
-          <b-form-group  style="margin-bottom: 10px"
+          <b-form-group
+              v-if="personActiondisabled"
+              style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Manoeuvre du Pieton')"
               label-for="input-1"
@@ -420,7 +772,9 @@
 
           </b-form-group>
 
-          <b-form-group  style="margin-bottom: 10px"
+          <b-form-group
+              v-if="seatingrangedisabled"
+              style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Rangee')"
               label-for="input-1"
@@ -435,13 +789,15 @@
 
           </b-form-group>
 
-          <b-form-group  style="margin-bottom: 10px"
+          <b-form-group
+              v-if="seatingplacedisabled"
+              style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Place')"
               label-for="input-1"
           >
 
-            <b-form-select v-model="person.place">
+            <b-form-select v-model="person.place" >
               <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.seatingPlaceResp" :value="option.id" :key="option.id">
                 {{ option.value }}
@@ -467,7 +823,9 @@
 
           </b-form-group>
 
-          <b-form-group  style="margin-bottom: 10px"
+          <b-form-group
+              v-if="occupantRestraintSystemdisabled"
+                        style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Equipement de Securite')"
               label-for="input-1"
@@ -517,8 +875,6 @@
 
 
 
-
-
           <b-form-group  style="margin-bottom: 10px"
               class="col-md-6 mb-30"
               :label="$t('Resultat des tests')"
@@ -554,8 +910,11 @@
 
         <p></p>
         <div style="text-align: right">
-          <b-button @click="submitperson()" variant="outline-success" style="margin-right: 15px">
+          <b-button v-if="operations" @click="submitperson()" variant="outline-success" style="margin-right: 15px">
             {{$t('ajouter')}}</b-button>
+
+          <b-button v-if="!operations" @click="submiteditperson()" variant="outline-success" style="margin-right: 15px">
+            {{$t('modifier')}}</b-button>
         </div>
 
       </template>
@@ -620,7 +979,7 @@
                   :label="$t('longitude')"
                   label-for="input-1"
               >
-                <b-form-input disabled
+                <b-form-input
 
 
                     v-model="data.longitude"
@@ -633,7 +992,7 @@
                   :label="$t('latitude')"
                   label-for="input-1"
               >
-                <b-form-input disabled
+                <b-form-input
 
                     v-model="data.latitude"
                     type="text"
@@ -655,6 +1014,7 @@
         <br/>
 
       </div>
+
       <div role="tablist">
         <b-card no-body class="ul-card__border-radius">
           <b-card-header header-tag="header" class="p-1"  role="tab">
@@ -852,11 +1212,12 @@
                     :label="$t('type de Route')"
                     label-for="input-1"
                 >
-                  <b-form-select v-model="data.roadType">
+                  <b-form-select v-model="data.roadType" :disabled="!roadTypedisabled">
                     <option :value="null" disabled>-- Please select an option --</option>
                     <option v-for="option in respdata.roadTypeResp" :value="option.id" :key="option.id">
                       {{ option.value }}
                     </option>
+
                   </b-form-select>
 
                 </b-form-group>
@@ -972,26 +1333,43 @@
         </b-card>
       </div>
       <p></p>
+
       <div role="tablist">
+
+
         <b-card no-body class="ul-card__border-radius">
+
           <b-card-header header-tag="header" class="p-1"  role="tab">
             <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-7 variant="transparent">
               {{$t('véhicules')}}</b-button>
           </b-card-header>
+
           <b-collapse id="accordion-7" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
-                <b-button  @click ="addvehicules()"  variant="success"
+
+                <b-button   v-if="seen==true"  @click ="addvehicules()"  variant="success"
+                           style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+
+                <b-button v-if="seen==false" @click ="retour()"  variant="success"
+                           style="position: relative;right: 0;margin-right: 10px;">{{$t('retour')}}</b-button>
+                <b-button v-if="seen==false" @click ="addocument()"  variant="success"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
 
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm">
 
-                    <ListTable :type="'examen'" @onRowclick="onRowclick" :rows="vehicles" :columns="columnexamen" :isCLoseMenu="true"
+                    <div v-if="seen==true">
+                    <ListTable :type="'examen'" @onEditClick="onEditClick" @onRowclick="onRowclick" :rows="vehicles" :columns="columnexamen" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
-                               @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
-
+                               @deleteProps="deleteProps" @editProps="editProps" @onDocumentClick="onDocumentClick" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
+                    </div>
+                    <div  v-if="seen==false" >
+                      <ListTable :type="'document'"  @onEditClick="onEditClick" @onRowclick="onRowclick" :rows="documents" :columns="columndocument" :isCLoseMenu="true"
+                                 :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
+                                 @deleteProps="deleteProps" @editProps="editProps" @onDocumentClick="onDocumentClick" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
+                    </div>
 
                   </b-overlay>
                 </b-col>
@@ -1009,25 +1387,42 @@
       <p></p>
 
       <div role="tablist">
+
         <b-card no-body class="ul-card__border-radius">
+
           <b-card-header header-tag="header" class="p-1"  role="tab">
-            <b-button class="card-title mb-0" block href="#" v-b-toggle.accordion-6 variant="transparent">
+            <b-button class="card-title mb-0" block href="#"
+                      v-b-toggle.accordion-6 variant="transparent">
               {{$t('accidentés')}}</b-button>
           </b-card-header>
+
           <b-collapse id="accordion-6" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
-                <b-button  @click ="addperson()"  variant="success"
+                <b-button  v-if="seen2==true" @click ="choose()"  variant="success"
+                          style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+
+                <b-button  v-if="seen2==false" @click ="retour2()"  variant="primary"
+                          style="position: relative;right: 0;margin-right: 10px;">{{$t('retour')}}</b-button>
+
+                <b-button v-if="seen2==false" @click ="addocumentpersons()"  variant="success"
                           style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
 
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
-
-                    <ListTable :type="'soins'" :rows="persons" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
+                  <div v-if="seen2">
+                    <ListTable v-if="seen2==true"  :type="'soins'" :rows="persons" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
-                               @deleteProps="deleteProps" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
+                               @deleteProps="deleteProps" @onDocumentClick="onDocumentClick" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
+                  </div>
+                    <div v-if="seen2==false">
+                      <ListTable :type="'document'" :rows="documents1" :columns="columndocument" @onRowclick="onRowclick" :isCLoseMenu="true"
+                                 :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
+                                 @deleteProps="deleteProps" @onDocumentClick="onDocumentClick" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
+
+                    </div>
 
                   </b-overlay>
                 </b-col>
@@ -1101,6 +1496,32 @@ export default {
   },
   data() {
     return {
+      vehicleId:0,
+      permises:[
+        {id:1,
+        value:"A"},
+        {id:2,
+          value:"B"},
+        {id:3,
+          value:"B1"},
+        {id:4,
+          value:"C"},
+        {id:5,
+          value:"D"}
+      ],
+      operations:true,
+      seen:true,
+      seen2:true,
+
+      occupantRestraintSystemdisabled:true,
+      personActiondisabled:true,
+      roadTypedisabled:true,
+
+      nopermisdisabled:true,
+      typepermisdisabled:true,
+      drivingLicenceYeardisabled:true,
+      seatingrangedisabled:true,
+      seatingplacedisabled:true,
       forms:{
         create:{url:"",confirm:"confirmer"},
 
@@ -1147,6 +1568,10 @@ export default {
       vehicles:[],
       person:{},
       persons:[],
+      documents:[],
+      documents1:[],
+      document:{},
+      document1:{},
       valeur:'',
       valeur1:{},
       filteredSuggestions:[],
@@ -1170,6 +1595,11 @@ export default {
           label: "Id",
           field: "id",
           hidden: false,
+        },
+        {
+          label: "vehicle",
+          field: "vehicleImages",
+          hidden: true,
         },
         {
           label: "numero du vehicule",
@@ -1198,6 +1628,45 @@ export default {
           html: true,
         }
 
+      ],
+
+      columndocument:[
+
+        {
+          label: "Id document",
+          field: "identification",
+          hidden: false,
+        },
+        {
+          label: "Prenom",
+          field: "recipientFirstname",
+          hidden: false,
+        },
+        {
+          label: "Nom",
+          field: "recipientLastname",
+          hidden: false,
+        },
+        {
+          label: "Date",
+          field: "issueDate",
+          hidden: false,
+        },
+        {
+          label: "Date d'expiration",
+          field: "expireAt",
+          hidden: false,
+        },
+        {
+          label: "Document_id",
+          field: "vehicleId",
+          hidden: true,
+        },
+        {
+          label: "type",
+          field: "type",
+          hidden: false,
+        }
       ],
       columnoins:[
 
@@ -1276,17 +1745,57 @@ export default {
     }
   },
   methods:{
+    onEditClick(params){
+
+      console.log('savechange', params);
+
+
+      switch(params.types) {
+        case 'examen':
+          this.vehicle = params
+
+          console.log('savechange', this.images1);
+          console.log('savechange', this.vehicle);
+          this.$bvModal.show('openvehicule')
+          this.operations=false
+
+          break;
+        case 'soins':
+          this.person = params
+          this.$bvModal.show('openperson')
+          this.operations=false
+
+          break;
+
+      }
+
+    },
+
     fileRemovedVehicles(index, done, fileList) {
 
       console.log('data', done, index, fileList)
-      this.imagevehicles.splice(index, 1);
+      this.images1.splice(index, 1)
+      this.vehicle.vehicleImages = this.images1
+    },
+    fileRemovedDocument(index, done, fileList) {
+
+      console.log('data', done, index, fileList)
+      this.images3.splice(index, 1)
+      this.document.image = this.images3
+    },
+    fileRemovedDocumentperson(index, done, fileList) {
+
+      console.log('data', done, index, fileList)
+      this.images4.splice(index, 1)
+      this.document1.image = this.images4
     },
     fileRemovedPersons(index, done, fileList) {
 
       console.log('data', done, index, fileList)
-      this.imagepersons.splice(index, 1);
+      this.images2.splice(index, 1)
+      this.person.images = this.images2
     },
-    fileRemoved(index, done, fileList) {
+    fileRemoveds(index, done, fileList) {
       console.log('data', done, index, fileList)
       this.imagetest.splice(index, 1);
     },
@@ -1294,14 +1803,15 @@ export default {
       console.log('files',files)
     },
     suggestionon(value) {
+
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+      this.timer = setTimeout(() => {
       this.openb = true
 
-      console.log('suggestionon', constants.resource_url_visit+'public/search/cartegrise/assurance')
-      //this.openb = true
-      let params = {};
-      params["name"] = value
-
-      axios.get(constants.resource_url_visit+'public/search/cartegrise/assurance', {params})
+      axios.get(constants.resource_url_visit+'public/search/cartegrise/assurance/'+value)
           .then(response =>{
 
             this.openb = false
@@ -1321,6 +1831,7 @@ export default {
         //commit("setError", error);
 
       });
+      }, 1000000000);
 
     },
     modalShown() {
@@ -1379,6 +1890,57 @@ export default {
 
     },
 
+    fileRemoved(index, done, fileList) {
+
+      console.log('data', done, index, fileList)
+
+      let size = this.images[index].path + ''
+      let sizes = size.split('/')
+
+
+      //let formdata = new FormData();
+
+      //let si = ((sizes)[sizes.length-1]).split('.')
+      /*formdata.append('name',si[0])
+      formdata.append('accidentId',this.data.id)*/
+
+      let send={}
+      send.name = (sizes)[sizes.length-1]
+      send.id = this.data.id
+
+      console.log('datae', send)
+
+      //console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/delete-crash-image',send,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }}
+      )
+
+          .then(list => {
+
+            if(list.data.success){
+
+              this.images.splice(index, 1)
+
+              this.makeToast(this.$t('Image supprime avec success'),1)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de la suppression de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+
+    },
+
     fileAddedVehicles(formData, index, fileList){
 
       let formdata = new FormData();
@@ -1396,10 +1958,15 @@ export default {
 
             if(list.data.success){
               //
+
               let objet={}
               objet.path = list.data.data.path
               objet.name = list.data.data.name
-              this.imagevehicles.push(objet)
+              this.images1.push(objet)
+              this.vehicle.vehicleImages = this.images1
+
+
+              console.log('images1',this.images1)
 
             }else{
               this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
@@ -1415,6 +1982,84 @@ export default {
           });
     },
 
+    fileAddedDocument(formData, index, fileList){
+
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-vehicle-document-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //
+
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.images3.push(objet)
+              this.document.image = this.images3
+
+              console.log('images3',this.images3)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
+    fileAddedDocumentperson(formData, index, fileList){
+
+      let formdata = new FormData();
+
+      formdata.append('image',formData.get("file"))
+
+      console.log('data', formData, index, fileList)
+      axios.post(constants.resource_url+'accidents/save-person-image',formdata,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}
+      )
+          .then(list => {
+
+            if(list.data.success){
+              //
+
+              let objet={}
+              objet.path = list.data.data.path
+              objet.name = list.data.data.name
+              this.images4.push(objet)
+              this.document1.image = this.images4
+
+              console.log('images3',this.images4)
+
+            }else{
+              this.makeToast(this.$t('erreur lors de l\'ajout de l\'image'),0)
+            }
+
+            console.log('care',list.data.data)
+          })
+          .catch(function(error) {
+            console.log('products_error',error);
+            // Handle Errors here.
+            // var errorCode = error.code;
+
+          });
+    },
     removeVehicles(thisFile){
       this.$refs.myVueDropzones1.removeFile(thisFile)
       console.log("File removed!")
@@ -1439,7 +2084,9 @@ export default {
               let objet={}
               objet.path = list.data.data.path
               objet.name = list.data.data.name
-              this.imagepersons.push(objet)
+
+              this.images2.push(objet)
+              this.person.images = this.images2
 
             }else{
               this.makeToast(this.$t("erreur lors de l'ajout de l'image"),0)
@@ -1477,14 +2124,104 @@ export default {
 
       console.log('paf',params)
     },
-    addperson(){
+    addperson(value){
+
+
+      this.intelligenceformperson(value)
+      this.$bvModal.hide('choose')
       this.$bvModal.show('openperson')
+      this.operations=true
       this.person.personAccidentNumber = this.persons.length + 1
+      this.person.vehicleLinkedPedestrian = 1
+    },
+
+    intelligenceformperson(value){
+
+      switch (value){
+        case 0:
+            //activez rangee,place, les donnees du permis
+            this.seatingrangedisabled=true
+            this.roadTypedisabled=true
+            this.person.roadType = 1
+
+            this.occupantRestraintSystemdisabled=true
+            this.personActiondisabled=false
+
+            this.seatingplacedisabled=true
+            this.person.place = 1
+            this.person.range = 1
+             console.log('wearing',this.respdata.wearingHelmetResp[this.getidbycode(this.respdata.wearingHelmetResp,3)].id)
+
+            this.person.wearingHelmet = this.respdata.wearingHelmetResp[this.getidbycode(this.respdata.wearingHelmetResp,3)].id
+
+            this.nopermisdisabled=true
+            this.typepermisdisabled=true
+            this.drivingLicenceYeardisabled=true
+
+          this.person.personAction = this.respdata.actionResp[this.getidbycode(this.respdata.actionResp,9)].id
+
+
+          break;
+        case 1:
+          //activer rangee,place. desactiver tout relatif au permis
+          this.seatingrangedisabled=true
+          this.seatingplacedisabled=true
+          this.nopermisdisabled=false
+          this.typepermisdisabled=false
+          this.drivingLicenceYeardisabled=false
+
+          this.roadTypedisabled=true
+          this.person.roadType = 2
+          this.person.personAction = this.respdata.actionResp[this.getidbycode(this.respdata.actionResp,9)].id
+
+          this.occupantRestraintSystemdisabled=true
+          this.personActiondisabled=false
+          break;
+        case 2:
+          //desactiver rangee,place,permiss
+          this.seatingrangedisabled=false
+          this.seatingplacedisabled=false
+          this.nopermisdisabled=false
+          this.typepermisdisabled=false
+          this.drivingLicenceYeardisabled=false
+
+          this.roadTypedisabled=true
+          this.person.roadType = 3
+
+          this.person.occupantRestraintSystem = this.respdata.occupantRestraintSystemResp[this.getidbycode(this.respdata.occupantRestraintSystemResp,9)].id
+          this.occupantRestraintSystemdisabled=false
+          this.personActiondisabled=true
+          break;
+
+      }
+    },
+    retour(){
+      this.seen = true
+      this.vehicle={}
+    },
+    retour2(){
+      this.seen2 = true
+      this.person={}
+    },
+    addocument(){
+      this.$bvModal.show('opendocument')
+      this.operations=true
+    },
+    addocumentpersons(){
+      this.$bvModal.show('opendocumentperson')
+      this.operations=true
     },
     addvehicules(){
       this.$bvModal.show('openvehicule')
+      this.operations=true
       this.vehicle.vehicleAccidentNumber = this.vehicles.length + 1
     },
+
+    getidbycode(liste,code){
+
+      return liste.map(function(item) { return item.code; }).indexOf(code);
+    },
+
     submitall(){
       //console.log("vehicles",item)
       this.data.accidentTime = this.accidentTime.hh +":"+ this.accidentTime.mm
@@ -1500,8 +2237,8 @@ export default {
       formdata.append('accidentReq',JSON.stringify(this.data))
       //console.log('append',this.images.length)
       // formdata.append('images',this.imagetest)
-      // formdata.append('imagesvehicles',this.imagevehicles)
-      // formdata.append('imagespersons',this.imagepersons)
+      // formdata.append('imagesvehicles',this.vehicle.vehicleImages)
+      // formdata.append('imagespersons',this.person.images)
 
       /*const reader = new FileReader()
             reader.readAsDataURL(this.file)
@@ -1513,6 +2250,9 @@ export default {
       this.addpolice(formdata)
 
     },
+    choose(){
+      this.$bvModal.show('choose')
+    },
     submitperson(){
 
       //console.log("this.vehicles",this.person.vehicleAccidentNumber)
@@ -1522,28 +2262,82 @@ export default {
       this.$bvModal.hide('openperson')
       this.person.id=0
       this.person.care=0
-      this.person.images=this.imagepersons
-      this.imagepersons = []
-
+      //this.person.images=this.imagepersons
+      //this.imagepersons = []
       this.persons.push(this.person)
       console.log("this.vehicles",this.persons)
 
-
       this.person={}
+      this.makeToast(this.$t('added'),1)
+
+    },
+    submiteditvehicule(){
+      this.$bvModal.hide('openvehicule')
+
+
+      this.vehicles.splice(this.checkvehicule(this.vehicles,this.vehicle.vehicleAccidentNumber), 1,  this.vehicle)
+
+      this.vehicle={}
       this.makeToast(this.$t('added'),1)
     },
     submitvehicule(){
+
       this.$bvModal.hide('openvehicule')
       this.vehicle.vehicleId = 0
-      this.vehicle.vehicleImages = this.imagevehicles
+
+      //this.vehicle.vehicleImages = this.imagevehicles
       this.vehicles.push(this.vehicle)
+
       console.log("this.vehicles",this.vehicles)
-      this.imagevehicles = []
+      console.log("this.vehicles1",this.images1)
+      //this.imagevehicles = []
+
       this.vehicle={}
+      this.makeToast(this.$t('added'),1)
+
+    },
+    submiteditdocumentvehicule(){
+
+      this.operations=false
+
+      this.$bvModal.hide('opendocument')
+
+      this.documents.splice(this.checkdocument(this.documents,this.document.identification), 1,  this.document)
+
+      this.document={}
+      this.makeToast(this.$t('added'),1)
+
+    },
+    submitdocument(){
+
+      this.$bvModal.hide('opendocument')
+      this.document.vehicleId = this.vehicleId
+
+      this.documents.push(this.document)
+      this.vehicle.documents = this.documents
+
+      this.document={}
+      this.makeToast(this.$t('added'),1)
+
+    },
+    submitdocumentperson(){
+      this.$bvModal.hide('opendocumentperson')
+      this.document1.vehicleId = this.vehicleId
+
+      this.documents1.push(this.document1)
+      this.person.documents = this.documents1
+      this.document1={}
       this.makeToast(this.$t('added'),1)
     },
     selected(value){
       this.filteredSuggestions = []
+      this.vehicle.plate = value.item.numImmatriculation
+      this.vehicle.fabricationYear= value.item.dateDelivrance
+      this.vehicle.fabricationYear= value.item.vehicule.cylindre
+      this.vehicle.fabricationYear= value.item.vehicule.marqueVehicule
+      this.vehicle.fabricationYear= value.item.vehicule.typeVehicule
+      this.vehicle.fabricationYear= value.item.dateDelivrance
+
       this.valeur = value.item.name
       this.valeur1 = value
 
@@ -1644,6 +2438,44 @@ export default {
       contact.sort();
     },
 
+    onDocumentClick(value){
+
+      console.log('savechange', value);
+      console.log('savechange', value.types);
+
+      if(value.types=='examen'){
+
+        this.seen=!this.seen;
+
+        this.vehicle = this.vehicles[this.checkvehicule(this.vehicles,value.vehicleAccidentNumber)]
+
+
+        console.log('documents',this.vehicle)
+        this.vehicleId = this.vehicle.vehicleAccidentNumber
+        //filtrer la liste des documents
+        console.log('documents',this.documents)
+        console.log('documents',this.documents.filter(document => document.vehicleId === this.vehicleId))
+        console.log('documents',this.vehicleId)
+
+        this.documents = this.documents.filter(document => document.vehicleId === this.vehicleId);
+
+      }else{
+
+        this.seen2=!this.seen2;
+        let id = value.vgt_id
+        this.person = this.persons[id]
+        this.vehicleId = this.person.personAccidentNumber
+        //filtrer la liste des documents
+        this.documents1 = this.documents1.filter(document => document.vehicleId === this.vehicleId);
+
+      }
+
+
+
+      console.log('savechange', value);
+
+    },
+
     onRowclick(params){
       this.loadanotherpage = true
       console.log('paramis',params)
@@ -1664,6 +2496,41 @@ export default {
 
       return obj.map(function(item) { return item.id; }).indexOf(id);
 
+    },
+    checkvehicule(obj, id) {
+
+      return obj.map(function(item) { return item.vehicleAccidentNumber; }).indexOf(id);
+
+    },
+    checkperson(obj, id) {
+
+      return obj.map(function(item) { return item.personAccidentNumber; }).indexOf(id);
+
+    },
+    checkdocument(obj, id) {
+
+      return obj.map(function(item) { return item.identification; }).indexOf(id);
+
+    },
+    submiteditdocumentperson(){
+      this.operations=false
+
+      this.$bvModal.hide('opendocumentperson')
+
+      this.documents1.splice(this.checkdocument(this.documents1,this.document1.identification), 1,  this.document1)
+
+      this.document1={}
+      this.makeToast(this.$t('added'),1)
+    },
+    submiteditperson(){
+      this.operations=false
+
+      this.$bvModal.hide('openperson')
+
+      this.persons.splice(this.checkperson(this.persons,this.person.personAccidentNumber), 1,  this.person)
+
+      this.person={}
+      this.makeToast(this.$t('added'),1)
     },
     editProps(params){
 
@@ -1695,8 +2562,6 @@ export default {
     selectionChanged(){
       console.log('loadpage','')
     },
-
-
 
     makeToastTwo(variant = null) {
       console.log('Successfully Submitted')
@@ -1737,8 +2602,8 @@ export default {
 .foobar1{
   width: 100%;
   height: 300px;
-
 }
+
 /* style="height: 300px;width: 1104px"*/
 .form-control{
   font-size: 0.8rem!important;
@@ -1751,6 +2616,48 @@ select.form-control{
 }
 .form-group{
   margin-bottom:0.1rem
+}
+.taille{
+  border-radius: 25px;
+  width: 95px;
+  height: 80px;
+  font-weight: bold;
+  font-family: Calibri, "Helvetica Neue", Helvetica, sans-serif;
+  background: #e8eaed;
+  cursor: pointer;
+
+}
+.taille:hover{
+  border-radius: 25px;
+  width: 95px;
+  height: 80px;
+  font-weight: bold;
+  font-family: Calibri, "Helvetica Neue", Helvetica, sans-serif;
+  background: #9fc0e7;
+  cursor: pointer;
+
+}
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 50%;
+  transform: translate(-70%, -100%);
+  width: 10px;
+  height: 10px;
+  display: block;
+}
+
+.icons {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  height: 50%;
+  text-align: center;
+  width: 50px;
+  font-size: 11px;
+  transform: translate(-45%, 10%);
+  display: block;
 }
 
 </style>

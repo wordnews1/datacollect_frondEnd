@@ -980,8 +980,6 @@
                 <b-button  @click ="addvehicules()"  variant="success"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
-
-
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
 
@@ -1097,8 +1095,8 @@ export default {
   },
   data() {
     return {
-      images:[],
-      images1:[],
+    images:[],
+    images1:[],
       images2:[],
       images3:[],
       images4:[],
