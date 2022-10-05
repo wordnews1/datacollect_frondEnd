@@ -1,6 +1,289 @@
 <template>
 
   <b-overlay :show="show" rounded="sm">
+
+    <b-modal id="opendocumentperson" :title="$t('add_document')" hide-footer>
+
+      <template #modal-header="{}">
+        <!-- Emulate built in modal header close button action -->
+        <h5>{{$t("add_document")}} </h5>
+      </template>
+
+      <template #default="{  }">
+        <b-row style="margin-bottom: 20px">
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                dragText="Document"
+                browseText=""
+                primaryText=""
+                dropText=""
+                @before-remove="fileRemovedDocumentperson"
+                @upload-success="fileAddedDocumentperson"
+                :data-images="document1.image"
+                idUpload="myIdUpload2"
+            ></vue-upload-multiple-image>
+
+          </div>
+        </b-row>
+        <b-row>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Type de Document')"
+              label-for="input-1"
+          >
+            <b-form-select v-model="document1.type">
+              <option :value="null" disabled>-- Please select an option --</option>
+              <option v-for="option in respdata.documentTypeResp" :value="option.id" :key="option.id">
+                {{ option.name }}
+              </option>
+            </b-form-select>
+
+          </b-form-group>
+
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Identification')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-uppercase
+                v-model="document1.identification"
+                type="text"
+            ></b-form-input>
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Prenom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document1.recipientFirstname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Nom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document1.recipientLastname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date de Delivrance')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document1.issueDate" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date dexpiration')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document1.expireAt" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+
+        </b-row>
+
+
+        <p></p>
+        <div style="text-align: right">
+          <b-button v-if="operations"  @click="submitdocumentperson()" variant="outline-success" style="margin-right: 15px">
+            {{$t('ajouter')}}</b-button>
+
+          <b-button  v-if="!operations" @click="submiteditdocumentperson()" variant="outline-success" style="margin-right: 15px">
+            {{$t('modifier')}}</b-button>
+        </div>
+
+
+      </template>
+
+    </b-modal>
+
+    <b-modal id="opendocument" :title="$t('add_document')" hide-footer>
+
+      <template #modal-header="{}">
+        <!-- Emulate built in modal header close button action -->
+        <h5>{{$t("add_document")}} </h5>
+      </template>
+
+      <template #default="{  }">
+        <b-row style="margin-bottom: 20px">
+          <div class="col-md-12">
+
+            <vue-upload-multiple-image
+                dragText="Document"
+                browseText=""
+                primaryText=""
+                dropText=""
+                @before-remove="fileRemovedDocument"
+                @upload-success="fileAddedDocument"
+                :data-images="document.image"
+                idUpload="myIdUpload1"
+            ></vue-upload-multiple-image>
+
+          </div>
+        </b-row>
+        <b-row>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Type de Document')"
+              label-for="input-1"
+          >
+            <b-form-select v-model="document.type">
+              <option :value="null" disabled>-- Please select an option --</option>
+              <option v-for="option in respdata.documentTypeResp" :value="option.id" :key="option.id">
+                {{ option.value }}
+              </option>
+            </b-form-select>
+
+
+          </b-form-group>
+
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Identification')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-uppercase
+                v-model="document.identification"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Prenom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document.recipientFirstname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group
+              class="col-md-6 mb-30"
+              :label="$t('Nom')"
+              label-for="input-1"
+          >
+
+            <b-form-input
+                v-model="document.recipientLastname"
+                type="text"
+            ></b-form-input>
+
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date de Delivrance')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document.issueDate" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+          <b-form-group  style="margin-bottom: 10px"
+                         class="col-md-6 mb-30"
+                         :label="$t('Date dexpiration')"
+                         label-for="input-1"
+          >
+            <date-picker v-model="document.expireAt" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+          </b-form-group>
+
+        </b-row>
+
+
+        <p></p>
+        <div style="text-align: right">
+          <b-button v-if="operations"  @click="submitdocument()" variant="outline-success" style="margin-right: 15px">
+            {{$t('ajouter')}}</b-button>
+
+          <b-button  v-if="!operations" @click="submiteditdocumentvehicule()" variant="outline-success" style="margin-right: 15px">
+            {{$t('modifier')}}</b-button>
+        </div>
+
+
+      </template>
+
+    </b-modal>
+
+    <b-modal scrollable no-close-on-backdrop   id="choose" size="lg" hide-footer>
+
+      <b-row>
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="addperson(0)" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Chauffeur')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="addperson(1)" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Passager')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+        <b-col style="
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+">
+
+          <div>
+            <div  class="card mb-20">
+              <a href="#"  @click="addperson(2)" class="item item-text-wrap item-button-left  taille">
+                <i class="i-Add icon"></i> <span class="icons">{{$t('Pieton')}}</span>
+              </a>
+            </div>
+          </div>
+        </b-col>
+
+      </b-row>
+
+    </b-modal>
+
     <b-overlay :show="openb" rounded="sm" >
 
       <b-modal id="openassociate" :title="$t('open_box')" hide-footer>
@@ -977,8 +1260,13 @@
           <b-collapse id="accordion-7" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
-                <b-button  @click ="addvehicules()"  variant="success"
-                           style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+                <b-button   v-if="seen==true"  @click ="addvehicules()"  variant="success"
+                            style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+
+                <b-button v-if="seen==false" @click ="retour()"  variant="success"
+                          style="position: relative;right: 0;margin-right: 10px;">{{$t('retour')}}</b-button>
+                <b-button v-if="seen==false" @click ="addocument()"  variant="success"
+                          style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
@@ -1012,8 +1300,14 @@
           <b-collapse id="accordion-6" invisible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <b-row>
-                <b-button  @click ="addperson()"  variant="success"
+                <b-button  v-if="seen2==true" @click ="choose()"  variant="success"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
+
+                <b-button  v-if="seen2==false" @click ="retour2()"  variant="primary"
+                           style="position: relative;right: 0;margin-right: 10px;">{{$t('retour')}}</b-button>
+
+                <b-button v-if="seen2==false" @click ="addocumentpersons()"  variant="success"
+                          style="position: relative;right: 0;margin-right: 10px;">{{$t('add')}}</b-button>
 
                 <b-button  v-if="rowe.length==1 && rowe[0].care==0" @click ="associer()"  variant="success"
                            style="position: relative;right: 0;margin-right: 10px;">{{$t('associer')}}</b-button>
@@ -1054,6 +1348,7 @@
 
 
     </b-form>
+
   </b-overlay>
 
 </template>
@@ -1095,6 +1390,10 @@ export default {
   },
   data() {
     return {
+      documents:[],
+      documents1:[],
+      document:{},
+      document1:{},
     images:[],
     images1:[],
       images2:[],
@@ -1121,6 +1420,17 @@ export default {
       },
       rowe:{},
       operations:true,
+      seen:true,
+      seen2:true,
+      occupantRestraintSystemdisabled:true,
+      personActiondisabled:true,
+      roadTypedisabled:true,
+
+      nopermisdisabled:true,
+      typepermisdisabled:true,
+      drivingLicenceYeardisabled:true,
+      seatingrangedisabled:true,
+      seatingplacedisabled:true,
       respdata:{},
       data:{},
       vehicle:{},
@@ -1261,6 +1571,141 @@ export default {
     }
   },
   methods:{
+
+    submiteditdocumentvehicule(){
+
+      this.operations=false
+
+      this.$bvModal.hide('opendocument')
+
+      this.documents.splice(this.checkdocument(this.documents,this.document.identification), 1,  this.document)
+
+      this.document={}
+      this.makeToast(this.$t('added'),1)
+
+    },
+
+    checkvehicule(obj, id) {
+
+      return obj.map(function(item) { return item.vehicleAccidentNumber; }).indexOf(id);
+
+    },
+    checkperson(obj, id) {
+
+      return obj.map(function(item) { return item.personAccidentNumber; }).indexOf(id);
+
+    },
+    checkdocument(obj, id) {
+
+      return obj.map(function(item) { return item.identification; }).indexOf(id);
+
+    },
+    submitdocument(){
+
+      this.$bvModal.hide('opendocument')
+      this.document.vehicleId = this.vehicleId
+
+      this.documents.push(this.document)
+      this.vehicle.documents = this.documents
+
+      this.document={}
+      this.makeToast(this.$t('added'),1)
+
+    },
+    submitdocumentperson(){
+      this.$bvModal.hide('opendocumentperson')
+      this.document1.vehicleId = this.vehicleId
+
+      this.documents1.push(this.document1)
+      this.person.documents = this.documents1
+      this.document1={}
+      this.makeToast(this.$t('added'),1)
+    },
+
+    getdate: function() {
+      const today = new Date();
+      let day = today.getDate()<10?'0'+today.getDate():today.getDate() ;
+      let month = today.getMonth()<10?'0'+today.getMonth():today.getMonth() ;
+      const date = day+'/'+month+'/'+today.getFullYear() ;
+
+      const time = today.getHours() + ":" + today.getMinutes() ;//+ ":" + today.getSeconds();
+      console.log('date',date +' '+ time)
+      return date +' '+ time;
+      //this.timestamp = dateTime;
+    },
+    choose(){
+      this.$bvModal.show('choose')
+    },
+    intelligenceformperson(value){
+
+      switch (value){
+        case 0:
+          //activez rangee,place, les donnees du permis
+          this.seatingrangedisabled=true
+          this.roadTypedisabled=true
+          this.person.roadType = 1
+
+          this.occupantRestraintSystemdisabled=true
+          this.personActiondisabled=false
+
+          this.seatingplacedisabled=true
+          this.person.place = 1
+          this.person.range = 1
+          console.log('wearing',this.respdata.wearingHelmetResp[this.getidbycode(this.respdata.wearingHelmetResp,3)].id)
+
+          this.person.wearingHelmet = this.respdata.wearingHelmetResp[this.getidbycode(this.respdata.wearingHelmetResp,3)].id
+
+          this.nopermisdisabled=true
+          this.typepermisdisabled=true
+          this.drivingLicenceYeardisabled=true
+
+          this.person.personAction = this.respdata.actionResp[this.getidbycode(this.respdata.actionResp,9)].id
+
+
+          break;
+        case 1:
+          //activer rangee,place. desactiver tout relatif au permis
+          this.seatingrangedisabled=true
+          this.seatingplacedisabled=true
+          this.nopermisdisabled=false
+          this.typepermisdisabled=false
+          this.drivingLicenceYeardisabled=false
+
+          this.roadTypedisabled=true
+          this.person.roadType = 2
+          this.person.personAction = this.respdata.actionResp[this.getidbycode(this.respdata.actionResp,9)].id
+
+          this.occupantRestraintSystemdisabled=true
+          this.personActiondisabled=false
+          break;
+        case 2:
+          //desactiver rangee,place,permiss
+          this.seatingrangedisabled=false
+          this.seatingplacedisabled=false
+          this.nopermisdisabled=false
+          this.typepermisdisabled=false
+          this.drivingLicenceYeardisabled=false
+
+          this.roadTypedisabled=true
+          this.person.roadType = 3
+
+          this.person.occupantRestraintSystem = this.respdata.occupantRestraintSystemResp[this.getidbycode(this.respdata.occupantRestraintSystemResp,9)].id
+          this.occupantRestraintSystemdisabled=false
+          this.personActiondisabled=true
+          break;
+
+      }
+
+      },
+    addperson(value){
+
+      this.intelligenceformperson(value)
+      this.$bvModal.hide('choose')
+      this.$bvModal.show('openperson')
+      this.operations=true
+      this.person.personAccidentNumber = this.persons.length + 1
+      this.person.vehicleLinkedPedestrian = 1
+    },
 
     ...mapActions(["addpolice","ListData","DetailsAccident"]),
     modalShown() {
@@ -1595,12 +2040,29 @@ export default {
     timechoose(data){
       console.log('data',data)
     },
-    addperson(){
+   /* addperson(){
       this.$bvModal.show('openperson')
+    },*/
+    retour(){
+      this.seen = true
+      this.vehicle={}
+    },
+    retour2(){
+      this.seen2 = true
+      this.person={}
+    },
+    addocument(){
+      this.$bvModal.show('opendocument')
+      this.operations=true
+    },
+    addocumentpersons(){
+      this.$bvModal.show('opendocumentperson')
+      this.operations=true
     },
     addvehicules(){
       this.$bvModal.show('openvehicule')
       this.operations=true
+      this.vehicle.vehicleAccidentNumber = this.vehicles.length + 1
     },
     submitall(){
 
@@ -1659,6 +2121,16 @@ export default {
       console.log("this.vehicles",this.vehicles)
 
       this.vehicle={}
+      this.makeToast(this.$t('added'),1)
+    },
+    submiteditdocumentperson(){
+      this.operations=false
+
+      this.$bvModal.hide('opendocumentperson')
+
+      this.documents1.splice(this.checkdocument(this.documents1,this.document1.identification), 1,  this.document1)
+
+      this.document1={}
       this.makeToast(this.$t('added'),1)
     },
     submiteditvehicule(){

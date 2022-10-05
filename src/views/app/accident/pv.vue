@@ -705,7 +705,7 @@ export default {
                   //this.listexamen.push(response.data.data.exams[response.data.data.exams.length-1])
                   //this.listexamen=response.data.data.exams
                   this.listexamen.push(this.valeur1.item)
-                  this.$bvModal.hide('confirmopenAccount')
+                 // this.$bvModal.hide('confirmopenAccount')
                 }else{
                   this.makeToast(this.$t('error'),0)
                 }
@@ -735,10 +735,11 @@ export default {
                   //this.listsoin.push(response.data.data.treatments[response.data.data.treatments.length-1])
                   //this.listsoin=response.data.data.treatments
                   console.log('products_error1',this.valeur1.item);
+                  this.valeur.item.date = this.getdate()
                   this.listsoin.push(this.valeur1.item)
 
 
-                  this.$bvModal.hide('confirmopenAccount')
+                  //this.$bvModal.hide('confirmopenAccount')
                   this.openb = false
                 }else{
                   this.makeToast(this.$t('error'),0)
@@ -767,7 +768,7 @@ export default {
                   //this.listrauma.push(response.data.data.injuries[response.data.data.injuries.length-1])
                   //this.listrauma=response.data.data.injuries
                   this.listrauma.push(this.valeur1.item)
-                  this.$bvModal.hide('confirmopenAccount')
+                  //this.$bvModal.hide('confirmopenAccount')
 
                 }else{
                   this.makeToast(this.$t('error'),0)
@@ -786,6 +787,14 @@ export default {
 
           });break;
       }
+    },
+    getdate(){
+      let date = new Date().toLocaleString()
+      let date1 = date.split(",")
+      let date2 = date1.split(" ")
+      console.log('date',date1[0] + date2[0])
+
+      return date1[0] + date2[0]
     },
     suggestionon(value){
       console.log('suggestionon',value)

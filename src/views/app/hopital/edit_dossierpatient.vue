@@ -1090,6 +1090,11 @@
                   field: "name",
                   hidden: false,
                 },
+                {
+                  label: "Date",
+                  field: "date",
+                  hidden: false,
+                },
 
                 {
                   label: "actions",
@@ -1110,6 +1115,11 @@
                         field: "name",
                         hidden: false,
                     },
+                  {
+                    label: "Date",
+                    field: "date",
+                    hidden: false,
+                  },
                   {
 
                     label: "Status",
@@ -1142,6 +1152,11 @@
                         field: "price",
                         hidden: false,
                     },
+                  {
+                    label: "Date",
+                    field: "date",
+                    hidden: false,
+                  },
                     {
 
                       label: "Status",
@@ -1211,6 +1226,30 @@
         },
         methods:{
 
+
+          getdate: function() {
+            const today = new Date();
+            let day = today.getDate()<10?'0'+today.getDate():today.getDate() ;
+            let month = today.getMonth()<10?'0'+today.getMonth():today.getMonth() ;
+            const date = day+'/'+month+'/'+today.getFullYear() ;
+
+            const time = today.getHours() + ":" + today.getMinutes() ;//+ ":" + today.getSeconds();
+            console.log('date',date +' '+ time)
+            return date +' '+ time;
+            //this.timestamp = dateTime;
+          },
+
+          getdatew(){
+            let date = new Date().toLocaleString()
+            let date1 = date.split(",")
+            console.log('date',date1[1])
+
+            let date2 = date1[1].split(" ")
+            console.log('date',date1[0] + date2[0])
+            console.log('date',date2[0])
+
+            return date1[0] + date2[0]
+          },
             ...mapActions(["ListDossierPatient","UpdatePatients"]),
           onEditClick(params){
 
@@ -1334,6 +1373,7 @@
                          console.log('products_error',response);
                          //this.listexamen.push(response.data.data.exams[response.data.data.exams.length-1])
                          //this.listexamen=response.data.data.exams
+                         this.valeur.item.date = this.getdate()
                          this.listexamen.push(this.valeur1.item)
                          this.$bvModal.hide('confirmopenAccount')
                        }else{
@@ -1365,10 +1405,12 @@
                          //this.listsoin.push(response.data.data.treatments[response.data.data.treatments.length-1])
                          //this.listsoin=response.data.data.treatments
                          console.log('products_error1',this.valeur1.item);
+
                          this.listsoin.push(this.valeur1.item)
+                         this.valeur.item.date = this.getdate()
 
+                         //this.$bvModal.hide('confirmopenAccount')
 
-                         this.$bvModal.hide('confirmopenAccount')
                          this.openb = false
                        }else{
                          this.makeToast(this.$t('error'),0)
@@ -1396,6 +1438,7 @@
 
                          //this.listrauma.push(response.data.data.injuries[response.data.data.injuries.length-1])
                          //this.listrauma=response.data.data.injuries
+                         this.valeur.item.date = this.getdate()
                          this.listrauma.push(this.valeur1.item)
                          this.$bvModal.hide('confirmopenAccount')
 

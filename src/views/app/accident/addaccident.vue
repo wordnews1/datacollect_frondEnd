@@ -716,12 +716,13 @@
               class="col-md-6 mb-30"
               :label="$t('Type d\' usager de la Route')"
               label-for="input-1"
+
           >
 
-            <b-form-select v-model="person.roadType">
+            <b-form-select v-model="person.roadType" :disabled="true">
               <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
               <option v-for="option in respdata.personRoadTypeResp" :value="option.id" :key="option.id">
-                {{ option.value }}
+                {{ option.value }}:
               </option>
             </b-form-select>
 
@@ -1412,13 +1413,14 @@
                 <b-col md="12">
                   <b-overlay :show="loadanotherpage" rounded="sm" >
                   <div v-if="seen2">
-                    <ListTable v-if="seen2==true"  :type="'soins'" :rows="persons" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
+                    <ListTable v-if="seen2==true"  :type="'soins'" @onEditClick="onEditClick" :rows="persons" :columns="columnoins" @onRowclick="onRowclick" :isCLoseMenu="true"
                                :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                @deleteProps="deleteProps" @onDocumentClick="onDocumentClick" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
                   </div>
+
                     <div v-if="seen2==false">
-                      <ListTable :type="'document'" :rows="documents1" :columns="columndocument" @onRowclick="onRowclick" :isCLoseMenu="true"
+                      <ListTable :type="'document'" :rows="documents1" @onEditClick="onEditClick" :columns="columndocument" @onRowclick="onRowclick" :isCLoseMenu="true"
                                  :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                  @deleteProps="deleteProps" @onDocumentClick="onDocumentClick" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
 
@@ -1763,6 +1765,22 @@ export default {
         case 'soins':
           this.person = params
           this.$bvModal.show('openperson')
+          this.operations=false
+
+          break;
+        case 'document':
+          this.document = params
+
+
+          this.$bvModal.show('opendocument')
+          this.operations=false
+
+          break;
+        case 'document1':
+          this.document1 = params
+
+
+          this.$bvModal.show('opendocumentperson')
           this.operations=false
 
           break;
@@ -2166,17 +2184,20 @@ export default {
           //activer rangee,place. desactiver tout relatif au permis
           this.seatingrangedisabled=true
           this.seatingplacedisabled=true
+
           this.nopermisdisabled=false
           this.typepermisdisabled=false
-          this.drivingLicenceYeardisabled=false
 
+          this.drivingLicenceYeardisabled=false
           this.roadTypedisabled=true
+
           this.person.roadType = 2
           this.person.personAction = this.respdata.actionResp[this.getidbycode(this.respdata.actionResp,9)].id
 
           this.occupantRestraintSystemdisabled=true
           this.personActiondisabled=false
           break;
+
         case 2:
           //desactiver rangee,place,permiss
           this.seatingrangedisabled=false

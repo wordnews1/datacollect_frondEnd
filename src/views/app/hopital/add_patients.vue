@@ -27,6 +27,9 @@
 
 
             </b-form-group>
+
+
+
             <b-form-group
                 class="col-md-6 mb-30"
                 :label="$t('nom')"
@@ -93,7 +96,7 @@
                 <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
                 <option value="frere">Frere</option>
                 <option value="soeur">Soeur</option>
-                <option value="passant">Passant</option>
+                <option value="bienfaiteur">Bienfaiteur</option>
                 <option value="passant">Autorite Etatique</option>
                 <option value="passant">Autres</option>
 
@@ -151,6 +154,35 @@
                                         >
 
                                     </b-form-group>
+                                  <b-form-group  style="margin-bottom: 10px"
+                                                 class="col-md-6 mb-30"
+                                                 :label="$t('Statut du Patient')"
+                                                 label-for="input-1"
+                                  >
+
+                                    <b-form-select v-model="contact.roadType">
+                                      <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                                      <option v-for="option in respdata.personRoadTypeResp" :value="option.id" :key="option.id">
+                                        {{ option.value }}
+                                      </option>
+                                    </b-form-select>
+
+                                  </b-form-group>
+                                  <b-form-group  style="margin-bottom: 10px"
+                                                 class="col-md-6 mb-30"
+                                                 :label="$t('Profession')"
+                                                 label-for="input-1"
+                                  >
+
+                                    <b-form-select  v-model="contact.profession">
+                                      <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
+                                      <option v-for="option in respdata.professionResp" :value="option.id" :key="option.id">
+                                        {{ option.name }}
+                                      </option>
+                                    </b-form-select>
+
+
+                                  </b-form-group>
                                     <b-form-group
                                             class="col-md-12 mb-30"
                                             :label="$t('prenom_label')"
@@ -247,9 +279,6 @@
                                     </b-form-group>
 
 
-
-
-
                                     <b-form-group
                                             class="col-md-12 mb-30"
                                             :label="$t('passports')"
@@ -263,6 +292,7 @@
                                         ></b-form-input>
 
                                     </b-form-group>
+
                                       <label style="margin-left: 15px;font-size: 12px;color: #1b406c;margin-bottom: 4px;">Sexe: </label>
 <!--                                    <b-form-select
                                         :label="$t(''Genre')"
@@ -290,8 +320,6 @@
                                       </select>
                                 </b-col>
                             </b-row>
-
-
 
                         </b-card-body>
                     </b-collapse>
@@ -675,7 +703,7 @@
 
         data() {
             return {
-
+              respdata:[],
               persontrauma:1,
               sexes:[{
                 id:1,
@@ -768,13 +796,17 @@
             },
         },
         computed: {
-            ...mapGetters(["GetStorePatients"]),
+            ...mapGetters(["GetStorePatients","GETLISTDATA"]),
         },
+      mounted(){
+
+        this.ListData()
+      },
 
 
         methods:{
 
-            ...mapActions(["StorePatients"]),
+            ...mapActions(["StorePatients","ListData"]),
           submitcontact(){
 
             this.$bvModal.hide('opencontacts')
@@ -878,6 +910,12 @@
         },
 
       watch:{
+        GETLISTDATA(data){
+
+          console.log('data',data)
+          this.respdata = data
+
+        },
 
         GetStorePatients(value){
 
