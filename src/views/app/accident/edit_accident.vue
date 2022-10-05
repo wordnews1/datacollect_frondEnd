@@ -1572,6 +1572,11 @@ export default {
   },
   methods:{
 
+    getidbycode(liste,code){
+
+      return liste.map(function(item) { return item.code; }).indexOf(code);
+    },
+
     submiteditdocumentvehicule(){
 
       this.operations=false
@@ -2408,6 +2413,49 @@ select.form-control{
 }
 .form-group{
   margin-bottom:0.1rem
+}
+
+.taille{
+  border-radius: 25px;
+  width: 95px;
+  height: 80px;
+  font-weight: bold;
+  font-family: Calibri, "Helvetica Neue", Helvetica, sans-serif;
+  background: #e8eaed;
+  cursor: pointer;
+
+}
+.taille:hover{
+  border-radius: 25px;
+  width: 95px;
+  height: 80px;
+  font-weight: bold;
+  font-family: Calibri, "Helvetica Neue", Helvetica, sans-serif;
+  background: #9fc0e7;
+  cursor: pointer;
+
+}
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 50%;
+  transform: translate(-70%, -100%);
+  width: 10px;
+  height: 10px;
+  display: block;
+}
+
+.icons {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  height: 50%;
+  text-align: center;
+  width: 50px;
+  font-size: 11px;
+  transform: translate(-45%, 10%);
+  display: block;
 }
 
 </style>
