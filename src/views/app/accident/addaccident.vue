@@ -421,7 +421,7 @@
             <b-form-select v-model="document.type">
               <option :value="null" disabled>-- Please select an option --</option>
               <option v-for="option in respdata.documentTypeResp" :value="option.id" :key="option.id">
-                {{ option.value }}
+                {{ option.name }}
               </option>
             </b-form-select>
 
@@ -1420,6 +1420,7 @@
                   </div>
 
                     <div v-if="seen2==false">
+
                       <ListTable :type="'document'" :rows="documents1" @onEditClick="onEditClick" :columns="columndocument" @onRowclick="onRowclick" :isCLoseMenu="true"
                                  :totalPage="totalPagesoin_" :totalElement="totalElementsoin" :links="linksoin"
                                  @deleteProps="deleteProps" @onDocumentClick="onDocumentClick" @editProps="editProps" @loadpage="loadpage" @selectionChanged="clickRow"></ListTable>
@@ -1499,6 +1500,8 @@ export default {
   data() {
     return {
       vehicleId:0,
+      images3:[],
+      images4:[],
       permises:[
         {id:1,
         value:"A"},
@@ -1668,7 +1671,14 @@ export default {
           label: "type",
           field: "type",
           hidden: false,
+        },
+        {
+          label: "action",
+          field: "action",
+          hidden: false,
+          html: true,
         }
+
       ],
       columnoins:[
 
@@ -2015,8 +2025,12 @@ export default {
       )
           .then(list => {
 
+            console.log('images3',list.data)
+            console.log('images3',list.data.data.path)
+            console.log('images3',list.data.success)
             if(list.data.success){
               //
+
 
               let objet={}
               objet.path = list.data.data.path
@@ -2145,6 +2159,7 @@ export default {
     addperson(value){
 
 
+      this.person={}
       this.intelligenceformperson(value)
       this.$bvModal.hide('choose')
       this.$bvModal.show('openperson')
@@ -2225,14 +2240,17 @@ export default {
       this.person={}
     },
     addocument(){
+      this.document={}
       this.$bvModal.show('opendocument')
       this.operations=true
     },
     addocumentpersons(){
+      this.document1={}
       this.$bvModal.show('opendocumentperson')
       this.operations=true
     },
     addvehicules(){
+      this.vehicles={}
       this.$bvModal.show('openvehicule')
       this.operations=true
       this.vehicle.vehicleAccidentNumber = this.vehicles.length + 1
@@ -2507,6 +2525,12 @@ export default {
           break;
         case 'soins':
           this.removelist(this.persons,this.checkId(this.persons,params.id))
+          break;
+        case 'document':
+          this.removelist(this.documents,this.checkId(this.documents,params.id))
+          break;
+        case 'document1':
+          this.removelist(this.documents1,this.checkId(this.documents1,params.id))
           break;
 
       }

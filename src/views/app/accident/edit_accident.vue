@@ -2073,6 +2073,8 @@ export default {
 
       this.show=true
       console.log("vehicles",this.rowes.id)
+
+
       //if(data.accidentTime)
       //this.data.accidentTime = this.accidentTime.hh +":"+ this.accidentTime.mm
       this.data.road = 0
