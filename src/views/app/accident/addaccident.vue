@@ -1766,23 +1766,23 @@ export default {
      // this.data.accidentSeverity = this.getidbycode(this.respdata.accidentSeverityResp,9)
 
 
-      this.data.impactType = this.getidbycode(this.respdata.impactTypeResp,1)
+      this.data.impactType =this.respdata.impactTypeResp[ this.getidbycode(this.respdata.impactTypeResp,1)].id
 
-      console.log('accidenryyyyy',this.respdata.impactTypeResp)
-      console.log('accidenryyyyy',this.getidbycode(this.respdata.impactTypeResp,1))
-      console.log('accidenryyyyy',this.getidbycode(this.respdata.accidentTypeResp,9))
+      console.log('imact',this.getidbycode(this.respdata.impactTypeResp,1))
+      console.log('imact',this.respdata.impactTypeResp)
+      console.log('imact',this.respdata.impactTypeResp[0])
 
-      this.data.accidentType = this.getidbycode(this.respdata.accidentTypeResp,9)
-      this.data.climaticCondition = this.getidbycode(this.respdata.climaticConditionResp,9)
-      this.data.brightnessCondition = this.getidbycode(this.respdata.brightnessConditionResp,9)
-      this.data.roadType = this.getidbycode(this.respdata.roadTypeResp,9)
-      this.data.roadCategory = this.getidbycode(this.respdata.roadCategoryResp,9)
-      this.data.roadState = this.getidbycode(this.respdata.roadStateResp,9)
-      this.data.roadIntersection = this.getidbycode(this.respdata.roadIntersectionResp,9)
-      this.data.block = this.getidbycode(this.respdata.blockResp,9)
-      this.data.roadTrafficControl = this.getidbycode(this.respdata.roadTrafficControlResp,9)
-      this.data.virage = this.getidbycode(this.respdata.virageResp,9)
-      this.data.roadSlopSection = this.getidbycode(this.respdata.roadSlopSectionResp,9)
+      this.data.accidentType =this.respdata.accidentTypeResp[ this.getidbycode(this.respdata.accidentTypeResp,8)].id
+      this.data.climaticCondition = this.respdata.climaticConditionResp[this.getidbycode(this.respdata.climaticConditionResp,9)].id
+      this.data.brightnessCondition = this.respdata.brightnessConditionResp[this.getidbycode(this.respdata.brightnessConditionResp,9)].id
+      this.data.roadType = this.respdata.roadTypeResp[this.getidbycode(this.respdata.roadTypeResp,9)].id
+      //this.data.roadCategory = this.getidbycode(this.respdata.roadCategoryResp,9)
+      this.data.roadState = this.respdata.roadStateResp[this.getidbycode(this.respdata.roadStateResp,9)].id
+      this.data.roadIntersection = this.respdata.roadIntersectionResp[this.getidbycode(this.respdata.roadIntersectionResp,9)].id
+      this.data.block = this.respdata.blockResp[this.getidbycode(this.respdata.blockResp,3)].id
+      this.data.roadTrafficControl = this.respdata.controlResp[this.getidbycode(this.respdata.controlResp,7)].id
+      this.data.virage =this.respdata.virageResp[ this.getidbycode(this.respdata.virageResp,9)].id
+      this.data.roadSlopSection =this.respdata.roadSlopSectionResp[ this.getidbycode(this.respdata.roadSlopSectionResp,9)].id
 
     },
 
@@ -2667,7 +2667,7 @@ export default {
       console.log('dataeveryone',data)
       this.respdata = data
 
-      //this.loaddata();
+      this.loaddata();
 
     },
     GETADDACCIDENT(data){
