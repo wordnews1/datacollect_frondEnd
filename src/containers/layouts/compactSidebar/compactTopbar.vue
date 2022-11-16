@@ -305,6 +305,7 @@ export default {
       changeLocale : function (data) {
 
           this.$i18n.locale = data.code;
+          console.log('console',data)
 
       },
     logoutUser() {

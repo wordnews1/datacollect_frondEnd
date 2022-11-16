@@ -51,6 +51,8 @@
         <b-row  style="right: 0;position: absolute;margin-right: 32px;margin-top: 3px;">
           <b-col md="12">
 
+
+    <div  v-if=" checkArray(roles,'policier')">
             <div>
               <div  class="card mb-20">
                 <a href="#"  @click="addaccident()" class="item item-text-wrap item-button-left  taille">
@@ -60,7 +62,7 @@
             </div>
             <div v-if="rowe.length<=1">
               <div class="card mb-20">
-                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+
                 <a href="#"  @click="consult()" class="item item-text-wrap item-button-left  taille">
                   <i class="i-Folder-Open icon"></i>
                   <span class="icons">{{$t('consultfolder')}}</span>
@@ -76,15 +78,6 @@
                 </a>
               </div>
             </div>
-
-            <!--            <div v-if=" rowe.length<=1 ">
-              <div class="card mb-20">
-                <a href="#"  @click="associer()" class="item item-text-wrap item-button-left  taille">
-                  <i class="i-Receipt-3 icon"></i>
-                  <span class="icons" >{{$t('associer')}}</span>
-                </a>
-              </div>
-            </div>-->
 
             <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
               <div class="card mb-20">
@@ -120,25 +113,30 @@
               </div>
             </div>
 
-            <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
-              <div class="card mb-20">
-                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
-                <a href="#"  @click="signin(1)" class="item item-text-wrap item-button-left  taille">
-                  <i class="i-Close icon"></i>
+    </div>
+            <div v-if=" checkArray(roles,'policeManager')" >
 
-                  <span class="icons">{{$t('accepter')}}</span>
-                </a>
-              </div>
-            </div>
-            <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
-              <div class="card mb-20">
-                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
-                <a href="#"  @click="signin(2)" class="item item-text-wrap item-button-left  taille">
-                  <i class="i-Close icon"></i>
+                <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
+                  <div class="card mb-20">
+                    <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                    <a href="#"  @click="signin(1)" class="item item-text-wrap item-button-left  taille">
+                      <i class="i-Close icon"></i>
 
-                  <span class="icons">{{$t('refuser')}}</span>
-                </a>
-              </div>
+                      <span class="icons">{{$t('accepter')}}</span>
+                    </a>
+                  </div>
+                </div>
+                <div v-if="rowe.length<=1 && rowe[0].status=='READY'">
+                  <div class="card mb-20">
+                    <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                    <a href="#"  @click="signin(2)" class="item item-text-wrap item-button-left  taille">
+                      <i class="i-Close icon"></i>
+
+                      <span class="icons">{{$t('refuser')}}</span>
+                    </a>
+                  </div>
+                </div>
+
             </div>
 
 
@@ -221,8 +219,9 @@ export default {
     ListTable,Signin
   },
   mounted(){
+    this.roles  = this.$store.state.authData.role
 
-    console.log('fetchvuelistpatient','patient')
+    console.log('fetchvuelistpatient',this.roles)
 
     this.FetchVueListaccidents(getRequestParams(this.filter,this.currentpage,10,this.$i18n.locale))
 
@@ -238,6 +237,9 @@ export default {
   methods: {
 
     ...mapActions(["FetchVueKanban", "FetchVueGraph", "FetchVueListaccidents","Finish"]),
+    checkArray(arr1,arr2){
+      return (arr1.filter(x => arr2.includes(x))).length
+    },
     signaturee(data){
     this.openb=true
       switch(this.operations){
@@ -264,6 +266,7 @@ export default {
       }
 
       this.$router.push({name: 'st_signin',params: { rowes:this.rowe }})*/
+
       this.operations = data
 
       this.$bvModal.show('signin')
@@ -469,6 +472,7 @@ export default {
   data() {
 
     return {
+      roles:[],
       currentpage:1,
       filter:"",
       operations:0,

@@ -535,6 +535,7 @@
           </div>
         </b-row>
         <b-row>
+
           <b-form-group  style="margin-bottom: 10px"
               class="col-md-12 mb-30"
               :label="$t('véhicules concerné')"
@@ -544,7 +545,8 @@
 
             <b-form-select @change="getSelectedItem" v-model="person.vehicleAccidentNumber">
               <option :value="null" disabled>&#45;&#45; Please select an option &#45;&#45;</option>
-              <option v-for="option in vehicles" :value="option.vehicleAccidentNumber" :key="option.vehicleAccidentNumber">
+              <option v-for="option in vehicles" :value="option.vehicleAccidentNumber"
+                      :key="option.vehicleAccidentNumber">
                 {{ option.plate }}
               </option>
             </b-form-select>
@@ -1489,6 +1491,8 @@ export default {
   },
 
   mounted(){
+
+    this.data.accidentType = 0
     console.log('rowe',this.rowes)
 
     //this.ListDossierPatient(this.rowes[0].id)
@@ -1757,6 +1761,31 @@ export default {
     }
   },
   methods:{
+    loaddata(){
+
+     // this.data.accidentSeverity = this.getidbycode(this.respdata.accidentSeverityResp,9)
+
+
+      this.data.impactType = this.getidbycode(this.respdata.impactTypeResp,1)
+
+      console.log('accidenryyyyy',this.respdata.impactTypeResp)
+      console.log('accidenryyyyy',this.getidbycode(this.respdata.impactTypeResp,1))
+      console.log('accidenryyyyy',this.getidbycode(this.respdata.accidentTypeResp,9))
+
+      this.data.accidentType = this.getidbycode(this.respdata.accidentTypeResp,9)
+      this.data.climaticCondition = this.getidbycode(this.respdata.climaticConditionResp,9)
+      this.data.brightnessCondition = this.getidbycode(this.respdata.brightnessConditionResp,9)
+      this.data.roadType = this.getidbycode(this.respdata.roadTypeResp,9)
+      this.data.roadCategory = this.getidbycode(this.respdata.roadCategoryResp,9)
+      this.data.roadState = this.getidbycode(this.respdata.roadStateResp,9)
+      this.data.roadIntersection = this.getidbycode(this.respdata.roadIntersectionResp,9)
+      this.data.block = this.getidbycode(this.respdata.blockResp,9)
+      this.data.roadTrafficControl = this.getidbycode(this.respdata.roadTrafficControlResp,9)
+      this.data.virage = this.getidbycode(this.respdata.virageResp,9)
+      this.data.roadSlopSection = this.getidbycode(this.respdata.roadSlopSectionResp,9)
+
+    },
+
     onEditClick(params){
 
       console.log('savechange', params);
@@ -2183,15 +2212,13 @@ export default {
             this.seatingplacedisabled=true
             this.person.place = 1
             this.person.range = 1
-             console.log('wearing',this.respdata.wearingHelmetResp[this.getidbycode(this.respdata.wearingHelmetResp,3)].id)
-
             this.person.wearingHelmet = this.respdata.wearingHelmetResp[this.getidbycode(this.respdata.wearingHelmetResp,3)].id
 
             this.nopermisdisabled=true
             this.typepermisdisabled=true
             this.drivingLicenceYeardisabled=true
 
-          this.person.personAction = this.respdata.actionResp[this.getidbycode(this.respdata.actionResp,9)].id
+            this.person.personAction = this.respdata.actionResp[this.getidbycode(this.respdata.actionResp,9)].id
 
 
           break;
@@ -2250,12 +2277,22 @@ export default {
       this.operations=true
     },
     addvehicules(){
-      this.vehicles={}
+      this.vehicle={}
       this.$bvModal.show('openvehicule')
       this.operations=true
       this.vehicle.vehicleAccidentNumber = this.vehicles.length + 1
     },
 
+    getlistepersonbytypeuserandmatricule(matricule,typeuser){
+      var array = []
+      this.persons.forEach((element) =>{
+        if(element.roadType == typeuser && element.vehicleAccidentNumber == matricule){
+          array.push(element);
+        }
+      })
+      return array.length
+
+    },
     getidbycode(liste,code){
 
       return liste.map(function(item) { return item.code; }).indexOf(code);
@@ -2297,6 +2334,10 @@ export default {
       //console.log("this.vehicles",this.person.vehicleAccidentNumber)
       //console.log("this.vehicles",this.person.vehicleAccidentNumber==null)
       //return;
+      /*if((this.getlistepersonbytypeuserandmatricule(this.person.vehicleAccidentNumber,this.getidbycode(this.respdata.roadtypeResp,1))) >0){
+        this.makeToast(this.$t('un chauffeur existe deja pour ce vehicule'),0)
+        return ;
+      }*/
 
       this.$bvModal.hide('openperson')
       this.person.id=0
@@ -2360,6 +2401,8 @@ export default {
 
     },
     submitdocumentperson(){
+      //check if this matricule has already an vehicule
+
       this.$bvModal.hide('opendocumentperson')
       this.document1.vehicleId = this.vehicleId
 
@@ -2621,8 +2664,10 @@ export default {
   watch:{
     GETLISTDATA(data){
 
-      console.log('data',data)
+      console.log('dataeveryone',data)
       this.respdata = data
+
+      //this.loaddata();
 
     },
     GETADDACCIDENT(data){

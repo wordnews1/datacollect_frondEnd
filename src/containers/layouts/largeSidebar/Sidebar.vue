@@ -78,7 +78,8 @@
             </li>
 
           <li
-              v-if="this.$store.state.authData.role.indexOf('policier') !== -1"
+              v-if="this.$store.state.authData.role.indexOf('policier') !== -1
+              || this.$store.state.authData.role.indexOf('policeManager') !== -1"
               @mouseenter="toggleSubMenu"
               class="nav-item"
               :class="{ active: selectedParentMenu == 'crma' }"
