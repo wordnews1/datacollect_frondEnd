@@ -112,6 +112,16 @@
                 </a>
               </div>
             </div>
+      <div v-if="rowe.length<=1 && rowe[0].status=='OPENED'">
+              <div class="card mb-20">
+                <!--  <div v-if=" checkArray(roles,controleur)" class="card mb-20">-->
+                <a href="#" @click="signin(0)" class="item item-text-wrap item-button-left  taille">
+                  <i class="i-Building   icon"></i>
+
+                  <span class="icons">{{$t('Terminer le PV')}}</span>
+                </a>
+              </div>
+            </div>
 
     </div>
             <div v-if=" checkArray(roles,'policeManager')" >

@@ -1497,6 +1497,7 @@ export default {
 
     //this.ListDossierPatient(this.rowes[0].id)
     this.ListData()
+    //this.vehicle.vehicleImages =[]
     //this.$refs.myMap.mapObject._onResize();
 
 

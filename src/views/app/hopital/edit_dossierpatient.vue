@@ -229,6 +229,23 @@
                             type="text"
                             :placeholder="$t('valeur')"
                     ></b-form-input>
+                  <b-form-group
+                      class="col-md-3 mb-30"
+                      :label="$t('Date')"
+                      label-for="input-1"
+                  >
+                    <date-picker v-model="dates" format="DD/MM/YYYY"  valueType="DD/MM/YYYY"></date-picker>
+
+                  </b-form-group>
+                  <b-form-group
+                      class="col-md-3 mb-30"
+                      :label="$t('Heure')"
+                      label-for="input-1"
+                  >
+                    <vue-timepicker v-model="heures" format="hh:mm" ></vue-timepicker>
+
+
+                  </b-form-group>
 
                   <b-list-group v-if="filteredSuggestions.length" style="float:inherit;position:absolute;z-index:1">
 
@@ -1017,6 +1034,8 @@
         },
         data() {
             return {
+              dates:"",
+              heures:"",
               sexes:[{
                 id:1,
                 value:"Homme"
@@ -1357,7 +1376,8 @@
             this.openb=true
             let soin = {
               care: this.folder_id,
-              item: this.valeur1.item.id
+              item: this.valeur1.item.id,
+              date: this.dates+" "+this.heure
             };
             switch(this.type){
 

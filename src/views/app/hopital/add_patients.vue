@@ -340,13 +340,14 @@
 
                                 <b-col md="6">
 
+
+
                                     <b-form-group
                                             class="col-md-12 mb-30"
                                             :label="$t('crashacc')"
                                             label-for="input-1"
                                     >
-<!--                                        <b-form-datepicker id="example-datepicker"
-                                                           class="mb-2"></b-form-datepicker>-->
+
                                       <DatePickers format="YYYY-MM-DD H:i"  v-model="crashacc" />
 
 

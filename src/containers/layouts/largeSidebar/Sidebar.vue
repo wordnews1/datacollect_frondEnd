@@ -94,6 +94,30 @@
             <div class="triangle"></div>
 
           </li>
+          <li
+              v-if="this.$store.state.authData.role.indexOf('policier') !== -1
+              || this.$store.state.authData.role.indexOf('policeManager') !== -1
+              || this.$store.state.authData.role.indexOf('hopital') !== -1"
+              @mouseenter="toggleSubMenu"
+              class="nav-item"
+              :class="{ active: selectedParentMenu == 'crma' }"
+              data-item="crma"
+              :data-submenu="true"
+          >
+
+              <a class="nav-item-hold" :href="art_urls">
+                <i class="nav-icon i-Statistic"></i>
+                <span class="nav-text">{{ $t("Rapports") }}</span>
+              </a>
+
+
+<!--            <a class="nav-item-hold" href="#">
+              <i class="nav-icon i-Police"></i>
+              <span class="nav-text">Rapports</span>
+            </a>-->
+            <div class="triangle"></div>
+
+          </li>
 
 
 
@@ -969,7 +993,8 @@ export default {
       isStyle: true,
       selectedParentMenu: "",
       adrReport: "",
-      isMobile
+      isMobile,
+      art_urls:constants.art_urls,
     };
   },
   mounted() {
