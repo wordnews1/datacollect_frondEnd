@@ -221,6 +221,23 @@
                 </template>
 
                 <template #default="{  }">
+                  <b-form-group  style="margin-bottom: 10px"
+                                 class="col-md-6 mb-30"
+                                 :label="$t('Date')"
+                                 label-for="input-1"
+                  >
+                    <date-picker v-model="soinsdate" format="DD/MM/YYYY"  valueType="DD/MM/YYYY" ></date-picker>
+
+                  </b-form-group>
+
+                  <b-form-group
+                      class="col-md-3 mb-30"
+                      :label="$t('Heure ')"
+                      label-for="input-1"
+                  >
+                    <vue-timepicker v-model="soinsheure" format="hh:mm" ></vue-timepicker>
+
+                  </b-form-group>
 
                     <b-form-input
 
@@ -229,23 +246,7 @@
                             type="text"
                             :placeholder="$t('valeur')"
                     ></b-form-input>
-                  <b-form-group
-                      class="col-md-3 mb-30"
-                      :label="$t('Date')"
-                      label-for="input-1"
-                  >
-                    <date-picker v-model="dates" format="DD/MM/YYYY"  valueType="DD/MM/YYYY"></date-picker>
 
-                  </b-form-group>
-                  <b-form-group
-                      class="col-md-3 mb-30"
-                      :label="$t('Heure')"
-                      label-for="input-1"
-                  >
-                    <vue-timepicker v-model="heures" format="hh:mm" ></vue-timepicker>
-
-
-                  </b-form-group>
 
                   <b-list-group v-if="filteredSuggestions.length" style="float:inherit;position:absolute;z-index:1">
 
@@ -1006,12 +1007,15 @@
 
 <script>
 
+import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
     import constants from '../../../plugins/constants'
     import ListTable from '../components/List-table2'
     import { required, minLength, maxLength } from "vuelidate/lib/validators";
     // import partnersVue from "../partners/list"
     import axios from 'axios'
-    import Datepicker from 'vuejs-datetimepicker';
+
     import Datepicker2 from 'vue2-datepicker';
     import 'vue2-datepicker/index.css';
     import { mapGetters,mapActions } from "vuex";
@@ -1023,7 +1027,7 @@
         },
 
         components: {
-            ListTable,Datepicker,Datepicker2
+            ListTable,DatePicker,Datepicker2,VueTimepicker,
         },
         mounted(){
             console.log('rowe',this.rowes)
@@ -1034,6 +1038,8 @@
         },
         data() {
             return {
+              soinsdate:"",
+              soinsheure:"",
               dates:"",
               heures:"",
               sexes:[{
@@ -1374,10 +1380,12 @@
             console.log('selected2',value)
             console.log('selected2',this.valeur)
             this.openb=true
+
+
             let soin = {
               care: this.folder_id,
               item: this.valeur1.item.id,
-              date: this.dates+" "+this.heure
+              date: this.soinsdate+" "+this.soinsheure
             };
             switch(this.type){
 
@@ -1555,9 +1563,14 @@
             },
             onRowclick(params){
                 this.loadanotherpage = true
+
+              let today = new Date();
+              console.log('date3',today)
+
                 let soin = {
                     care: this.folder_id,
                     item: params.id
+
                 };
                 switch(params.types){
                     case 'contact':

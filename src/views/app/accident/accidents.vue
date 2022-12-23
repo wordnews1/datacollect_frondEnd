@@ -269,6 +269,7 @@ export default {
     genererpv(){
       this.$router.push({name: 'genererpv',params: { rowes:this.rowe }})
     },
+
     signin(data){
       /*if(Object.keys(this.rowe).length === 0){
           this.makeToast(this.$t('st_signin_error'),'error')
