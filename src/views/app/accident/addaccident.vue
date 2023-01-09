@@ -1003,6 +1003,7 @@
 
               </b-form-group>
               </b-row>
+
               <div class="foobar1">
                   <l-map ref="myMap"  :zoom="zoom" :center="center" @click="addMarker">
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -1010,6 +1011,7 @@
 
                   </l-map>
               </div>
+
             </b-card-body>
           </b-collapse>
         </b-card>
